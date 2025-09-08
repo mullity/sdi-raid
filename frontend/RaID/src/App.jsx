@@ -1,31 +1,16 @@
-import { Routes, Route, Navigate } from "react-router-dom";
-import { useContext } from "react";
+import { Routes, Route } from "react-router-dom";
+import AppLayout from "./AppLayout";
+import Dashboard from "./routes/Dashboard";
+import ThreeFiftyOne from "./routes/ThreeFiftyOne";
 
-import { APIContext } from "./components/Context";
-import Login from "./components/Login";
-import Home from "./components/Home";
-
-
-function App() {
-  const { } =
-    useContext(APIContext);
-  if (
-    
-  ) {
-    return <h1>Loading</h1>;
-  } else {
-    return (
-      <>
-        <APIProvider>
-          <Routes>
-            <Route path="/" element={<Navigate to="/Home" replace />} />
-            <Route path="/Home" element={<Home />} />
-            <Route path="/Login" element={<Login />} />
-          </Routes>
-        </APIProvider>
-      </>
-    );
-  }
+export default function App() {
+  return (
+    <Routes>
+      <Route element={<AppLayout />}>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/350-1" element={<ThreeFiftyOne />} />
+      </Route>
+    </Routes>
+  );
 }
-
-export default App;
