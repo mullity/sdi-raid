@@ -1,0 +1,52 @@
+.trend-chart {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+}
+
+.chart-title {
+  margin: 0 0 20px 0;
+  font-size: 1rem;
+  color: #374151;
+  font-weight: 600;
+}
+
+.chart-container {
+  position: relative;
+}
+
+.chart-svg {
+  overflow: visible;
+}
+
+.chart-line {
+  fill: none;
+  stroke: #3b82f6;
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+.chart-point {
+  fill: #3b82f6;
+}
+
+.chart-labels {
+  position: absolute;
+  bottom: -25px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.chart-stats {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
