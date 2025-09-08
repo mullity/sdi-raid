@@ -1,0 +1,120 @@
+[
+    {
+        "Topic Area": "WARFIGHTER SKILL SUSTAINMENT and PROFICIENCY",
+        "Topic": "Army Warrior Training (Warrior Task and Battle Drills) including Tier-1 TCCC",
+        "Frequency": {
+            "RA": [
+                "A"
+            ],
+            "RC": [
+                "B"
+            ]
+        },
+        "Delivery Method": null,
+        "Institutional Training": [
+            "ET"
+        ],
+        "Authority Reference": [
+            "AR 350-1",
+            "DoDI 1322.24"
+        ],
+        "HQDA POC": "DCS, G-3/5/7"
+    },
+    {
+        "Topic Area": "WARFIGHTER SKILL SUSTAINMENT and PROFICIENCY",
+        "Topic": "Individual Weapons Qualification",
+        "Frequency": {
+            "RA": [
+                "A"
+            ],
+            "RC": [
+                "A"
+            ]
+        },
+        "Delivery Method": null,
+        "Institutional Training": [
+            "ET"
+        ],
+        "Authority Reference": [
+            "AR 350-1",
+            "DA Pam 350-38"
+        ],
+        "HQDA POC": "DCS, G-3/5/7"
+    },
+    {
+        "Topic Area": "WARFIGHTER SKILL SUSTAINMENT and PROFICIENCY",
+        "Topic": "Physical Readiness Training Program (AFT/P3T)",
+        "Frequency": {
+            "RA": [
+                "S"
+            ],
+            "RC": [
+                "A"
+            ]
+        },
+        "Delivery Method": null,
+        "Institutional Training": [
+            "ET",
+            "PME"
+        ],
+        "Authority Reference": [
+            "AR 350-1"
+        ],
+        "HQDA POC": "DCS, G-3/5/7"
+    },
+    {
+        "Topic Area": "WARFIGHTER SKILL SUSTAINMENT and PROFICIENCY",
+        "Topic": "Driver's Selection, Training Testing, Licensing, and Review",
+        "Frequency": {
+            "RA": [
+                "A"
+            ],
+            "RC": [
+                "B"
+            ]
+        },
+        "Delivery Method": null,
+        "Institutional Training": [
+            "IET (MOS Specific Only)"
+        ],
+        "Authority Reference": [
+            "AR 600–55",
+            "DoDI 6055.04"
+        ],
+        "HQDA POC": "DCS, G-3/5/7"
+    },
+    {
+        "Topic Area": "PREVENTION OF HARMFUL BEHAVIORS",
+        "Topic": "Sexual Harassment/Assault, Response, and Prevention (SHARP) Program",
+        "Frequency": {
+            "RA": [
+                "I",
+                "A",
+                "P"
+            ],
+            "RC": [
+                "A",
+                "P"
+            ],
+            "CIV": [
+                "I",
+                "A"
+            ],
+            "CTR": [
+                "OPT"
+            ]
+        },
+        "Delivery Method": "Leader led with SHARP professional assisting",
+        "Institutional Training": [
+            "ET",
+            "PME",
+            "SCP"
+        ],
+        "Authority Reference": [
+            "AR 600-20",
+            "AR 600-52",
+            "DoDI 6495.02"
+        ],
+        "HQDA POC": "DCS, G-9"
+    }
+]
