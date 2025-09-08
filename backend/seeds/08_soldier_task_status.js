@@ -31,7 +31,6 @@ exports.seed = function(knex) {
               })
             }
           }
-          console.log(data)
           return data
         })
       })
