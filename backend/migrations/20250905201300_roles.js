@@ -4,7 +4,8 @@
  */
 exports.up = function(knex) {
   return knex.schema.createTable('roles', table => {
-
+    table.increments('id').primary()
+    table.string('name', 60).notNullable().unique()
   })
 };
 
@@ -13,5 +14,5 @@ exports.up = function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = function(knex) {
-  return knex.schema.dropTableIfExits('roles')
+  return knex.schema.dropTableIfExists('roles')
 };
