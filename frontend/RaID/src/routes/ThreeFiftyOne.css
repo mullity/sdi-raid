@@ -1,0 +1,25 @@
+.threefiftyone-page {
+  padding: 20px;
+  background-color: #f9fafb;
+  min-height: 100vh;
+}
+
+.threefiftyone-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #374151;
+}
+
+.threefiftyone-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.threefiftyone-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}

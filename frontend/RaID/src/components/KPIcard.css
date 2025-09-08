@@ -1,0 +1,82 @@
+.kpi-card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  min-width: 200px;
+}
+
+.kpi-card.status-good {
+  border: 2px solid #10b981;
+}
+
+.kpi-card.status-warning {
+  border: 2px solid #f59e0b;
+}
+
+.kpi-card.status-critical {
+  border: 2px solid #ef4444;
+}
+
+.kpi-card.status-neutral {
+  border: 2px solid #6b7280;
+}
+
+.kpi-title {
+  margin: 0 0 10px 0;
+  font-size: 0.875rem;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.kpi-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.kpi-value {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.kpi-value.status-good {
+  color: #10b981;
+}
+
+.kpi-value.status-warning {
+  color: #f59e0b;
+}
+
+.kpi-value.status-critical {
+  color: #ef4444;
+}
+
+.kpi-value.status-neutral {
+  color: #6b7280;
+}
+
+.kpi-unit {
+  font-size: 1rem;
+  color: #6b7280;
+  margin-left: 4px;
+}
+
+.kpi-trend {
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+.kpi-trend.trend-up {
+  color: #10b981;
+}
+
+.kpi-trend.trend-down {
+  color: #ef4444;
+}
+
+.kpi-trend.trend-neutral {
+  color: #6b7280;
+}

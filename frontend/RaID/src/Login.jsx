@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import './Login.css'
 
 function Login({ onLogin }) {
   const [username, setUsername] = useState('')
@@ -25,163 +26,54 @@ function Login({ onLogin }) {
   }
 
   return (
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      minHeight: '100vh',
-      background: 'linear-gradient(135deg, #1f2937 0%, #374151 50%, #1f2937 100%)',
-      padding: '20px'
-    }}>
-      <div style={{
-        backgroundColor: 'white',
-        borderRadius: '12px',
-        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-        padding: '40px',
-        width: '100%',
-        maxWidth: '400px',
-        textAlign: 'center'
-      }}>
+    <div className="login-container">
+      <div className="login-card">
         <div>
-          <h1 style={{
-            color: '#374151',
-            fontSize: '2.5rem',
-            marginBottom: '8px',
-            fontWeight: 'bold',
-            letterSpacing: '0.1em'
-          }}>R.a.I.D.</h1>
-          <h2 style={{
-            color: '#6b7280',
-            fontSize: '1.25rem',
-            marginBottom: '8px',
-            fontWeight: 'normal'
-          }}>Unit Readiness Dashboard</h2>
-          <p style={{
-            color: '#9ca3af',
-            marginBottom: '32px',
-            fontSize: '0.875rem'
-          }}>Please sign in to continue</p>
+          <h1 className="login-title">R.a.I.D.</h1>
+          <h2 className="login-subtitle">Unit Readiness Dashboard</h2>
+          <p className="login-description">Please sign in to continue</p>
         </div>
 
-        <form onSubmit={handleSubmit} style={{ textAlign: 'left' }}>
+        <form onSubmit={handleSubmit} className="login-form">
           {error && (
-            <div style={{
-              backgroundColor: '#fef2f2',
-              color: '#dc2626',
-              padding: '12px',
-              borderRadius: '6px',
-              marginBottom: '20px',
-              fontSize: '0.875rem',
-              border: '1px solid #fecaca'
-            }}>
+            <div className="error-message">
               {error}
             </div>
           )}
           
-          <div style={{ marginBottom: '20px' }}>
-            <label htmlFor="username" style={{
-              display: 'block',
-              marginBottom: '6px',
-              color: '#374151',
-              fontWeight: '500',
-              fontSize: '0.875rem'
-            }}>Username</label>
+          <div className="form-group">
+            <label htmlFor="username" className="form-label">Username</label>
             <input
               type="text"
               id="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Enter your username"
-              style={{
-                width: '100%',
-                padding: '12px 16px',
-                border: '2px solid #e5e7eb',
-                borderRadius: '6px',
-                fontSize: '1rem',
-                transition: 'border-color 0.2s, box-shadow 0.2s',
-                outline: 'none',
-                boxSizing: 'border-box'
-              }}
-              onFocus={(e) => {
-                e.target.style.borderColor = '#3b82f6';
-                e.target.style.boxShadow = '0 0 0 4px rgba(59, 130, 246, 0.1)';
-              }}
-              onBlur={(e) => {
-                e.target.style.borderColor = '#e5e7eb';
-                e.target.style.boxShadow = 'none';
-              }}
+              className="form-input"
               required
             />
           </div>
 
-          <div style={{ marginBottom: '20px' }}>
-            <label htmlFor="password" style={{
-              display: 'block',
-              marginBottom: '6px',
-              color: '#374151',
-              fontWeight: '500',
-              fontSize: '0.875rem'
-            }}>Password</label>
+          <div className="form-group">
+            <label htmlFor="password" className="form-label">Password</label>
             <input
               type="password"
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
-              style={{
-                width: '100%',
-                padding: '12px 16px',
-                border: '2px solid #e5e7eb',
-                borderRadius: '6px',
-                fontSize: '1rem',
-                transition: 'border-color 0.2s, box-shadow 0.2s',
-                outline: 'none',
-                boxSizing: 'border-box'
-              }}
-              onFocus={(e) => {
-                e.target.style.borderColor = '#3b82f6';
-                e.target.style.boxShadow = '0 0 0 4px rgba(59, 130, 246, 0.1)';
-              }}
-              onBlur={(e) => {
-                e.target.style.borderColor = '#e5e7eb';
-                e.target.style.boxShadow = 'none';
-              }}
+              className="form-input"
               required
             />
           </div>
 
-          <div style={{ marginBottom: '20px' }}>
-            <label htmlFor="role" style={{
-              display: 'block',
-              marginBottom: '6px',
-              color: '#374151',
-              fontWeight: '500',
-              fontSize: '0.875rem'
-            }}>Role</label>
+          <div className="form-group">
+            <label htmlFor="role" className="form-label">Role</label>
             <select
               id="role"
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '12px 16px',
-                border: '2px solid #e5e7eb',
-                borderRadius: '6px',
-                fontSize: '1rem',
-                transition: 'border-color 0.2s, box-shadow 0.2s',
-                outline: 'none',
-                cursor: 'pointer',
-                backgroundColor: 'white',
-                boxSizing: 'border-box'
-              }}
-              onFocus={(e) => {
-                e.target.style.borderColor = '#3b82f6';
-                e.target.style.boxShadow = '0 0 0 4px rgba(59, 130, 246, 0.1)';
-              }}
-              onBlur={(e) => {
-                e.target.style.borderColor = '#e5e7eb';
-                e.target.style.boxShadow = 'none';
-              }}
+              className="form-select"
               required
             >
               <option value="">Select your role</option>
@@ -193,38 +85,14 @@ function Login({ onLogin }) {
 
           <button 
             type="submit" 
-            style={{
-              width: '100%',
-              backgroundColor: '#2563eb',
-              color: 'white',
-              border: 'none',
-              padding: '14px',
-              borderRadius: '6px',
-              fontSize: '1rem',
-              fontWeight: '500',
-              cursor: 'pointer',
-              transition: 'background-color 0.2s, transform 0.1s',
-              marginTop: '10px'
-            }}
-            onMouseEnter={(e) => e.target.style.backgroundColor = '#1d4ed8'}
-            onMouseLeave={(e) => e.target.style.backgroundColor = '#2563eb'}
-            onMouseDown={(e) => e.target.style.transform = 'translateY(1px)'}
-            onMouseUp={(e) => e.target.style.transform = 'translateY(0)'}
+            className="login-button"
           >
             Sign In
           </button>
         </form>
 
-        <div style={{
-          marginTop: '32px',
-          paddingTop: '20px',
-          borderTop: '1px solid #e5e7eb'
-        }}>
-          <p style={{
-            color: '#9ca3af',
-            fontSize: '0.75rem',
-            margin: '0'
-          }}>Authorized personnel only</p>
+        <div className="login-footer">
+          <p className="login-footer-text">Authorized personnel only</p>
         </div>
       </div>
     </div>
