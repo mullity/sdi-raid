@@ -1,16 +1,29 @@
-import { Routes, Route } from "react-router-dom";
-import AppLayout from "./AppLayout";
-import Dashboard from "./routes/Dashboard";
-import ThreeFiftyOne from "./routes/ThreeFiftyOne";
+import { useState } from 'react'
+import ThemeProvider from './ThemeContext'
+import Login from './Login'
+import LeaderDashboard from './LeaderDashboard'
+import './App.css'
 
-export default function App() {
+function App() {
+  const [user, setUser] = useState(null)
+
+  const handleLogin = (userData) => {
+    setUser(userData)
+  }
+
+  const handleLogout = () => {
+    setUser(null)
+  }
+
   return (
-    <Routes>
-      <Route element={<AppLayout />}>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/350-1" element={<ThreeFiftyOne />} />
-      </Route>
-    </Routes>
-  );
+    <ThemeProvider>
+      <div className="app">
+        {!user ? (
+          <Login onLogin={handleLogin} />
+        ) : (
+          <LeaderDashboard user={user} onLogout={handleLogout} />
+        )}
+      </div>
+    </ThemeProvider>
+  )
 }
