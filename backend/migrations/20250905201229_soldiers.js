@@ -7,6 +7,7 @@ exports.up = function(knex) {
     table.increments('id').primary();
     table.string('first_name').notNullable()
     table.string('last_name').notNullable()
+    table.string('pay_grade').notNullable()
     table.integer('unit_id').notNullable()
 
     table.foreign('unit_id').references('units.id').deferrable('deferred')

@@ -23,11 +23,16 @@ exports.up = function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = function(knex) {
-  return knex.schema.alterTable('soldier_task_status', table => {
+  return knex.schema
+  .alterTable('soldier_task_status', table => {
     table.dropForeign('soldier_id')
     table.dropForeign('task_id')
   })
-  .then( () => {
-    return knex.schema.dropTableIfExists('soldier_task_status')
-  })
+  .then(() => {
+    return knex.schema
+    .dropTableIfExists('soldier_task_status')
+    .raw('DROP TYPE IF EXISTS training_status;')
+  });
+
 };
+

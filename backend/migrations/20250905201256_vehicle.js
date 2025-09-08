@@ -6,6 +6,7 @@ exports.up = function(knex) {
   return knex.schema.createTable('vehicle', table => {
     table.increments('id').primary()
     table.string('name', 150).notNullable()
+    table.string('lin',10).notNullable()
     table.enu('status', ['FMC','PMC', 'NMC'], {
       useNative: true,
       enumName: 'equipment_status'
@@ -22,10 +23,15 @@ exports.up = function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = function(knex) {
-  return knex.schema.alterTable('vehicle', table => {
+return knex.schema
+  .alterTable('vehicle', table => {
     table.dropForeign('assigned_unit_id')
   })
-  .then( () => {
-    return knex.schema.dropTableIfExists('vehicle')
-  })
+  .then(() => {
+    return knex.schema
+    .dropTableIfExists('vehicle')
+    .raw('DROP TYPE IF EXISTS equipment_status;')
+  });
+
 };
+
