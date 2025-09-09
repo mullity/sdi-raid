@@ -9,8 +9,10 @@ exports.up = function(knex) {
     table.string('last_name').notNullable()
     table.string('pay_grade').notNullable()
     table.integer('unit_id').notNullable()
+    table.integer('deployable_status').notNullable()
 
     table.foreign('unit_id').references('units.id').deferrable('deferred')
+    table.foreign('deployable_status').references('status.id').deferrable('deferred')
   })
 };
 
@@ -21,6 +23,7 @@ exports.up = function(knex) {
 exports.down = function(knex) {
   return knex.schema.alterTable('soldiers', table => {
     table.dropForeign('unit_id')
+    table.dropForeign('deployable_status')
   })
   .then( () => {
     return knex.schema.dropTableIfExists('soldiers')

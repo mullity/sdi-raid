@@ -14,7 +14,6 @@ exports.seed = function(knex){
           let idNum = 0
           for(let user of users){
             let scoreNum = Math.floor(Math.random() * 100)
-            console.log(Number(user.unit_id))
             data.push({
               id: idNum,
               user_id: Number(user.id),
