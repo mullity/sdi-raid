@@ -4,34 +4,55 @@
  */
 const { faker } = require('@faker-js/faker');
 
-let data = []
-let faked = 10
 
-data.push({
-  id: 1,
-  email: `${faker.person.firstName()}.${faker.string.alpha(1)}.${faker.person.lastName()}.mil@army.mil`.toLowerCase(),
-  password: 'pass',
-  role_id: 1
-})
-data.push({
-  id: 2,
-  email: `${faker.person.firstName()}.${faker.string.alpha(1)}.${faker.person.lastName()}.mil@army.mil`.toLowerCase(),
-  password: 'pass',
-  role_id: 2
-})
+exports.seed = function(knex) {
+  return knex('users').del()
+    .then(one => {
+      return knex('units').select('id').from('units')
+        .then(output => {
+          let data = []
+          let fakeUnits = Number(output.length -1)
+          let idNum = 0
 
-data.push({
-  id: 3,
-  email: `${faker.person.firstName()}.${faker.string.alpha(1)}.${faker.person.lastName()}.mil@army.mil`.toLowerCase(),
-  password: 'pass',
-  role_id: 3
-})
+          for(let i = 0; i < fakeUnits; i++ ){
+            let name1 = `${faker.person.firstName()}.${faker.string.alpha(1)}.${faker.person.lastName()}`.toLowerCase()
+            let name2 = `${faker.person.firstName()}.${faker.string.alpha(1)}.${faker.person.lastName()}`.toLowerCase()
+            let name3 = `${faker.person.firstName()}.${faker.string.alpha(1)}.${faker.person.lastName()}`.toLowerCase()
 
+            idNum++
+            data.push({
+              id: idNum,
+              email: `${name1}.mil@army.mil`,
+              password: 'pass',
+              username: name1,
+              role_id: 1,
+              unit_id: i
+            })
+            idNum++
+            data.push({
+              id: idNum,
+              email: `${name2}.mil@army.mil`,
+              password: 'pass',
+              username: name2,
+              role_id: 2,
+              unit_id: i
+            })
+            idNum++
+            data.push({
+              id: idNum,
+              email: `${name3}.mil@army.mil`,
+              password: 'pass',
+              username: name3,
+              role_id: 3,
+              unit_id: i
+            })
 
+          }
 
-
-exports.seed = async function(knex) {
-  // Deletes ALL existing entries
-  await knex('users').del()
-  await knex('users').insert(data);
-};
+          return data;
+        })
+        .then(data => {
+          return knex('users').insert(data)
+        })
+    })
+  }
