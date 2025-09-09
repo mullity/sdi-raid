@@ -11,6 +11,7 @@ exports.up = function(knex) {
       useNative: true,
       enumName: 'training_level'
     })
+    table.date('date_last_completed');
 
   })
 };

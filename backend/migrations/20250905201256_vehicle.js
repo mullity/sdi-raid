@@ -12,6 +12,7 @@ exports.up = function(knex) {
       enumName: 'equipment_status'
     })
     table.integer('assigned_unit_id').notNullable()
+    table.date('date_last_serviced');
 
     table.foreign('assigned_unit_id').references('units.id')
 

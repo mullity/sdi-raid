@@ -31,12 +31,14 @@ for(let i = 0; i < faked; i++){
   let taskNum = Math.floor(Math.random() * 3)
   let fakeNum = Math.floor(Math.random() * 71)
   let itemNum = Math.floor(Math.random() * 9999)
+  let date = `${faker.date.past()}`.slice(4, 15)
 
   data.push({
     id: i,
     number: `${fakeNum}-${echelonNum[trainingNum].name}-${itemNum}`,
     title: `${taskNumbers[taskNum].name}`,
     level: `${trainingLevel[trainingNum].name}`,
+    date_last_completed: date,
   })
 }
 
