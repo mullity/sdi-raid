@@ -3,8 +3,16 @@ import AppLayout from './AppLayout'
 import Dashboard from './routes/Dashboard'
 import ThreeFiftyOne from './routes/ThreeFiftyOne'
 import './LeaderDashboard.css'
+import {useState, useEffect } from 'react';
+import { fetchUIC } from './utils/fetchUIC';
 
 function LeaderDashboard({ user, onLogout }) {
+  const [unitData, setUnitData] = useState('');
+
+  useEffect(() => {
+    fetchUIC().then(setUnitData);
+  }, []);
+  
   return (
     <div className="dashboard-container">
       <Routes>
@@ -17,7 +25,8 @@ function LeaderDashboard({ user, onLogout }) {
       
       <div className="user-info">
         <div className="user-welcome">
-          <div className="user-name">Welcome, {user.username}</div>
+          <div className="user-name">Welcome, {user.username}, UIC: {unitData}
+          </div>
           <div className="user-role">{user.role}</div>
         </div>
         <button

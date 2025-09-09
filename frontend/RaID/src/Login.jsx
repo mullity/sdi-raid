@@ -23,6 +23,7 @@ function Login({ onLogin }) {
     } else {
       setError('Password must be at least 6 characters')
     }
+  
   }
 
   return (
