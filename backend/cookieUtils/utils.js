@@ -217,7 +217,6 @@ const medicalSnapshot = async (unit, verbose) => {
 }
 
 const snapshot = async (unit, verbose) => {
-  //get initial data & set start state
   let vics = await vicSnapshot(unit, 'true')
   let troops = await personnelSnapshot(unit, 'true')
   let tasks = await trainingSnapshot(unit, 'true')
@@ -225,14 +224,13 @@ const snapshot = async (unit, verbose) => {
   let deployable = 0
   let nonDeployable = 0
 
-  //define output
   let output = [
     vics,
     troops,
     tasks,
     meds
   ]
-  //return output
+
   return output;
 }
 
@@ -240,6 +238,8 @@ const priority = async (unit, verbose) => {
   let safetyNet = await snapshot(unit, verbose)
   let data = JSON.parse(JSON.stringify(safetyNet.slice()))
   data.sort((a,b) => a.data.PERCENT - b.data.PERCENT)
+
+  return data
 
 }
 module.exports = {
