@@ -12,7 +12,7 @@
         },
         "Delivery Method": null,
         "Institutional Training": [
-            "ET"
+            "IET"
         ],
         "Authority Reference": [
             "AR 350-1",
@@ -33,7 +33,7 @@
         },
         "Delivery Method": null,
         "Institutional Training": [
-            "ET"
+            "IET"
         ],
         "Authority Reference": [
             "AR 350-1",
@@ -54,7 +54,7 @@
         },
         "Delivery Method": null,
         "Institutional Training": [
-            "ET",
+            "IET",
             "PME"
         ],
         "Authority Reference": [
@@ -78,7 +78,7 @@
             "IET (MOS Specific Only)"
         ],
         "Authority Reference": [
-            "AR 600–55",
+            "AR 600-55",
             "DoDI 6055.04"
         ],
         "HQDA POC": "DCS, G-3/5/7"
@@ -106,7 +106,7 @@
         },
         "Delivery Method": "Leader led with SHARP professional assisting",
         "Institutional Training": [
-            "ET",
+            "IET",
             "PME",
             "SCP"
         ],
@@ -116,5 +116,141 @@
             "DoDI 6495.02"
         ],
         "HQDA POC": "DCS, G-9"
+    },
+    {
+        "Topic Area": "PREVENTION OF HARMFUL BEHAVIORS",
+        "Topic": "Suicide Prevention",
+        "Frequency": {
+            "RA": [
+                "A",
+                "P"
+            ],
+            "RC": [
+                "A",
+                "P"
+            ],
+            "CIV": [
+                "I",
+                "A"
+            ]
+        },
+        "Delivery Method": "Face-to-Face using ACE Base +1 Modules, or Engage",
+        "Institutional Training": [
+            "IET",
+            "PME",
+            "SCP"
+        ],
+        "Authority Reference": [
+            "AR 600-92",
+            "DoDI 6490.16"
+        ],
+        "HQDA POC": "DCS, G-9"
+    },
+    {
+        "Topic Area": "PREVENTION OF HARMFUL BEHAVIORS",
+        "Topic": "Substance Misuse Prevention",
+        "Frequency": {
+            "RA": [
+                "A",
+                "P"
+            ],
+            "RC": [
+                "A",
+                "P"
+            ],
+            "CIV": [
+                "I",
+                "A"
+            ]
+        },
+        "Delivery Method": "ASAP SME (face-to-face for Soldiers",
+        "Institutional Training": [
+            "IET"
+        ],
+        "Authority Reference": [
+            "AR 600-85",
+            "DoDI 1010.04"
+        ],
+        "HQDA POC": "DCS, G-9"
+    },
+    {
+        "Topic Area": "PREVENTION OF HARMFUL BEHAVIORS",
+        "Topic": "Substance Misuse Prevention",
+        "Frequency": {
+            "RA": [
+                "A",
+                "P"
+            ],
+            "RC": [
+                "A",
+                "P"
+            ],
+            "CIV": [
+                "I",
+                "A"
+            ]
+        },
+        "Delivery Method": "ASAP SME (face-to-face for Soldiers",
+        "Institutional Training": [
+            "IET"
+        ],
+        "Authority Reference": [
+            "AR 600-85",
+            "DoDI 1010.04"
+        ],
+        "HQDA POC": "DCS, G-9"
+    },
+    {
+        "Topic Area": "PREVENTION OF HARMFUL BEHAVIORS",
+        "Topic": "Military Equal Opportunity (MEO) (includes treatment of persons)",
+        "Frequency": {
+            "RA": [
+                "A"
+            ],
+            "RC": [
+                "B"
+            ]
+        },
+        "Delivery Method": "SME (EO)",
+        "Institutional Training": [
+            "IET",
+            "PME",
+            "SCP"
+        ],
+        "Authority Reference": [
+            "AR 600-20",
+            "DoDD 1350.2"
+        ],
+        "HQDA POC": "ASA M&RA"
+    },
+    {
+        "Topic Area": "PROTECTION",
+        "Topic": "Cyber Awareness Initial and Refresher Training",
+        "Frequency": {
+            "RA": [
+                "I",
+                "A"
+            ],
+            "RC": [
+                "I",
+                "A"
+            ],
+            "CIV": [
+                "I",
+                "A"
+            ],
+            "CTR": [
+                "A"
+            ]
+        },
+        "Delivery Method": "Online only - JKO or US Army School Cyber Leader College websites",
+        "Institutional Training": [
+            "ONLY IF NOT ALREADY CURRENT"
+        ],
+        "Authority Reference": [
+            "AR 25-2",
+            "DoDI 8599.01"
+        ],
+        "HQDA POC": "DCS, G-6"
     }
 ]
