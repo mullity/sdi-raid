@@ -12,10 +12,13 @@ class Vehicle extends Equipment {
 
   constructor(options = {}) {
     const{uic, lin, name, status} = options
-    this.uic = uic || "000000"
+    this.uic = uic
     this.lin = lin || "000000"
     this.name = name || "NO NAME"
     this.status = status || "ZZZ"
     }
 }
 
+module.exports = {
+  Vehicle: Vehicle,
+}
