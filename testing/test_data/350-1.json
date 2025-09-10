@@ -1,5 +1,6 @@
 [
     {
+        "350-1Id": 1,
         "Topic Area": "WARFIGHTER SKILL SUSTAINMENT and PROFICIENCY",
         "Topic": "Army Warrior Training (Warrior Task and Battle Drills) including Tier-1 TCCC",
         "Frequency": {
@@ -21,6 +22,7 @@
         "HQDA POC": "DCS, G-3/5/7"
     },
     {
+        "350-1Id": 2,
         "Topic Area": "WARFIGHTER SKILL SUSTAINMENT and PROFICIENCY",
         "Topic": "Individual Weapons Qualification",
         "Frequency": {
@@ -42,6 +44,7 @@
         "HQDA POC": "DCS, G-3/5/7"
     },
     {
+        "350-1Id": 3,
         "Topic Area": "WARFIGHTER SKILL SUSTAINMENT and PROFICIENCY",
         "Topic": "Physical Readiness Training Program (AFT/P3T)",
         "Frequency": {
@@ -63,6 +66,7 @@
         "HQDA POC": "DCS, G-3/5/7"
     },
     {
+        "350-1Id": 4,
         "Topic Area": "WARFIGHTER SKILL SUSTAINMENT and PROFICIENCY",
         "Topic": "Driver's Selection, Training Testing, Licensing, and Review",
         "Frequency": {
@@ -84,6 +88,7 @@
         "HQDA POC": "DCS, G-3/5/7"
     },
     {
+        "350-1Id": 5,
         "Topic Area": "PREVENTION OF HARMFUL BEHAVIORS",
         "Topic": "Sexual Harassment/Assault, Response, and Prevention (SHARP) Program",
         "Frequency": {
@@ -118,6 +123,7 @@
         "HQDA POC": "DCS, G-9"
     },
     {
+        "350-1Id": 6,
         "Topic Area": "PREVENTION OF HARMFUL BEHAVIORS",
         "Topic": "Suicide Prevention",
         "Frequency": {
@@ -147,6 +153,7 @@
         "HQDA POC": "DCS, G-9"
     },
     {
+        "350-1Id": 7,
         "Topic Area": "PREVENTION OF HARMFUL BEHAVIORS",
         "Topic": "Substance Misuse Prevention",
         "Frequency": {
@@ -174,33 +181,7 @@
         "HQDA POC": "DCS, G-9"
     },
     {
-        "Topic Area": "PREVENTION OF HARMFUL BEHAVIORS",
-        "Topic": "Substance Misuse Prevention",
-        "Frequency": {
-            "RA": [
-                "A",
-                "P"
-            ],
-            "RC": [
-                "A",
-                "P"
-            ],
-            "CIV": [
-                "I",
-                "A"
-            ]
-        },
-        "Delivery Method": "ASAP SME (face-to-face for Soldiers",
-        "Institutional Training": [
-            "IET"
-        ],
-        "Authority Reference": [
-            "AR 600-85",
-            "DoDI 1010.04"
-        ],
-        "HQDA POC": "DCS, G-9"
-    },
-    {
+        "350-1Id": 8,
         "Topic Area": "PREVENTION OF HARMFUL BEHAVIORS",
         "Topic": "Military Equal Opportunity (MEO) (includes treatment of persons)",
         "Frequency": {
@@ -224,6 +205,7 @@
         "HQDA POC": "ASA M&RA"
     },
     {
+        "350-1Id": 12,
         "Topic Area": "PROTECTION",
         "Topic": "Cyber Awareness Initial and Refresher Training",
         "Frequency": {
