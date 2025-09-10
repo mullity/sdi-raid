@@ -1,14 +1,25 @@
 import { NavLink, Outlet } from "react-router-dom";
+import LeaderHub from "./components/LeaderHub";
 import './AppLayout.css';
 
-export default function AppLayout() {
+export default function AppLayout({ user, onLogout }) {
+  const formatRole = (role) => {
+    if (!role) return '';
+    return role.charAt(0).toUpperCase() + role.slice(1);
+  };
+
   return (
     <div className="app-layout">
       <header className="app-header">
         <div className="header-content">
-          <h1 className="app-title">
-            R.a.I.D — Dashboard
-          </h1>
+          <div className="header-left">
+            <h1 className="app-title">
+              R.a.I.D — Dashboard
+            </h1>
+            <div className="welcome-message">
+              Welcome, {user?.username} ({formatRole(user?.role)})
+            </div>
+          </div>
           <nav className="main-nav">
             <NavLink 
               to="/dashboard" 
@@ -23,17 +34,17 @@ export default function AppLayout() {
               350-1
             </NavLink>
           </nav>
+          <div className="user-controls">
+            <button className="logout-button" onClick={onLogout}>
+              Logout
+            </button>
+          </div>
         </div>
       </header>
 
       <div className="app-body">
         <aside className="sidebar">
-          <h3 className="sidebar-title">
-            Sections
-          </h3>
-          <SectionLink label="Medical" disabled />
-          <SectionLink label="Equipment" disabled />
-          <SectionLink label="Training" disabled />
+          <LeaderHub />
         </aside>
         <main className="main-content">
           <Outlet />
@@ -43,18 +54,3 @@ export default function AppLayout() {
   );
 }
 
-function SectionLink({ to = "#", label, disabled }) {
-  if (disabled) return (
-    <div className="sidebar-link disabled">
-      {label}
-    </div>
-  );
-  return (
-    <NavLink 
-      to={to}
-      className="sidebar-link"
-    >
-      {label}
-    </NavLink>
-  );
-}

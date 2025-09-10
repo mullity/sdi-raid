@@ -18,11 +18,24 @@
   margin: 0 auto;
 }
 
+.header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 .app-title {
   margin: 0;
   font-size: 1.5rem;
   font-weight: bold;
   letter-spacing: 0.1em;
+  color: white;
+}
+
+.welcome-message {
+  color: #e5e7eb;
+  font-size: 0.875rem;
+  font-weight: 400;
 }
 
 .main-nav {
@@ -53,10 +66,18 @@
 }
 
 .sidebar {
-  width: 200px;
+  width: 320px;
   background-color: #e5e7eb;
   padding: 20px;
   border-right: 1px solid #d1d5db;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+}
+
+.sidebar-sections {
+  flex-shrink: 0;
 }
 
 .sidebar-title {
@@ -90,4 +111,24 @@
 .main-content {
   flex: 1;
   background-color: #f9fafb;
+}
+
+.user-controls {
+  display: flex;
+  align-items: center;
+}
+
+.logout-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.logout-button:hover {
+  background-color: #c82333;
 }
