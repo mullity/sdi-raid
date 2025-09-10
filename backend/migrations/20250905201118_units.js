@@ -7,10 +7,7 @@ exports.up = function(knex) {
     table.increments('id').primary()
     table.string('uic', 10).notNullable().unique()
     table.string('name').notNullable()
-    table.integer('parent_unit_id')
-
-    table.foreign('parent_unit_id').references('units.id').deferrable('deferred')
-
+    table.string('parent_unit_uic')
   })
 };
 
@@ -19,10 +16,6 @@ exports.up = function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = function(knex) {
-  return knex.schema.alterTable('units', table => {
-    table.dropForeign('parent_unit_id')
-  })
-  .then( () => {
-    return knex.schema.dropTableIfExists('units')
-  })
+  return knex.schema.dropTableIfExists('units')
+
 };

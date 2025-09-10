@@ -3,7 +3,7 @@ const port = 3001;
 
 const express = require('express');
 const cors = require('cors');
-const { snapshot, vicSnapshot, trainingSnapshot } = require('./cookieUtils/utils')
+const { snapshot, vicSnapshot, trainingSnapshot, personnelSnapshot } = require('./cookieUtils/utils')
 const environment = process.env.NODE_ENV || 'development';
 const knexConfig = require('./knexfile')[environment];
 const knex = require('knex')(knexConfig);
@@ -81,6 +81,7 @@ app.get('/kpi', async (req, res) => {
   try {
     let vicKpi = await vicSnapshot(unit, verbose)
     let trainingKpi = await trainingSnapshot(unit, verbose)
+    let personnelKpi = await personnelSnapshot(unit, verbose)
     let output= []
     if(equipmentReadinessScore == undefined && personnelReadinessScore == undefined && trainingReadinessScore == undefined && medicalReadinessScore == undefined){
       output.push({Error: 'Must select a KPI Score to recieve data'})
@@ -89,7 +90,7 @@ app.get('/kpi', async (req, res) => {
       output.push(vicKpi)
     }
     if (personnelReadinessScore === "true"){
-      console.log(personnelReadinessScore)
+      output.push(personnelKpi)
     }
     if (trainingReadinessScore=== "true"){
       output.push(trainingKpi)

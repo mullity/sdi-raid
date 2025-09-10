@@ -33,7 +33,6 @@ function joinTaskStatus() {
   .select()
 }
 
-
 const vicSnapshot = async (unit, verbose) => {
   let vics = await getWithUnitId('vehicle', unit)
   let fmc = 0
@@ -136,7 +135,43 @@ const trainingSnapshot = async (unit, verbose) => {
   return output;
 }
 
-//will break
+const personnelSnapshot = async (unit, verbose) => {
+  let troops = await getWithUnitId('soldiers', unit)
+  let deployable = 0
+  let nonDeployable = 0
+
+  for(let troop of troops){
+    if(troop.deployable_status == "5" || troop.deployable_status == "6" ) {
+      deployable++
+    } else if (troop.deployable_status == "7"){
+      nonDeployable++
+    }
+  }
+
+  let troopT = troops.length
+  let troopPercent = Number(deployable/troopT) * 100
+
+
+
+    if(verbose === "true"){
+      output =
+      {id: "Troops", data: {
+        total: troops.length,
+        DEPLOYABLE: deployable,
+        NONDEPLOYABLE: nonDeployable,
+        PERCENT: troopPercent
+      }}
+    } else {
+      output =
+      {id: "Troops", data: {
+        PERCENT: troopPercent
+      }}
+    }
+
+  return output;
+
+}
+
 const snapshot = async (unit, verbose) => {
   //get initial data & set start state
   let vics = await vicSnapshot(unit, verbose)
@@ -144,8 +179,6 @@ const snapshot = async (unit, verbose) => {
   let tasks = await trainingSnapshot(unit, verbose)
   let deployable = 0
   let nonDeployable = 0
-  let qualified = 0
-  let notQualified = 0
 
   //iterate through all data
   for(let troop of troops){
@@ -156,19 +189,9 @@ const snapshot = async (unit, verbose) => {
     }
   }
 
-  for(let task of tasks){
-    if(task.status == "qualified" ) {
-      qualified++
-    } else if (task.status == "not_qualified"){
-      notQualified++
-    }
-  }
-
   //calculate all percents/ process data
   let troopT = troops.length
   let troopPercent = Number(deployable/troopT) * 100
-  let tasksT = tasks.length
-  let tasksPercent = Number(qualified/tasksT) * 100
 
   // let actionItem = {
   //   combatPower: {
@@ -193,12 +216,7 @@ const snapshot = async (unit, verbose) => {
       NONDEPLOYABLE: nonDeployable,
       PERCENT: troopPercent
     }},
-    {id: 'Tasks', data: {
-      total: `${tasks.length}`,
-      QUALIFIED: qualified,
-      NOTQUALIFIED: notQualified,
-      PERCENT: tasksPercent
-    }}
+    tasks
   ]
   //return output
   return output;
@@ -211,7 +229,8 @@ module.exports = {
   snapshot: snapshot,
   vicSnapshot:vicSnapshot,
   getWithUnitId: getWithUnitId,
-  trainingSnapshot:trainingSnapshot
+  trainingSnapshot:trainingSnapshot,
+  personnelSnapshot:personnelSnapshot
 }
 
 

@@ -45,31 +45,31 @@ data.push({
   id: 0,
   uic: `WAMZA0`,
   name: `${unitNum0} ${nameType[0].name}`,
-  parent_unit_id: Number('')
+  parent_unit_uic: 'WAMZAA'
 })
 data.push({
   id: 1,
   uic: `WAMZB0`,
   name: `${unitNum1} ${nameType[1].name}`,
-  parent_unit_id: Number('')
+  parent_unit_uic: 'WAMZAA'
 })
 data.push({
   id: 2,
   uic: `WAMZC0`,
   name: `${unitNum2} ${nameType[2].name}`,
-  parent_unit_id: Number('')
+  parent_unit_uic: 'WAMZAA'
 })
 data.push({
   id: 3,
   uic: `WAMZD0`,
   name: `${unitNum3} ${nameType[3].name}`,
-  parent_unit_id: Number('')
+  parent_unit_uic: 'WAMZAA'
 })
 data.push({
   id: 4,
   uic: `WAMZAA`,
   name: `${unitNum4} ${nameType[4].name}`,
-  parent_unit_id: Number('')
+  parent_unit_uic: null
 })
 
 
@@ -77,31 +77,31 @@ data.push({
   id: 5,
   uic: `WEMZA0`,
   name: `${unitNum5} ${nameType[0].name}`,
-  parent_unit_id: Number('')
+  parent_unit_uic: 'WEMZAA'
 })
 data.push({
   id: 6,
   uic: `WEMZB0`,
   name: `${unitNum6} ${nameType[1].name}`,
-  parent_unit_id: Number('')
+  parent_unit_uic: 'WEMZAA'
 })
 data.push({
   id: 7,
   uic: `WEMZC0`,
   name: `${unitNum7} ${nameType[2].name}`,
-  parent_unit_id: Number('')
+  parent_unit_uic: 'WEMZAA'
 })
 data.push({
   id: 8,
   uic: `WEMZD0`,
   name: `${unitNum8} ${nameType[3].name}`,
-  parent_unit_id: Number('')
+  parent_unit_uic: 'WEMZAA'
 })
 data.push({
   id: 9,
   uic: `WEMZAA`,
   name: `${unitNum9} ${nameType[4].name}`,
-  parent_unit_id: Number('')
+  parent_unit_uic: null
 })
 
 
