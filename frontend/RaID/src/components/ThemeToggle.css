@@ -1,0 +1,72 @@
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.toggle-container {
+  width: 48px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  position: relative;
+  transition: background 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.toggle-slider {
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 1px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-slider.light {
+  left: 1px;
+  background: #fbbf24;
+}
+
+.toggle-slider.dark {
+  left: 25px;
+  background: #1f2937;
+}
+
+.toggle-icon {
+  font-size: 12px;
+  line-height: 1;
+}
+
+.toggle-slider.light .toggle-icon {
+  color: white;
+}
+
+.toggle-slider.dark .toggle-icon {
+  color: #fbbf24;
+}
+
+/* Dark theme toggle container styling */
+[data-theme="dark"] .toggle-container {
+  background: rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.05);
+}

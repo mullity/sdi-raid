@@ -1,6 +1,6 @@
 .dashboard-page {
   padding: 20px;
-  background-color: #f9fafb;
+  background-color: var(--bg-tertiary);
   min-height: 100vh;
 }
 
@@ -8,7 +8,7 @@
   font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 20px;
-  color: #374151;
+  color: var(--text-primary);
 }
 
 .kpi-grid {

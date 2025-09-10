@@ -1,0 +1,99 @@
+/* Light Theme Variables */
+:root {
+  --bg-primary: #f3f4f6;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f9fafb;
+  --bg-sidebar: #e5e7eb;
+  --bg-header: #1f2937;
+  
+  --text-primary: #2c3e50;
+  --text-secondary: #6c757d;
+  --text-tertiary: #495057;
+  --text-inverse: #ffffff;
+  
+  --border-color: #e9ecef;
+  --border-light: #d1d5db;
+  
+  --shadow-light: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-medium: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-heavy: 0 10px 25px rgba(0, 0, 0, 0.2);
+  
+  --accent-blue: #1976d2;
+  --accent-blue-dark: #1565c0;
+  --accent-success: #4caf50;
+  --accent-warning: #ff9800;
+  --accent-danger: #f44336;
+  --accent-info: #17a2b8;
+  
+  --status-success: #28a745;
+  --status-success-light: #d4edda;
+  --status-success-dark: #155724;
+  --status-warning: #ffc107;
+  --status-warning-light: #fff3cd;
+  --status-warning-dark: #856404;
+  --status-danger: #dc3545;
+  --status-danger-light: #f8d7da;
+  --status-danger-dark: #721c24;
+  
+  --text-dark: #212529;
+  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Dark Theme Variables */
+[data-theme="dark"] {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-tertiary: #334155;
+  --bg-sidebar: #1e293b;
+  --bg-header: #020617;
+  
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-tertiary: #94a3b8;
+  --text-inverse: #0f172a;
+  
+  --border-color: #334155;
+  --border-light: #475569;
+  
+  --shadow-light: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-medium: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-heavy: 0 10px 25px rgba(0, 0, 0, 0.5);
+  
+  --accent-blue: #60a5fa;
+  --accent-blue-dark: #3b82f6;
+  --accent-success: #10b981;
+  --accent-warning: #f59e0b;
+  --accent-danger: #ef4444;
+  --accent-info: #06b6d4;
+  
+  --status-success: #10b981;
+  --status-success-light: #065f46;
+  --status-success-dark: #34d399;
+  --status-warning: #f59e0b;
+  --status-warning-light: #78350f;
+  --status-warning-dark: #fbbf24;
+  --status-danger: #ef4444;
+  --status-danger-light: #7f1d1d;
+  --status-danger-dark: #f87171;
+  
+  --text-dark: #f8fafc;
+  --gradient-primary: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+}
+
+/* Base element theming */
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Add smooth transitions to themed elements */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Disable transitions on motion-sensitive elements */
+.modal-backdrop,
+.modal-content {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}

@@ -1,27 +1,31 @@
 .app-layout {
   min-height: 100vh;
-  background-color: #f3f4f6;
+  background-color: var(--bg-primary);
 }
 
 .app-header {
-  background-color: #1f2937;
-  color: white;
-  padding: 15px 20px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  background-color: var(--bg-header);
+  color: var(--text-inverse);
+  padding: 15px 0;
+  box-shadow: var(--shadow-light);
 }
 
 .header-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
+  padding: 0 20px;
+  gap: 24px;
 }
 
 .header-left {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  flex: 1;
+  align-items: flex-start;
 }
 
 .app-title {
@@ -29,7 +33,7 @@
   font-size: 1.5rem;
   font-weight: bold;
   letter-spacing: 0.1em;
-  color: white;
+  color: #ffffff;
 }
 
 .welcome-message {
@@ -40,7 +44,24 @@
 
 .main-nav {
   display: flex;
-  gap: 20px;
+  gap: 24px;
+  align-items: center;
+}
+
+.main-nav .theme-toggle {
+  margin-right: 0;
+}
+
+.uic-display {
+  color: #ffffff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.1em;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .nav-link {
@@ -67,9 +88,9 @@
 
 .sidebar {
   width: 320px;
-  background-color: #e5e7eb;
+  background-color: var(--bg-sidebar);
   padding: 20px;
-  border-right: 1px solid #d1d5db;
+  border-right: 1px solid var(--border-light);
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -110,12 +131,15 @@
 
 .main-content {
   flex: 1;
-  background-color: #f9fafb;
+  background-color: var(--bg-tertiary);
+  position: relative;
 }
+
 
 .user-controls {
   display: flex;
   align-items: center;
+  gap: 24px;
 }
 
 .logout-button {
@@ -132,3 +156,4 @@
 .logout-button:hover {
   background-color: #c82333;
 }
+

@@ -30,7 +30,7 @@ function Login({ onLogin }) {
     <div className="login-container">
       <div className="login-card">
         <div>
-          <h1 className="login-title">R.a.I.D.</h1>
+          <h1 className="login-title">R.A.I.D.</h1>
           <h2 className="login-subtitle">Unit Readiness Dashboard</h2>
           <p className="login-description">Please sign in to continue</p>
         </div>
