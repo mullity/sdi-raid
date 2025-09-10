@@ -3,7 +3,7 @@ const port = 3001;
 
 const express = require('express');
 const cors = require('cors');
-const { snapshot } = require('./cookieUtils/utils')
+const { snapshot, vicSnapshot, trainingSnapshot } = require('./cookieUtils/utils')
 const environment = process.env.NODE_ENV || 'development';
 const knexConfig = require('./knexfile')[environment];
 const knex = require('knex')(knexConfig);
@@ -61,8 +61,11 @@ app.get('/api/equipment/:uic', async (req, res) => {
 });
 
 app.get('/snapshot', async (req,res) => {
+  //required query params: unit
+  //optional query params: verbose
+  let { verbose, unit } = req.query
   try {
-    const got = await snapshot()
+    const got = await snapshot(unit, verbose)
     res.status(200).send(got)
   }
   catch (error) {
@@ -70,6 +73,39 @@ app.get('/snapshot', async (req,res) => {
     res.status(500).json({ error: 'Server error' });
   }
 })
+
+app.get('/kpi', async (req, res) => {
+  //required query params: unit
+  //optional query params: verbose, personnelReadinessScore, equipmentReadinessScore, trainingReadinessScore, medicalReadinessScore
+  let { verbose, unit, personnelReadinessScore, equipmentReadinessScore, trainingReadinessScore, medicalReadinessScore } = req.query
+  try {
+    let vicKpi = await vicSnapshot(unit, verbose)
+    let trainingKpi = await trainingSnapshot(unit, verbose)
+    let output= []
+    if(equipmentReadinessScore == undefined && personnelReadinessScore == undefined && trainingReadinessScore == undefined && medicalReadinessScore == undefined){
+      output.push({Error: 'Must select a KPI Score to recieve data'})
+    }
+    if(equipmentReadinessScore === "true"){
+      output.push(vicKpi)
+    }
+    if (personnelReadinessScore === "true"){
+      console.log(personnelReadinessScore)
+    }
+    if (trainingReadinessScore=== "true"){
+      output.push(trainingKpi)
+    }
+    if (medicalReadinessScore === "true"){
+      console.log(medicalReadinessScore)
+    }
+
+    res.status(200).send(output)
+  }
+  catch (error) {
+    console.error(error);
+    res.status(500).json({ error: `${error}` });
+  }
+})
+
 
 
 
