@@ -224,8 +224,6 @@ const snapshot = async (unit, verbose) => {
   let troops = await personnelSnapshot(unit, 'true')
   let tasks = await trainingSnapshot(unit, 'true')
   let meds = await medicalSnapshot(unit, 'true')
-  let deployable = 0
-  let nonDeployable = 0
 
   let output = [
     vics,
