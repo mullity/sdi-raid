@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import './Modal.css';
 
 function Modal({ isOpen, onClose, title, children }) {
@@ -28,7 +29,7 @@ function Modal({ isOpen, onClose, title, children }) {
     }
   };
 
-  return (
+  return createPortal(
     <div className="modal-backdrop" onClick={handleBackdropClick}>
       <div className="modal-content">
         <div className="modal-header">
@@ -41,7 +42,8 @@ function Modal({ isOpen, onClose, title, children }) {
           {children}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 

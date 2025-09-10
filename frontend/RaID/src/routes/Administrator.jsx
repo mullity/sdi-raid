@@ -340,7 +340,7 @@ function Administrator() {
     <div className="administrator-page">
       <div className="admin-header">
         <h1>Administrator Dashboard</h1>
-        <p>Manage and input basic data for the R.a.I.D system</p>
+        <p>Manage and input basic data for the R.A.I.D system</p>
       </div>
 
       {successMessage && (

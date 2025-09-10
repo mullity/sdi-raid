@@ -1,5 +1,6 @@
 import { NavLink, Outlet } from "react-router-dom";
 import LeaderHub from "./components/LeaderHub";
+import ThemeToggle from "./components/ThemeToggle";
 import './AppLayout.css';
 
 export default function AppLayout({ user, onLogout }) {
@@ -20,7 +21,7 @@ export default function AppLayout({ user, onLogout }) {
         <div className="header-content">
           <div className="header-left">
             <h1 className="app-title">
-              R.a.I.D — Dashboard
+              R.A.I.D — Dashboard
             </h1>
             <div className="welcome-message">
               Welcome, {user?.username} ({formatRole(user?.role)})
