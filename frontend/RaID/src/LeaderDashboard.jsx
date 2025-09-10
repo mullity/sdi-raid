@@ -12,7 +12,7 @@ function LeaderDashboard({ user, onLogout }) {
   useEffect(() => {
     fetchUIC().then(setUnitData);
   }, []);
-  
+
   return (
     <div className="dashboard-container">
       <Routes>
@@ -22,7 +22,7 @@ function LeaderDashboard({ user, onLogout }) {
           <Route path="350-1" element={<ThreeFiftyOne />} />
         </Route>
       </Routes>
-      
+
       <div className="user-info">
         <div className="user-welcome">
           <div className="user-name">Welcome, {user.username}, UIC: {unitData}

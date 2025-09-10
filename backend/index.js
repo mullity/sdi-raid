@@ -3,7 +3,7 @@ const port = 3001;
 
 const express = require('express');
 const cors = require('cors');
-
+const { snapshot } = require('./cookieUtils/utils')
 const environment = process.env.NODE_ENV || 'development';
 const knexConfig = require('./knexfile')[environment];
 const knex = require('knex')(knexConfig);
@@ -59,6 +59,17 @@ app.get('/api/equipment/:uic', async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 });
+
+app.get('/snapshot', async (req,res) => {
+  try {
+    const got = await snapshot()
+    res.status(200).send(got)
+  }
+  catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Server error' });
+  }
+})
 
 
 
