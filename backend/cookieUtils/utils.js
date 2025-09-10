@@ -76,7 +76,7 @@ const vicSnapshot = async (unit, verbose) => {
   let output
   if(verbose === "true"){
     output =
-    {id: "Vics", data: {
+    {id: "Equipment", data: {
       total: vics.length,
       FMC: fmc,
       PMC: pmc,
@@ -85,7 +85,7 @@ const vicSnapshot = async (unit, verbose) => {
     }}
   } else {
     output = {
-      id: "Vics", data: {
+      id: "Equipment", data: {
         PERCENT: vicPercent
       }
     }
@@ -94,14 +94,15 @@ const vicSnapshot = async (unit, verbose) => {
   return output;
 }
 
-const trainingSnapshot = async (unit, verbose) => {
+const trainingSnapshot = async (unitString, verbose) => {
   let qualified = 0
   let notQualified = 0
+  let unit = Number(unitString)
   let joined = await joinTaskStatus()
   let tasks = []
 
   for(let join of joined){
-    if(join.unit_id == 0){
+    if(join.assigned_unit_id == unit){
       tasks.push(join)
     }
   }
@@ -119,7 +120,7 @@ const trainingSnapshot = async (unit, verbose) => {
 
   if(verbose === "true"){
     output =
-    {id: 'Tasks', data: {
+    {id: 'Training', data: {
       total: tasks.length,
       QUALIFIED: qualified,
       NOTQUALIFIED: notQualified,
@@ -127,7 +128,7 @@ const trainingSnapshot = async (unit, verbose) => {
     }}
   } else {
     output =
-    {id: 'Tasks', data: {
+    {id: 'Training', data: {
       PERCENT: tasksPercent
     }}
   }
@@ -155,7 +156,7 @@ const personnelSnapshot = async (unit, verbose) => {
 
     if(verbose === "true"){
       output =
-      {id: "Troops", data: {
+      {id: "Personnel", data: {
         total: troops.length,
         DEPLOYABLE: deployable,
         NONDEPLOYABLE: nonDeployable,
@@ -163,7 +164,50 @@ const personnelSnapshot = async (unit, verbose) => {
       }}
     } else {
       output =
-      {id: "Troops", data: {
+      {id: "Personnel", data: {
+        PERCENT: troopPercent
+      }}
+    }
+
+  return output;
+
+}
+
+const medicalSnapshot = async (unit, verbose) => {
+  let troops = await getWithUnitId('soldiers', unit)
+  let green = 0
+  let red = 0
+  let amber = 0
+
+  for(let troop of troops){
+    if(troop.medical_status == "5"){
+      green++
+    }
+    if(troop.medical_status == "6"){
+      amber++
+    }
+    if (troop.medical_status == "7"){
+      red++
+    }
+  }
+
+  let troopT = troops.length
+  let troopPercent = Number(green/troopT) * 100
+
+
+
+    if(verbose === "true"){
+      output =
+      {id: "Medical", data: {
+        total: troops.length,
+        GREEN: green,
+        AMBER: amber,
+        RED: red,
+        PERCENT: troopPercent
+      }}
+    } else {
+      output =
+      {id: "Medical", data: {
         PERCENT: troopPercent
       }}
     }
@@ -174,54 +218,30 @@ const personnelSnapshot = async (unit, verbose) => {
 
 const snapshot = async (unit, verbose) => {
   //get initial data & set start state
-  let vics = await vicSnapshot(unit, verbose)
-  let troops = await getter('soldiers')
-  let tasks = await trainingSnapshot(unit, verbose)
+  let vics = await vicSnapshot(unit, 'true')
+  let troops = await personnelSnapshot(unit, 'true')
+  let tasks = await trainingSnapshot(unit, 'true')
+  let meds = await medicalSnapshot(unit, 'true')
   let deployable = 0
   let nonDeployable = 0
-
-  //iterate through all data
-  for(let troop of troops){
-    if(troop.deployable_status == "5" || troop.deployable_status == "6" ) {
-      deployable++
-    } else if (troop.deployable_status == "7"){
-      nonDeployable++
-    }
-  }
-
-  //calculate all percents/ process data
-  let troopT = troops.length
-  let troopPercent = Number(deployable/troopT) * 100
-
-  // let actionItem = {
-  //   combatPower: {
-  //     message: `${bradleyArray.length} bradleys are NMC.`,
-  //     data: bradleyArray
-  //   },
-  //   sustainmentPower: {
-  //     message: `${hmmwvArray.length} HMMWV's are down and ${scissorArray.length} bridges are down`,
-  //     data: {
-  //       hmmwv: hmmwvArray,
-  //       bridge: scissorArray
-  //     }
-  //   }
-  // }
 
   //define output
   let output = [
     vics,
-    {id: "Troops", data: {
-      total: `${troops.length}`,
-      DEPLOYABLE: deployable,
-      NONDEPLOYABLE: nonDeployable,
-      PERCENT: troopPercent
-    }},
-    tasks
+    troops,
+    tasks,
+    meds
   ]
   //return output
   return output;
 }
 
+const priority = async (unit, verbose) => {
+  let safetyNet = await snapshot(unit, verbose)
+  let data = JSON.parse(JSON.stringify(safetyNet.slice()))
+  data.sort((a,b) => a.data.PERCENT - b.data.PERCENT)
+
+}
 module.exports = {
   units: units,
   calcEquipmentScore: calcEquipmentScore,
@@ -230,7 +250,9 @@ module.exports = {
   vicSnapshot:vicSnapshot,
   getWithUnitId: getWithUnitId,
   trainingSnapshot:trainingSnapshot,
-  personnelSnapshot:personnelSnapshot
+  personnelSnapshot:personnelSnapshot,
+  medicalSnapshot:medicalSnapshot,
+  priority:priority
 }
 
 

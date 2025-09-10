@@ -55,7 +55,8 @@ exports.seed = function(knex) {
                   last_name: faker.person.lastName(),
                   pay_grade: `${grades[gradeNum].grade}`,
                   assigned_unit_id: j,
-                  deployable_status: deployableNum
+                  deployable_status: deployableNum,
+                  medical_status: deployableNum
                 })
                 idNum++
               }
