@@ -2,11 +2,18 @@ require('dotenv').config()
 
 const knex = require('knex')( require('../knexfile')[process.env.NODE_ENV])
 
+
+
 const units = () => {
   return knex(units)
 
 }
 
+/**
+ * 
+ * @param {Array} vehicles Array of vehicles
+ * @returns {number} percentage of FMC vehicles as a whole number
+ */
 function calcEquipmentScore(vehicles) {
   const total = vehicles.length;
   const fmc = vehicles.filter(vehicle => vehicle.status === 'FMC').length;
@@ -19,6 +26,12 @@ function getter(table) {
   .from(table)
 }
 
+/**
+ * 
+ * @param {string} table table name to check for entities with an assigned_unit_id
+ * @param {number} unitId id to check for matches
+ * @returns array of all columns for any matching entity
+ */
 function getWithUnitId(table, unitId){
   return knex(table)
   .select()
@@ -26,6 +39,10 @@ function getWithUnitId(table, unitId){
   .where('assigned_unit_id', unitId)
 }
 
+/**
+ * 
+ * @returns array of all task statuses joined with their respective soldiers
+ */
 //SELECT * FROM soldier_task_status s INNER JOIN soldiers ON s.soldier_id = soldiers.id;
 function joinTaskStatus() {
   return knex('soldier_task_status')
@@ -33,9 +50,12 @@ function joinTaskStatus() {
   .select()
 }
 
-//add a fuel status marker
-//search by date last serviced, if > 6 months === not up to date on service
-//
+/**
+ * 
+ * @param {number} unit unitId  
+ * @param {boolean} verbose indicates if extra data (total, functionality numbers) is returned in the response
+ * @returns promise that resolves into a JSON object containing values
+ */
 const vicSnapshot = async (unit, verbose) => {
   let vics = await getWithUnitId('vehicle', unit)
   let fmc = 0
@@ -98,6 +118,12 @@ const vicSnapshot = async (unit, verbose) => {
   return output;
 }
 
+/**
+ * 
+ * @param {string} unitString unitId in string form, is converted to Number
+ * @param {boolean} verbose indicates if extra data (total, qualified numbers) is returned in the response
+ * @returns promise that resolves into a JSON object containing values
+ */
 const trainingSnapshot = async (unitString, verbose) => {
   let qualified = 0
   let notQualified = 0
@@ -121,6 +147,7 @@ const trainingSnapshot = async (unitString, verbose) => {
 
   let tasksT = tasks.length
   let tasksPercent = Number(qualified/tasksT) * 100
+  let output
 
   if(verbose === "true"){
     output =
@@ -140,6 +167,12 @@ const trainingSnapshot = async (unitString, verbose) => {
   return output;
 }
 
+/**
+ * 
+ * @param {number} unit unitId  
+ * @param {boolean} verbose indicates if extra data (total, deployability numbers) is returned in the response
+ * @returns promise that resolves into a JSON object containing values
+ */
 const personnelSnapshot = async (unit, verbose) => {
   let troops = await getWithUnitId('soldiers', unit)
   let deployable = 0
@@ -155,6 +188,8 @@ const personnelSnapshot = async (unit, verbose) => {
 
   let troopT = troops.length
   let troopPercent = Number(deployable/troopT) * 100
+  let output
+
 
 
 
@@ -177,6 +212,12 @@ const personnelSnapshot = async (unit, verbose) => {
 
 }
 
+/**
+ * 
+ * @param {number} unit unitId  
+ * @param {boolean} verbose indicates if extra data (total, medical status numbers) is returned in the response
+ * @returns promise that resolves into a JSON object containing values
+ */
 const medicalSnapshot = async (unit, verbose) => {
   let troops = await getWithUnitId('soldiers', unit)
   let green = 0
@@ -197,6 +238,8 @@ const medicalSnapshot = async (unit, verbose) => {
 
   let troopT = troops.length
   let troopPercent = Number(green/troopT) * 100
+  let output
+
 
 
 
@@ -220,6 +263,12 @@ const medicalSnapshot = async (unit, verbose) => {
 
 }
 
+/**
+ * 
+ * @param {number} unit unitId  
+ * @param {boolean} verbose NOT USED - indicates if extra data is returned in the response
+ * @returns {Promise} promise that resolves into a JSON Array containing values
+ */
 const snapshot = async (unit, verbose) => {
   let vics = await vicSnapshot(unit, 'true')
   let troops = await personnelSnapshot(unit, 'true')
@@ -236,6 +285,12 @@ const snapshot = async (unit, verbose) => {
   return output;
 }
 
+/**
+ * Gets snapshots and returns values in ascending order (worst category first)
+ * @param {number} unit unitId  
+ * @param {boolean} verbose indicates if extra data is returned in the response from various snapshots
+ * @returns {Promise} promise that resolves into a JSON Array containing values
+ */
 const priority = async (unit, verbose) => {
   let safetyNet = await snapshot(unit, verbose)
   let data = JSON.parse(JSON.stringify(safetyNet.slice()))
@@ -245,9 +300,14 @@ const priority = async (unit, verbose) => {
 
 }
 
+/**
+ * PLACEHOLDER - get maintenance_currancy from vehicle by unit
+ * @param {number} unit unitId  
+ * @param {boolean} verbose indicates if extra data is returned in the response from various snapshots
+ * @returns % of vehicles w/lin true && % of vehicles w/lin false && average fuel percentage
+ */
 const vicMaint = async (unit) => {
-  //get maintenance_currancy from vehicle by unit
-  //return % of vehicles w/lin true && % of vehicles w/lin false && average fuel percentage
+
   let output = {
       true: 75,
       trueData: [
@@ -281,6 +341,12 @@ const vicMaint = async (unit) => {
   return output;
 }
 
+/**
+ * TODO - PLACEHOLDER - get maintenance_currancy from vehicle by unit
+ * @param {number} unit unitId  
+ * @param {boolean} verbose indicates if extra data is returned in the response from various snapshots
+ * @returns % of vehicles w/lin true && % of vehicles w/lin false && average fuel percentage
+ */
 const vicIssuesActions = async (percent, maintenance, fuelLevel, unit) => {
   let issues= []
   let actions= []
