@@ -61,8 +61,8 @@ app.get('/api/equipment/:uic', async (req, res) => {
 });
 
 app.get('/snapshot', async (req,res) => {
-  //required query params: unit
-  //optional query params: verbose
+  //required query params: unit(number)
+  //optional query params: verbose(true/false as string)
   let { verbose, unit } = req.query
   try {
     const got = await snapshot(unit, verbose)
@@ -75,8 +75,8 @@ app.get('/snapshot', async (req,res) => {
 })
 
 app.get('/kpi', async (req, res) => {
-  //required query params: unit
-  //optional query params: verbose, personnelReadinessScore, equipmentReadinessScore, trainingReadinessScore, medicalReadinessScore
+  //required query params: unit(number)
+  //optional query params: verbose(true/false as string), personnelReadinessScore(true/false as string), equipmentReadinessScore(true/false as string), trainingReadinessScore(true/false as string), medicalReadinessScore(true/false as string)
   let { verbose, unit, personnelReadinessScore, equipmentReadinessScore, trainingReadinessScore, medicalReadinessScore } = req.query
   try {
     let vicKpi = await vicSnapshot(unit, verbose)
@@ -107,10 +107,18 @@ app.get('/kpi', async (req, res) => {
     res.status(500).json({ error: `${error}` });
   }
 })
+// Dashboard.jsx, passed to <KPIcard />
+  // {
+  //   value="87" number as a string
+  //   unit="%" percent symbol as a string
+  //   trend={2} number wrapped in curly
+  //   status="good"
+  // }
+//  in data object, rewrite PERCENT key as value, add unit key with string percent sign as value, add trend (based off helper function???), if percent > 80 status = good/warning/critical
 
 app.get('/priority', async (req,res) =>{
-  //required query params: unit
-  //optional query params: verbose
+  //required query params: unit(number)
+  //optional query params: verbose(true/false as string)
   let { verbose, unit } = req.query
   try {
     const got = await priority(unit, verbose)
@@ -121,6 +129,11 @@ app.get('/priority', async (req,res) =>{
     console.error(error);
     res.status(500).json({ error: `${error}` });
   }
+})
+
+app.get('/leaderhub', async (req,res) => {
+
+
 })
 
 
