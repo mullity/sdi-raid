@@ -3,7 +3,7 @@ const port = 3001;
 
 const express = require('express');
 const cors = require('cors');
-const { modal, priority, snapshot, vicSnapshot, trainingSnapshot, personnelSnapshot, medicalSnapshot } = require('./cookieUtils/utils')
+const { getAllFields, modal, priority, snapshot, vicSnapshot, trainingSnapshot, personnelSnapshot, medicalSnapshot } = require('./cookieUtils/utils')
 const environment = process.env.NODE_ENV || 'development';
 const knexConfig = require('./knexfile')[environment];
 const knex = require('knex')(knexConfig);
@@ -20,12 +20,12 @@ app.post("/api/:table", async (req, res) => {
     try {
     const columns = await getAllFields(table);
     const required = columns.filter(col => col !== 'id');
-console.log(JSON.stringify(required ))  
+console.log(JSON.stringify(required ))
 
     const inputKeys = Object.keys(input);
     console.log(JSON.stringify(inputKeys));
-    
-    if (!required.every(key => inputKeys.includes(key))) {  
+
+    if (!required.every(key => inputKeys.includes(key))) {
       return res.status(400).json({error: "All fields have not been entered"})
     }
 
