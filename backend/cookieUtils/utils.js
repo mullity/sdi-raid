@@ -414,7 +414,7 @@ const vicModal = async (unit, verbose) => {
   let certified = await vicCertified(unit)
   let vicOutput
 
-  if(verbose == true){
+  if(verbose == "true"){
     vicOutput = {
       id: 'vehicle',
       title: 'Vehicle Readiness',
@@ -442,7 +442,6 @@ const vicModal = async (unit, verbose) => {
       percentage: percent,
       }
     }
-
   return vicOutput
 }
 
@@ -454,7 +453,7 @@ const deploymentModal = async (unit, verbose) => {
     issues: "seed data in utils.js",
     actions: "seed data in utils.js"
   }
-  if(verbose == true) {
+  if(verbose == "true") {
     deploymentOutput = {
       id: 'deployment',
       title: 'Deployment Readiness',
@@ -491,7 +490,7 @@ const crewModal = async (unit, verbose) => {
     issues: "seed data in utils.js",
     actions: "seed data in utils.js"
   }
-  if(verbose == true){
+  if(verbose == "true"){
     crewModal = {
       id: 'crew',
       title: 'Crew Qualification',
@@ -527,7 +526,7 @@ const medModal = async (unit, verbose) => {
     actions: "seed data in utils.js"
   }
   let medOutput
-  if(verbose == true){
+  if(verbose == "true"){
     medOutput = {
       id: 'medical',
       title: 'Medical Readiness',
@@ -565,7 +564,7 @@ const weaponModal = async (unit, verbose) => {
     actions: "seed data in utils.js"
   }
   let weaponOutput
-  if(verbose == true){
+  if(verbose == "true"){
     weaponOutput = {
       id: 'weapons',
       title: 'Weapons Qualification',
@@ -604,23 +603,21 @@ const modal = async (unit, verbose, vicModalValue, deploymentModalValue, crewMod
   let weaponModaldata = await weaponModal(unit, verbose)
   let modalData = []
 
-  if(vicModalValue == true){
+  if(vicModalValue == "true"){
     modalData.push(vicModaldata)
   }
-  if(deploymentModalValue == true){
+  if(deploymentModalValue == "true"){
     modalData.push(deploymentModaldata)
   }
-  if(crewModalValue == true){
+  if(crewModalValue == "true"){
     modalData.push(crewModaldata)
   }
-  if(medModalValue == true){
+  if(medModalValue == "true"){
     modalData.push(medModaldata)
   }
-  if(weaponModalValue == true){
+  if(weaponModalValue == "true"){
     modalData.push(weaponModaldata)
   }
-  console.log(verbose)
-  console.log(vicModaldata)
   return modalData;
 }
 
