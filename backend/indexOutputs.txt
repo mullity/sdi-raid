@@ -1,0 +1,144 @@
+GET: Snapshot
+http://localhost:3001/snapshot?unit=1
+//required query params: unit(number)
+//optional query params: verbose(true/false as string) *Not implemented. No effect on return at this time*
+[
+    {
+        "id": "Equipment",
+        "data": {
+            "total": 10,
+            "FMC": 3,
+            "PMC": 1,
+            "NMC": 6,
+            "PERCENT": 40
+        }
+    },
+    {
+        "id": "Personnel",
+        "data": {
+            "total": 10,
+            "DEPLOYABLE": 7,
+            "NONDEPLOYABLE": 3,
+            "PERCENT": 70
+        }
+    },
+    {
+        "id": "Training",
+        "data": {
+            "total": 100,
+            "QUALIFIED": 50,
+            "NOTQUALIFIED": 50,
+            "PERCENT": 50
+        }
+    },
+    {
+        "id": "Medical",
+        "data": {
+            "total": 10,
+            "GREEN": 4,
+            "AMBER": 3,
+            "RED": 3,
+            "PERCENT": 40
+        }
+    }
+]
+
+GET: KPI
+http://localhost:3001/kpi?unit=1&verbose=true&personnelReadinessScore=true&equipmentReadinessScore=true&trainingReadinessScore=true&medicalReadinessScore=true
+//required query params: unit(number)
+//optional query params: verbose(true/false as string), personnelReadinessScore(true/false as string), equipmentReadinessScore(true/false as string), trainingReadinessScore(true/false as string), medicalReadinessScore(true/false as string)
+[
+    {
+        "id": "Equipment",
+        "data": {
+            "total": 10,
+            "FMC": 3,
+            "PMC": 1,
+            "NMC": 6,
+            "PERCENT": 40
+        }
+    },
+    {
+        "id": "Personnel",
+        "data": {
+            "total": 10,
+            "DEPLOYABLE": 7,
+            "NONDEPLOYABLE": 3,
+            "PERCENT": 70
+        }
+    },
+    {
+        "id": "Training",
+        "data": {
+            "total": 100,
+            "QUALIFIED": 50,
+            "NOTQUALIFIED": 50,
+            "PERCENT": 50
+        }
+    },
+    {
+        "id": "Medical",
+        "data": {
+            "total": 10,
+            "GREEN": 4,
+            "AMBER": 3,
+            "RED": 3,
+            "PERCENT": 40
+        }
+    }
+]
+
+http://localhost:3001/kpi?unit=1&personnelReadinessScore=true
+[
+    {
+        "id": "Personnel",
+        "data": {
+            "PERCENT": 70
+        }
+    }
+]
+
+GET: Priority
+http://localhost:3001/priority?unit=1
+//required query params: unit(number)
+//optional query params: verbose(true/false as string) *Not implemented. No effect on return at this time*
+[
+    {
+        "id": "Equipment",
+        "data": {
+            "total": 10,
+            "FMC": 3,
+            "PMC": 1,
+            "NMC": 6,
+            "PERCENT": 40
+        }
+    },
+    {
+        "id": "Medical",
+        "data": {
+            "total": 10,
+            "GREEN": 4,
+            "AMBER": 3,
+            "RED": 3,
+            "PERCENT": 40
+        }
+    },
+    {
+        "id": "Training",
+        "data": {
+            "total": 100,
+            "QUALIFIED": 50,
+            "NOTQUALIFIED": 50,
+            "PERCENT": 50
+        }
+    },
+    {
+        "id": "Personnel",
+        "data": {
+            "total": 10,
+            "DEPLOYABLE": 7,
+            "NONDEPLOYABLE": 3,
+            "PERCENT": 70
+        }
+    }
+]

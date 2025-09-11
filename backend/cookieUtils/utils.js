@@ -33,6 +33,9 @@ function joinTaskStatus() {
   .select()
 }
 
+//add a fuel status marker
+//search by date last serviced, if > 6 months === not up to date on service
+//
 const vicSnapshot = async (unit, verbose) => {
   let vics = await getWithUnitId('vehicle', unit)
   let fmc = 0
@@ -242,6 +245,71 @@ const priority = async (unit, verbose) => {
   return data
 
 }
+
+
+// //selectable by type,
+// let actionItems = [
+//   {type: equipment,
+//     data: [{
+//     status: '55% of vehicles are non-operational due to maintenance issues',
+//     reason: [
+//       {
+//         equipSn: 1234,
+//         equipStatus: 'parts on order'
+//       },
+//       {
+//         equipSn: 1234,
+//         equipStatus: 'needs annual services'
+//       },
+//       {
+//         equipSn: 1234,
+//         equipStatus: 'X fault due to lighting'
+//       },
+//     ],
+//     fix: "Implement emergency maintenance schedule for critical vehicles"
+//   }
+// ]
+//   },
+//   {type: personnel,
+//     data: [{
+//     status: '20% down on Rifle Qual',
+//     reason: 'Last Rifle Range was 13 months ago',
+//     fix: "Schedule Rifle Range"
+//   }
+// ]
+//   },
+//   {type: medical,
+//     data: [{
+//     status: '',
+//     reason: 'Track thrown',
+//     fix: "reason"
+//   }
+// ]
+//   },
+//   {type: trainingCurrent,
+//     data: [{
+//     status: 'NMC',
+//     reason: 'Track thrown',
+//     fix: "reason"
+//   }
+// ]
+//   },
+//   {type: deploymentReadiness,
+//     percent: 70,
+//     data: [
+//       {type: training,
+//         message: "8 Soldiers red on SHARP"
+//       },
+//       {type: equipment,
+//         message: "8 tracks NMC"
+//       },
+//       {type: medical,
+//         message: "8 Soldiers red on Dental"
+//       }
+//     ]
+//   }
+// ]
+
 module.exports = {
   units: units,
   calcEquipmentScore: calcEquipmentScore,
