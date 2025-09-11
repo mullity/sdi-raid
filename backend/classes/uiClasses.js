@@ -43,19 +43,20 @@ class VehicleSnapshot extends Snapshot {
     }
 
     async init(unit) {
+        const { getWithUnitId } = require('../cookieUtils/utils.js')
         this.vics = await getWithUnitId('vehicle', unit)
     }
 
-    generateCard() {
+    generateCard(verbose) {
         for (let vic of this.vics) {
             if (vic.status == 'FMC') {
-                fmc++
+                this.fmc++
             } else if (vic.status == 'PMC') {
-                pmc++
+                this.pmc++
             } else if (vic.status == 'NMC') {
                 let date = vic.date_last_serviced
-                nmc++
-                nmcArray.push({
+                this.nmc++
+                this.nmcArray.push({
                     lin: vic.lin,
                     unit: vic.assigned_unit_id,
                     lastService: `${date}`.slice(4, 15)
@@ -63,32 +64,33 @@ class VehicleSnapshot extends Snapshot {
             }
         }
 
-        for (let broke of nmcArray) {
+        for (let broke of this.nmcArray) {
             if (broke.lin == 'M05073') {
-                bradleyArray.push(broke)
+                this.bradleyArray.push(broke)
             }
             else if (broke.lin == 'M1079') {
-                hmmwvArray.push(broke)
+                this.hmmwvArray.push(broke)
             }
             else if (broke.lin == 'B31098') {
-                scissorArray.push(broke)
+                this.scissorArray.push(broke)
             }
         }
 
         //calculate all percents/ process data
-        let T = vics.length
-        let vicPercent = Number((fmc + pmc) / T) * 100
+        let T = this.vics.length
+        let vicPercent = Number((this.fmc + this.pmc) / T) * 100
         let output
 
         if (verbose === "true") {
             output =
             {
-                id: "Equipment", data: {
-                    total: vics.length,
-                    FMC: fmc,
-                    PMC: pmc,
-                    NMC: nmc,
-                    PERCENT: vicPercent
+                id: "Equipment",
+                percent: vicPercent,
+                data: {
+                    total: this.vics.length,
+                    FMC: this.fmc,
+                    PMC: this.pmc,
+                    NMC: this.nmc,
                 }
             }
         } else {
