@@ -3,7 +3,7 @@ const port = 3001;
 
 const express = require('express');
 const cors = require('cors');
-const { priority, snapshot, vicSnapshot, trainingSnapshot, personnelSnapshot, medicalSnapshot } = require('./cookieUtils/utils')
+const { priority, snapshot, vicSnapshot, trainingSnapshot, personnelSnapshot, medicalSnapshot, getAllFields } = require('./cookieUtils/utils')
 const environment = process.env.NODE_ENV || 'development';
 const knexConfig = require('./knexfile')[environment];
 const knex = require('knex')(knexConfig);
@@ -13,16 +13,32 @@ app.use(cors());
 app.use(express.json());
 
 
+app.post("/api/:table", async (req, res) => {
+    const table = req.params.table;
+    const input = req.body;
 
+    try {
+    const columns = await getAllFields(table);
+    const required = columns.filter(col => col !== 'id');
+console.log(JSON.stringify(required ))  
 
-function calcEquipmentScore(vehicles = []) {
-  const total = vehicles.length || 1;
-  const fmc = vehicles.filter(v => v.status === 'FMC').length;
-  return Math.round((fmc / total) * 100);
-}
+    const inputKeys = Object.keys(input);
+    console.log(JSON.stringify(inputKeys));
+    
+    if (!required.every(key => inputKeys.includes(key))) {  
+      return res.status(400).json({error: "All fields have not been entered"})
+    }
+
+    const inserted = await knex(table).insert(input).returning('*');
+    res.status(201).json(inserted[0]);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Server error' });
+  }
+
+})
 
 app.patch('/api/soldiers/:id', async (req, res) => {
-  console.log("")
   const { id } = req.params;
   const updateData = req.body;
   console.log(req.body);

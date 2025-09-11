@@ -244,69 +244,13 @@ const priority = async (unit, verbose) => {
 
 }
 
-
-// //selectable by type,
-// let actionItems = [
-//   {type: equipment,
-//     data: [{
-//     status: '55% of vehicles are non-operational due to maintenance issues',
-//     reason: [
-//       {
-//         equipSn: 1234,
-//         equipStatus: 'parts on order'
-//       },
-//       {
-//         equipSn: 1234,
-//         equipStatus: 'needs annual services'
-//       },
-//       {
-//         equipSn: 1234,
-//         equipStatus: 'X fault due to lighting'
-//       },
-//     ],
-//     fix: "Implement emergency maintenance schedule for critical vehicles"
-//   }
-// ]
-//   },
-//   {type: personnel,
-//     data: [{
-//     status: '20% down on Rifle Qual',
-//     reason: 'Last Rifle Range was 13 months ago',
-//     fix: "Schedule Rifle Range"
-//   }
-// ]
-//   },
-//   {type: medical,
-//     data: [{
-//     status: '',
-//     reason: 'Track thrown',
-//     fix: "reason"
-//   }
-// ]
-//   },
-//   {type: trainingCurrent,
-//     data: [{
-//     status: 'NMC',
-//     reason: 'Track thrown',
-//     fix: "reason"
-//   }
-// ]
-//   },
-//   {type: deploymentReadiness,
-//     percent: 70,
-//     data: [
-//       {type: training,
-//         message: "8 Soldiers red on SHARP"
-//       },
-//       {type: equipment,
-//         message: "8 tracks NMC"
-//       },
-//       {type: medical,
-//         message: "8 Soldiers red on Dental"
-//       }
-//     ]
-//   }
-// ]
+//get all fields in  a table
+async function getAllFields (table){
+  const columns = await knex('information_schema.columns')
+    .select('column_name')
+    .where({ table_name: table, table_schema: 'public' })
+  return columns.map(col => col.column_name);
+}
 
 module.exports = {
   units: units,
@@ -318,7 +262,8 @@ module.exports = {
   trainingSnapshot:trainingSnapshot,
   personnelSnapshot:personnelSnapshot,
   medicalSnapshot:medicalSnapshot,
-  priority:priority
+  priority:priority,
+  getAllFields: getAllFields,
 }
 
 
