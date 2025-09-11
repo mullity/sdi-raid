@@ -1,3 +1,5 @@
+const { VehicleSnapshot } = require('../classes/uiClasses');
+
 require('dotenv').config()
 
 const knex = require('knex')( require('../knexfile')[process.env.NODE_ENV])
@@ -57,6 +59,9 @@ function joinTaskStatus() {
  * @returns promise that resolves into a JSON object containing values
  */
 const vicSnapshot = async (unit, verbose) => {
+  let myNewSnap = new VehicleSnapshot()
+  myNewSnap.init(unit)
+  .then(()=>console.log(myNewSnap.generateCard()))
   let vics = await getWithUnitId('vehicle', unit)
   let fmc = 0
   let pmc = 0
@@ -81,6 +86,7 @@ const vicSnapshot = async (unit, verbose) => {
       })
     }
   }
+
   for(let broke of nmcArray){
     if(broke.lin == 'M05073') {
       bradleyArray.push(broke)
