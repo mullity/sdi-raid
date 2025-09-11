@@ -13,11 +13,30 @@ app.use(cors());
 app.use(express.json());
 
 
+
+
 function calcEquipmentScore(vehicles = []) {
   const total = vehicles.length || 1;
   const fmc = vehicles.filter(v => v.status === 'FMC').length;
   return Math.round((fmc / total) * 100);
 }
+
+app.patch('/api/soldiers/:id', async (req, res) => {
+  console.log("")
+  const { id } = req.params;
+  const updateData = req.body;
+  console.log(req.body);
+
+  try{
+      const updated = await knex ('soldiers')
+        .where('id', id)
+        .update(updateData)
+        .returning('*');
+      res.json(updated[0]);
+  }catch (err) {
+    res.status(500).send({ error: err.message })
+  }
+});
 
 app.listen(port, () => {
   console.log(`Express has started on ${port} (${environment})`);
