@@ -172,7 +172,6 @@ app.get('/modal', async (req,res) => {
   let { verbose, unit, vicModalValue, deploymentModalValue, crewModalValue, medModalValue, weaponModalValue } = req.query
   try {
     const got = await modal(unit, verbose, vicModalValue, deploymentModalValue, crewModalValue, medModalValue, weaponModalValue)
-    console.log(got)
     res.status(200).send(got)
 
   }

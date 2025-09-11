@@ -55,7 +55,7 @@ function joinTaskStatus() {
 /**
  *
  * @param {number} unit unitId
- * @param {boolean} verbose indicates if extra data (total, functionality numbers) is returned in the response
+ * @param {string} verbose indicates if extra data (total, functionality numbers) is returned in the response
  * @returns promise that resolves into a JSON object containing values
  */
 const vicSnapshot = async (unit, verbose) => {
@@ -67,7 +67,7 @@ const vicSnapshot = async (unit, verbose) => {
 /**
  *
  * @param {string} unitString unitId in string form, is converted to Number
- * @param {boolean} verbose indicates if extra data (total, qualified numbers) is returned in the response
+ * @param {string} verbose indicates if extra data (total, qualified numbers) is returned in the response
  * @returns promise that resolves into a JSON object containing values
  */
 const trainingSnapshot = async (unitString, verbose) => {
@@ -116,7 +116,7 @@ const trainingSnapshot = async (unitString, verbose) => {
 /**
  *
  * @param {number} unit unitId
- * @param {boolean} verbose indicates if extra data (total, deployability numbers) is returned in the response
+ * @param {string} verbose indicates if extra data (total, deployability numbers) is returned in the response
  * @returns promise that resolves into a JSON object containing values
  */
 const personnelSnapshot = async (unit, verbose) => {
@@ -161,7 +161,7 @@ const personnelSnapshot = async (unit, verbose) => {
 /**
  *
  * @param {number} unit unitId
- * @param {boolean} verbose indicates if extra data (total, medical status numbers) is returned in the response
+ * @param {string} verbose indicates if extra data (total, medical status numbers) is returned in the response
  * @returns promise that resolves into a JSON object containing values
  */
 const medicalSnapshot = async (unit, verbose) => {
@@ -212,7 +212,7 @@ const medicalSnapshot = async (unit, verbose) => {
 /**
  *
  * @param {number} unit unitId
- * @param {boolean} verbose NOT USED - indicates if extra data is returned in the response
+ * @param {string} verbose NOT USED - indicates if extra data is returned in the response
  * @returns {Promise} promise that resolves into a JSON Array containing values
  */
 const snapshot = async (unit, verbose) => {
@@ -234,7 +234,7 @@ const snapshot = async (unit, verbose) => {
 /**
  * Gets snapshots and returns values in ascending order (worst category first)
  * @param {number} unit unitId
- * @param {boolean} verbose indicates if extra data is returned in the response from various snapshots
+ * @param {string} verbose indicates if extra data is returned in the response from various snapshots
  * @returns {Promise} promise that resolves into a JSON Array containing values
  */
 const priority = async (unit, verbose) => {
@@ -249,7 +249,7 @@ const priority = async (unit, verbose) => {
 /**
  * PLACEHOLDER - get maintenance_currancy from vehicle by unit
  * @param {number} unit unitId
- * @param {boolean} verbose indicates if extra data is returned in the response from various snapshots
+ * @param {string} verbose indicates if extra data is returned in the response from various snapshots
  * @returns % of vehicles w/lin true && % of vehicles w/lin false && average fuel percentage
  */
 const vicMaint = async (unit) => {
@@ -290,7 +290,7 @@ const vicMaint = async (unit) => {
 /**
  * TODO - PLACEHOLDER - get maintenance_currancy from vehicle by unit
  * @param {number} unit unitId
- * @param {boolean} verbose indicates if extra data is returned in the response from various snapshots
+ * @param {string} verbose indicates if extra data is returned in the response from various snapshots
  * @returns % of vehicles w/lin true && % of vehicles w/lin false && average fuel percentage
  */
 const vicIssuesActions = async (percent, maintenance, fuelLevel, unit) => {
@@ -477,7 +477,6 @@ const medModal = async (unit, verbose) => {
       id: 'medical',
       title: 'Medical Readiness',
       description: 'Health and medical certification status',
-      status: 'high',
       percentage: percent,
       data: {
         metrics: [
@@ -495,7 +494,6 @@ const medModal = async (unit, verbose) => {
       id: 'medical',
       title: 'Medical Readiness',
       description: 'Health and medical certification status',
-      status: 'high',
       percentage: percent
     }
   }
@@ -515,7 +513,6 @@ const weaponModal = async (unit, verbose) => {
       id: 'weapons',
       title: 'Weapons Qualification',
       description: 'Weapons training and marksmanship status',
-      status: 'medium',
       percentage: percent,
       data: {
         metrics: [
@@ -533,7 +530,6 @@ const weaponModal = async (unit, verbose) => {
       id: 'weapons',
       title: 'Weapons Qualification',
       description: 'Weapons training and marksmanship status',
-      status: 'medium',
       percentage: percent
     }
   }

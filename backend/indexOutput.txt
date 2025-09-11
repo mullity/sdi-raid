@@ -142,3 +142,188 @@ http://localhost:3001/priority?unit=1
         }
     }
 ]
+
+GET: Modal
+http://localhost:3001/modal?unit=1&vicModalValue=true&deploymentModalValue=true&crewModalValue=true&medModalValue=true&weaponModalValue=true
+//required query params: unit(number)
+//optional query params: verbose(true/false as string), vicModalValue(true/false as string), deploymentModalValue(true/false as string), crewModalValue(true/false as string), medModalValue(true/false as string), weaponModalValue(true/false as string)
+[
+    {
+        "id": "vehicle",
+        "title": "Vehicle Readiness",
+        "description": "Equipment and vehicle operational status",
+        "percentage": 40,
+        "data": {
+            "FMC": 3,
+            "PMC": 1,
+            "NMC": 6,
+            "metrics": [
+                {
+                    "label": "Operational Vehicles",
+                    "value": 40
+                },
+                {
+                    "label": "Maintenance Current",
+                    "value": 75
+                },
+                {
+                    "label": "Fuel Readiness",
+                    "value": 75
+                },
+                {
+                    "label": "Driver Certification",
+                    "value": 75
+                }
+            ],
+            "issues": [
+                {
+                    "id": 0,
+                    "text": "40% of vehicles are non-operational"
+                }
+            ],
+            "actions": [
+                {
+                    "id": 0,
+                    "text": "Ensure all crew is scheduled for crew training, and all vehicles are on the maintenance schedule"
+                }
+            ]
+        }
+    },
+    {
+        "id": "deployment",
+        "title": "Deployment Readiness",
+        "description": "Mission deployment preparation status",
+        "percentage": 75,
+        "data": {
+            "metrics": [
+                {
+                    "label": "Personnel Ready",
+                    "value": "45%",
+                    "status": "critical"
+                },
+                {
+                    "label": "Equipment Staged",
+                    "value": "23%",
+                    "status": "critical"
+                },
+                {
+                    "label": "Transport Available",
+                    "value": "67%",
+                    "status": "medium"
+                },
+                {
+                    "label": "Mission Planning",
+                    "value": "12%",
+                    "status": "critical"
+                }
+            ],
+            "issues": "seed data in utils.js",
+            "actions": "seed data in utils.js"
+        }
+    },
+    {
+        "id": "crew",
+        "title": "Crew Qualification",
+        "description": "Combat Readiness Evaluation Assessment",
+        "percentage": 75,
+        "data": {
+            "metrics": [
+                {
+                    "label": "Combat Ready",
+                    "value": "89%",
+                    "status": "high"
+                },
+                {
+                    "label": "Team Cohesion",
+                    "value": "92%",
+                    "status": "high"
+                },
+                {
+                    "label": "Equipment Proficiency",
+                    "value": "85%",
+                    "status": "high"
+                },
+                {
+                    "label": "Mission Rehearsals",
+                    "value": "78%",
+                    "status": "medium"
+                }
+            ],
+            "issues": "seed data in utils.js",
+            "actions": "seed data in utils.js"
+        }
+    },
+    {
+        "id": "medical",
+        "title": "Medical Readiness",
+        "description": "Health and medical certification status",
+        "percentage": 75,
+        "data": {
+            "metrics": [
+                {
+                    "label": "Medical Readiness",
+                    "value": "92%",
+                    "status": "high"
+                },
+                {
+                    "label": "Vaccinations Current",
+                    "value": "98%",
+                    "status": "high"
+                },
+                {
+                    "label": "Physical Fitness",
+                    "value": "87%",
+                    "status": "high"
+                },
+                {
+                    "label": "Medical Equipment",
+                    "value": "94%",
+                    "status": "high"
+                }
+            ],
+            "issues": "seed data in utils.js",
+            "actions": "seed data in utils.js"
+        }
+    },
+    {
+        "id": "weapons",
+        "title": "Weapons Qualification",
+        "description": "Weapons training and marksmanship status",
+        "percentage": 75,
+        "data": {
+            "metrics": [
+                {
+                    "label": "Qualified Personnel",
+                    "value": "68%",
+                    "status": "medium"
+                },
+                {
+                    "label": "Range Time Current",
+                    "value": "45%",
+                    "status": "low"
+                },
+                {
+                    "label": "Equipment Status",
+                    "value": "82%",
+                    "status": "high"
+                },
+                {
+                    "label": "Safety Certification",
+                    "value": "95%",
+                    "status": "high"
+                }
+            ],
+            "issues": "seed data in utils.js",
+            "actions": "seed data in utils.js"
+        }
+    }
+]
+http://localhost:3001/modal?unit=1&vicModalValue=true
+[
+    {
+        "id": "vehicle",
+        "title": "Vehicle Readiness",
+        "description": "Equipment and vehicle operational status",
+        "percentage": 40
+    }
+]
