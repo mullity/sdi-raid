@@ -56,7 +56,8 @@ exports.seed = function(knex) {
                   pay_grade: `${grades[gradeNum].grade}`,
                   assigned_unit_id: j,
                   deployable_status: deployableNum,
-                  medical_status: deployableNum
+                  medical_status: deployableNum,
+                  //tasks_jsonb: ''
                 })
                 idNum++
               }

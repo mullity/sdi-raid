@@ -3,7 +3,7 @@ const port = 3001;
 
 const express = require('express');
 const cors = require('cors');
-const { priority, snapshot, vicSnapshot, trainingSnapshot, personnelSnapshot, medicalSnapshot, getAllFields } = require('./cookieUtils/utils')
+const { modal, priority, snapshot, vicSnapshot, trainingSnapshot, personnelSnapshot, medicalSnapshot } = require('./cookieUtils/utils')
 const environment = process.env.NODE_ENV || 'development';
 const knexConfig = require('./knexfile')[environment];
 const knex = require('knex')(knexConfig);
@@ -166,12 +166,28 @@ app.get('/priority', async (req,res) =>{
   }
 })
 
-app.get('/leaderhub', async (req,res) => {
+app.get('/modal', async (req,res) => {
+  //required query params: unit(number)
+  //optional query params: verbose(true/false as string), vicModalValue(true/false as string), deploymentModalValue(true/false as string), crewModalValue(true/false as string), medModalValue(true/false as string), weaponModalValue(true/false as string)
+  let { verbose, unit, vicModalValue, deploymentModalValue, crewModalValue, medModalValue, weaponModalValue } = req.query
+  try {
+    const got = await modal(unit, verbose, vicModalValue, deploymentModalValue, crewModalValue, medModalValue, weaponModalValue)
+    console.log(got)
+    res.status(200).send(got)
 
+  }
+  catch (error) {
+    console.error(error);
+    res.status(500).json({ error: `${error}` });
+  }
+
+  // let vicModal = await vicModal(unit, verbose)
+  // let deploymentModal = await deploymentModal(unit, verbose)
+  // let crewModal = await crewModal(unit, verbose)
+  // let medModal = await medModal(unit, verbose)
+  // let weaponModal = await weaponModal(unit, verbose)
 
 })
-
-
 
 
 // app.get('/api/training/350-1', function(request, response) {

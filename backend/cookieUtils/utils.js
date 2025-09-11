@@ -77,6 +77,7 @@ const vicSnapshot = async (unit, verbose) => {
   let T = vics.length
   let vicPercent = Number((fmc + pmc)/T) * 100
   let output
+
   if(verbose === "true"){
     output =
     {id: "Equipment", data: {
@@ -244,6 +245,385 @@ const priority = async (unit, verbose) => {
 
 }
 
+const vicMaint = async (unit) => {
+  //get maintenance_currancy from vehicle by unit
+  //return % of vehicles w/lin true && % of vehicles w/lin false && average fuel percentage
+  let output = {
+      true: 75,
+      trueData: [
+        {
+          id: 1,
+          assigned_unit_id: 0,
+          lin: 'C05105'
+        },
+        {
+          id: 1,
+          assigned_unit_id: 0,
+          lin: 'C05105'
+        },
+        {
+          id: 1,
+          assigned_unit_id: 0,
+          lin: 'C05105'
+        }
+      ],
+      false: 25,
+      falseData: [
+        {
+          id: 11,
+          assigned_unit_id: 1,
+          lin: 'X05105'
+        }
+      ],
+      fuelLevel: 75
+    }
+
+  return output;
+}
+
+const vicIssuesActions = async (percent, maintenance, fuelLevel, unit) => {
+  let issues= []
+  let actions= []
+  let issueTick = 0
+  let actionTick = 0
+  let certified = await vicCertified(unit)
+
+  if(percent < 75){
+    issues.push({id: issueTick, text: `${percent}% of vehicles are non-operational`})
+    issueTick++
+    actions.push({id: actionTick, text: 'Ensure all crew is scheduled for crew training, and all vehicles are on the maintenance schedule'})
+    actionTick++
+  }
+  if(maintenance < 75){
+    issues.push({id: issueTick, text: `${maintenance}% of vehicles are non-operational due to maintenance`})
+    issueTick++
+    actions.push({id: actionTick, text: 'Ensure all vehicles are on the maintenance schedule'})
+    actionTick++
+  }
+  if(fuelLevel < 75){
+    issues.push({id: issueTick, text: `Average fuel level across the motorpool is ${fuelLevel}.`})
+    issueTick++
+    actions.push({id: actionTick, text: 'Ensure operators fill vehicles and fuelers are available for refill of on-site storage'})
+    actionTick++
+  }
+  if(certified.overall < 75){
+    issues.push({id: issueTick, text: `Average operator certification level across the motorpool is ${certified.overall}.`})
+    issueTick++
+    actions.push({id: actionTick, text: 'Schedule drivers training or refresher training for out of date operators'})
+    actionTick++
+  }
+  let output =
+    {
+      issues: issues,
+      actions: actions
+    }
+  return output;
+
+}
+
+const vicCertified = async (unit) => {
+  //get appropriate flag from soldiers.tasks_jsonb
+  //return percent certified by soldier and overall
+  let output =
+    {
+      overall: 75,
+      soldier: [
+        {
+          id: 0,
+        }
+      ]
+    }
+
+  return output
+}
+
+const vicModal = async (unit, verbose) => {
+  let vics = await vicSnapshot(unit, 'true')
+  let fullMC = vics.data.FMC
+  let partialMC = vics.data.PMC
+  let nonMC = vics.data.NMC
+  let percent = vics.data.PERCENT
+  let vicMaintdata = await vicMaint(unit)
+  let issuesActions = await vicIssuesActions(percent, vicMaint.true, vicMaint.fuelLevel, unit)
+  let certified = await vicCertified(unit)
+  let vicOutput
+
+  if(verbose == true){
+    vicOutput = {
+      id: 'vehicle',
+      title: 'Vehicle Readiness',
+      description: 'Equipment and vehicle operational status',
+      percentage: percent,
+      data: {
+        FMC: fullMC,
+        PMC: partialMC,
+        NMC: nonMC,
+        metrics: [
+          { label: 'Operational Vehicles', value: percent},
+          { label: 'Maintenance Current', value: vicMaintdata.true},
+          { label: 'Fuel Readiness', value: vicMaintdata.fuelLevel},
+          { label: 'Driver Certification', value: certified.overall}
+        ],
+        issues: issuesActions.issues,
+        actions: issuesActions.actions
+      }
+    }
+  } else {
+    vicOutput = {
+      id: 'vehicle',
+      title: 'Vehicle Readiness',
+      description: 'Equipment and vehicle operational status',
+      percentage: percent,
+      }
+    }
+
+  return vicOutput
+}
+
+const deploymentModal = async (unit, verbose) => {
+  let percent = 75
+  let deploymentOutput
+  //let issuesActions = await deploymentIssuesActions(percent, vicMaint.true, vicMaint.fuelLevel, unit)
+  let issuesActions = {
+    issues: "seed data in utils.js",
+    actions: "seed data in utils.js"
+  }
+  if(verbose == true) {
+    deploymentOutput = {
+      id: 'deployment',
+      title: 'Deployment Readiness',
+      description: 'Mission deployment preparation status',
+      percentage: percent,
+      data: {
+        metrics:
+          [
+            { label: 'Personnel Ready', value: '45%', status: 'critical' },
+            { label: 'Equipment Staged', value: '23%', status: 'critical' },
+            { label: 'Transport Available', value: '67%', status: 'medium' },
+            { label: 'Mission Planning', value: '12%', status: 'critical' }
+          ],
+        issues: issuesActions.issues,
+        actions: issuesActions.actions
+      }
+    }
+  } else {
+    deploymentOutput = {
+      id: 'deployment',
+      title: 'Deployment Readiness',
+      description: 'Mission deployment preparation status',
+      percentage: percent,
+    }
+  }
+
+  return deploymentOutput
+}
+
+const crewModal = async (unit, verbose) => {
+  let crewModal
+  let percent = 75
+  let issuesActions = {
+    issues: "seed data in utils.js",
+    actions: "seed data in utils.js"
+  }
+  if(verbose == true){
+    crewModal = {
+      id: 'crew',
+      title: 'Crew Qualification',
+      description: 'Combat Readiness Evaluation Assessment',
+      percentage: percent,
+      data: {
+        metrics: [
+          { label: 'Combat Ready', value: '89%', status: 'high' },
+          { label: 'Team Cohesion', value: '92%', status: 'high' },
+          { label: 'Equipment Proficiency', value: '85%', status: 'high' },
+          { label: 'Mission Rehearsals', value: '78%', status: 'medium' }
+        ],
+        issues: issuesActions.issues,
+        actions: issuesActions.actions
+      }
+    }
+  } else {
+    crewModal = {
+      id: 'crew',
+      title: 'Crew Qualification',
+      description: 'Combat Readiness Evaluation Assessment',
+      percentage: percent
+    }
+  }
+
+  return crewModal;
+}
+
+const medModal = async (unit, verbose) => {
+  let percent = 75
+  let issuesActions = {
+    issues: "seed data in utils.js",
+    actions: "seed data in utils.js"
+  }
+  let medOutput
+  if(verbose == true){
+    medOutput = {
+      id: 'medical',
+      title: 'Medical Readiness',
+      description: 'Health and medical certification status',
+      status: 'high',
+      percentage: percent,
+      data: {
+        metrics: [
+          { label: 'Medical Readiness', value: '92%', status: 'high' },
+          { label: 'Vaccinations Current', value: '98%', status: 'high' },
+          { label: 'Physical Fitness', value: '87%', status: 'high' },
+          { label: 'Medical Equipment', value: '94%', status: 'high' }
+        ],
+        issues: issuesActions.issues,
+        actions: issuesActions.actions
+      }
+    }
+  } else {
+    medOutput = {
+      id: 'medical',
+      title: 'Medical Readiness',
+      description: 'Health and medical certification status',
+      status: 'high',
+      percentage: percent
+    }
+  }
+
+  return medOutput;
+}
+
+const weaponModal = async (unit, verbose) => {
+  let percent = 75
+  let issuesActions = {
+    issues: "seed data in utils.js",
+    actions: "seed data in utils.js"
+  }
+  let weaponOutput
+  if(verbose == true){
+    weaponOutput = {
+      id: 'weapons',
+      title: 'Weapons Qualification',
+      description: 'Weapons training and marksmanship status',
+      status: 'medium',
+      percentage: percent,
+      data: {
+        metrics: [
+          { label: 'Qualified Personnel', value: '68%', status: 'medium' },
+          { label: 'Range Time Current', value: '45%', status: 'low' },
+          { label: 'Equipment Status', value: '82%', status: 'high' },
+          { label: 'Safety Certification', value: '95%', status: 'high' }
+        ],
+        issues: issuesActions.issues,
+        actions: issuesActions.actions
+      }
+    }
+  } else {
+    weaponOutput = {
+      id: 'weapons',
+      title: 'Weapons Qualification',
+      description: 'Weapons training and marksmanship status',
+      status: 'medium',
+      percentage: percent
+    }
+  }
+
+  return weaponOutput;
+}
+
+const modal = async (unit, verbose, vicModalValue, deploymentModalValue, crewModalValue, medModalValue, weaponModalValue) => {
+  let vicModaldata = await vicModal(unit, verbose)
+  let deploymentModaldata = await deploymentModal(unit, verbose)
+  let crewModaldata = await crewModal(unit, verbose)
+  let medModaldata = await medModal(unit, verbose)
+  let weaponModaldata = await weaponModal(unit, verbose)
+  let modalData = []
+
+  if(vicModalValue == true){
+    modalData.push(vicModaldata)
+  }
+  if(deploymentModalValue == true){
+    modalData.push(deploymentModaldata)
+  }
+  if(crewModalValue == true){
+    modalData.push(crewModaldata)
+  }
+  if(medModalValue == true){
+    modalData.push(medModaldata)
+  }
+  if(weaponModalValue == true){
+    modalData.push(weaponModaldata)
+  }
+  console.log(verbose)
+  console.log(vicModaldata)
+  return modalData;
+}
+
+
+
+// //selectable by type,
+// let actionItems = [
+//   {type: equipment,
+//     data: [{
+//     status: '55% of vehicles are non-operational due to maintenance issues',
+//     reason: [
+//       {
+//         equipSn: 1234,
+//         equipStatus: 'parts on order'
+//       },
+//       {
+//         equipSn: 1234,
+//         equipStatus: 'needs annual services'
+//       },
+//       {
+//         equipSn: 1234,
+//         equipStatus: 'X fault due to lighting'
+//       },
+//     ],
+//     fix: "Implement emergency maintenance schedule for critical vehicles"
+//   }
+// ]
+//   },
+//   {type: personnel,
+//     data: [{
+//     status: '20% down on Rifle Qual',
+//     reason: 'Last Rifle Range was 13 months ago',
+//     fix: "Schedule Rifle Range"
+//   }
+// ]
+//   },
+//   {type: medical,
+//     data: [{
+//     status: '',
+//     reason: 'Track thrown',
+//     fix: "reason"
+//   }
+// ]
+//   },
+//   {type: trainingCurrent,
+//     data: [{
+//     status: 'NMC',
+//     reason: 'Track thrown',
+//     fix: "reason"
+//   }
+// ]
+//   },
+//   {type: deploymentReadiness,
+//     percent: 70,
+//     data: [
+//       {type: training,
+//         message: "8 Soldiers red on SHARP"
+//       },
+//       {type: equipment,
+//         message: "8 tracks NMC"
+//       },
+//       {type: medical,
+//         message: "8 Soldiers red on Dental"
+//       }
+//     ]
+//   }
+// ]
+
+
 //get all fields in  a table
 async function getAllFields (table){
   const columns = await knex('information_schema.columns')
@@ -264,7 +644,13 @@ module.exports = {
   medicalSnapshot:medicalSnapshot,
   priority:priority,
   getAllFields: getAllFields,
+  vicMaint:vicMaint,
+  modal:modal,
 }
 
-
+// vicModal:vicModal,
+//   deploymentModal:deploymentModal,
+//   crewModal:crewModal,
+//   medModal:medModal,
+//   weaponModal:weaponModal
 

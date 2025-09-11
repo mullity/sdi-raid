@@ -11,6 +11,7 @@ exports.up = function(knex) {
     table.integer('assigned_unit_id').notNullable()
     table.integer('deployable_status').notNullable()
     table.integer('medical_status').notNullable()
+    //table.jsonb('tasks_jsonb')
 
     table.foreign('assigned_unit_id').references('units.id').deferrable('deferred')
     table.foreign('deployable_status').references('status.id').deferrable('deferred')
