@@ -20,12 +20,16 @@ class UiCard {
 }
 
 class Snapshot extends UiCard {
+    constructor() {
+        super()
+    }
 
 }
 
 class VehicleSnapshot extends Snapshot {
 
     constructor() {
+        super()
         this.id="vehicle"
         this.percent=0
         this.data={}
