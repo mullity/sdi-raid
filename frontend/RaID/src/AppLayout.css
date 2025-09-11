@@ -33,6 +33,12 @@
   align-items: flex-start;
 }
 
+.title-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
 .app-title {
   margin: 0;
   font-size: 1.5rem;
@@ -180,3 +186,35 @@
   background-color: #c82333;
 }
 
+.print-button {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  margin-right: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.print-button:hover {
+  background-color: #357abd;
+}
+
+@media print {
+
+  /* .logout-button,
+  .print-button,
+  .main-nav {
+    /* display: none; */
+  /* Hide navigation and buttons when printing */
+}
+
+*/ body {
+  background: white;
+  color: black;
+}
+
+.theme-toggle-right {
+  margin-left: auto;
+}
