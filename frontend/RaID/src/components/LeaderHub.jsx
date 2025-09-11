@@ -2,19 +2,17 @@ import { useState } from 'react';
 import Modal from './Modal';
 import ReadinessModal from './ReadinessModal';
 import './LeaderHub.css';
+import raidLogo from '../assets/raidlogo.png';
 
 function LeaderHub({ selectedUnit }) {
   // Keep track of which category the user is hovering over
-  var hoveredCategory = useState(null)[0];
-  var setHoveredCategory = useState(null)[1];
+  var [hoveredCategory, setHoveredCategory] = useState(null);
   
   // Keep track of which category the user selected
-  var selectedCategory = useState(null)[0];
-  var setSelectedCategory = useState(null)[1];
+  var [selectedCategory, setSelectedCategory] = useState(null);
   
   // Keep track of whether the modal is open or closed
-  var isModalOpen = useState(false)[0];
-  var setIsModalOpen = useState(false)[1];
+  var [isModalOpen, setIsModalOpen] = useState(false);
 
   // Data about different readiness categories
   var readinessCategoriesData = [
@@ -97,6 +95,7 @@ function LeaderHub({ selectedUnit }) {
   return (
     <div className="leader-hub">
       <div className="hub-header">
+        <img src={raidLogo} alt="RAID Logo" className="raid-logo" />
         <h3 className="hub-title">Leader Hub</h3>
         {selectedUnit && (
           <div className="selected-unit">

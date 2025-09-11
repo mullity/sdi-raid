@@ -6,8 +6,7 @@ import './Dashboard.css';
 
 function Dashboard() {
   // Keep track of which category the user clicked on
-  var selectedCategory = useState(null)[0];
-  var setSelectedCategory = useState(null)[1];
+  var [selectedCategory, setSelectedCategory] = useState(null);
 
   // Different priority items for each category
   var categoryPriorityItems = {

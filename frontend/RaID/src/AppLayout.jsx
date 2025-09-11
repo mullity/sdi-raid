@@ -7,8 +7,7 @@ import './AppLayout.css';
 
 function AppLayout({ user, onLogout }) {
   // Keep track of which unit is selected
-  var selectedUIC = useState('WAZMB0')[0];
-  var setSelectedUIC = useState('WAZMB0')[1];
+  var [selectedUIC, setSelectedUIC] = useState('WAZMB0');
 
   // Function to make the first letter of a role uppercase
   function formatRole(role) {

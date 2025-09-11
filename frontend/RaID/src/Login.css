@@ -25,6 +25,13 @@
   letter-spacing: 0.1em;
 }
 
+.login-logo {
+  height: 360px;
+  width: auto;
+  margin-bottom: -80px;
+  filter: brightness(0) saturate(100%);
+}
+
 .login-subtitle {
   color: #6b7280;
   font-size: 1.25rem;

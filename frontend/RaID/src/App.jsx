@@ -9,8 +9,7 @@ import './App.css';
 
 function App() {
   // Keep track of who is logged in
-  var user = useState(null)[0];
-  var setUser = useState(null)[1];
+  var [user, setUser] = useState(null);
 
   // Function to handle when someone logs in
   function handleLogin(userData) {

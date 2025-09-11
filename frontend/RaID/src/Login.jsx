@@ -1,19 +1,13 @@
 import { useState } from 'react';
 import './Login.css';
+import raidLogo from './assets/raidlogo.png';
 
 function Login({ onLogin }) {
   // Keep track of what the user types in each field
-  var username = useState('')[0];
-  var setUsername = useState('')[1];
-  
-  var password = useState('')[0];
-  var setPassword = useState('')[1];
-  
-  var role = useState('')[0];
-  var setRole = useState('')[1];
-  
-  var error = useState('')[0];
-  var setError = useState('')[1];
+  var [username, setUsername] = useState('');
+  var [password, setPassword] = useState('');
+  var [role, setRole] = useState('');
+  var [error, setError] = useState('');
 
   // Function to handle when user submits the form
   function handleSubmit(e) {
@@ -39,7 +33,7 @@ function Login({ onLogin }) {
     <div className="login-container">
       <div className="login-card">
         <div>
-          <h1 className="login-title">R.A.I.D.</h1>
+          <img src={raidLogo} alt="R.A.I.D." className="login-logo" />
           <h2 className="login-subtitle">Unit Readiness Dashboard</h2>
           <p className="login-description">Please sign in to continue</p>
         </div>

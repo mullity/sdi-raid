@@ -3,8 +3,7 @@ import './UICSelector.css';
 
 function UICSelector({ selectedUIC, onUICChange }) {
   // Keep track of whether the dropdown is open or closed
-  var isOpen = useState(false)[0];
-  var setIsOpen = useState(false)[1];
+  var [isOpen, setIsOpen] = useState(false);
 
   // List of all the UIC options
   var uicOptions = [

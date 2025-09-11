@@ -3,8 +3,7 @@ import './PriorityTrendAnalysis.css';
 
 function PriorityTrendAnalysis() {
   // Keep track of which timeframe is selected
-  var selectedTimeframe = useState('30d')[0];
-  var setSelectedTimeframe = useState('30d')[1];
+  var [selectedTimeframe, setSelectedTimeframe] = useState('30d');
 
   // Data for different time periods
   var priorityDataByTimeframe = {
