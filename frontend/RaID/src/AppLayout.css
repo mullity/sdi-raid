@@ -38,7 +38,7 @@
   font-size: 1.5rem;
   font-weight: bold;
   letter-spacing: 0.1em;
-  color: #ffffff;
+  color: #ffffff !important;
 }
 
 .welcome-message {

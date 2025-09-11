@@ -1,27 +1,36 @@
-import { useState } from 'react'
-import './Login.css'
+import { useState } from 'react';
+import './Login.css';
 
 function Login({ onLogin }) {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [role, setRole] = useState('')
-  const [error, setError] = useState('')
+  // Keep track of what the user types in each field
+  var username = useState('')[0];
+  var setUsername = useState('')[1];
+  
+  var password = useState('')[0];
+  var setPassword = useState('')[1];
+  
+  var role = useState('')[0];
+  var setRole = useState('')[1];
+  
+  var error = useState('')[0];
+  var setError = useState('')[1];
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
+  // Function to handle when user submits the form
+  function handleSubmit(e) {
+    e.preventDefault();
     
-    // Basic validation
+    // Check if all fields are filled in
     if (!username || !password || !role) {
-      setError('Please fill in all fields')
-      return
+      setError('Please fill in all fields');
+      return;
     }
 
-    // Simple authentication logic - in a real app, this would call an API
+    // Check if password is long enough
     if (password.length >= 6) {
-      // Successful login
-      onLogin({ username, role })
+      // Login successful - call the function passed from parent
+      onLogin({ username, role });
     } else {
-      setError('Password must be at least 6 characters')
+      setError('Password must be at least 6 characters');
     }
   
   }
@@ -48,7 +57,9 @@ function Login({ onLogin }) {
               type="text"
               id="username"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={function(e) {
+                setUsername(e.target.value);
+              }}
               placeholder="Enter your username"
               className="form-input"
               required
@@ -61,7 +72,9 @@ function Login({ onLogin }) {
               type="password"
               id="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={function(e) {
+                setPassword(e.target.value);
+              }}
               placeholder="Enter your password"
               className="form-input"
               required
@@ -73,7 +86,9 @@ function Login({ onLogin }) {
             <select
               id="role"
               value={role}
-              onChange={(e) => setRole(e.target.value)}
+              onChange={function(e) {
+                setRole(e.target.value);
+              }}
               className="form-select"
               required
             >
@@ -97,7 +112,7 @@ function Login({ onLogin }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default Login
+export default Login;

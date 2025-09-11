@@ -1,28 +1,33 @@
-import { useState } from "react";
-import { Routes, Route } from "react-router-dom";
-import AppLayout from "./AppLayout";
-import Dashboard from "./routes/Dashboard";
-import ThreeFiftyOne from "./routes/ThreeFiftyOne";
-import Administrator from "./routes/Administrator";
-import Login from "./Login";
-import './App.css'
+import { useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import AppLayout from './AppLayout';
+import Dashboard from './routes/Dashboard';
+import ThreeFiftyOne from './routes/ThreeFiftyOne';
+import Administrator from './routes/Administrator';
+import Login from './Login';
+import './App.css';
 
-export default function App() {
-  const [user, setUser] = useState(null);
+function App() {
+  // Keep track of who is logged in
+  var user = useState(null)[0];
+  var setUser = useState(null)[1];
 
-  const handleLogin = (userData) => {
+  // Function to handle when someone logs in
+  function handleLogin(userData) {
     setUser(userData);
-  };
+  }
 
-  const handleLogout = () => {
+  // Function to handle when someone logs out
+  function handleLogout() {
     setUser(null);
-  };
+  }
 
+  // If nobody is logged in, show the login page
   if (!user) {
     return <Login onLogin={handleLogin} />;
   }
 
-  // If user is administrator, show the administrator page
+  // If the user is an administrator, show the admin page
   if (user.role === 'administrator') {
     return (
       <div className="app-layout">
@@ -48,7 +53,7 @@ export default function App() {
     );
   }
 
-  // For commanders and viewers, show the regular dashboard
+  // For normal users, show the dashboard with navigation
   return (
     <Routes>
       <Route element={<AppLayout user={user} onLogout={handleLogout} />}>
@@ -59,3 +64,5 @@ export default function App() {
     </Routes>
   );
 }
+
+export default App;

@@ -2,19 +2,46 @@ import { useTheme } from '../contexts/ThemeContext';
 import './ThemeToggle.css';
 
 function ThemeToggle() {
-  const { isDark, toggleTheme } = useTheme();
+  // Get the theme info from the context
+  var themeInfo = useTheme();
+  var isDark = themeInfo.isDark;
+  var toggleTheme = themeInfo.toggleTheme;
+
+  // Figure out what text to show for accessibility
+  var accessibilityText;
+  if (isDark) {
+    accessibilityText = 'Switch to light mode';
+  } else {
+    accessibilityText = 'Switch to dark mode';
+  }
+
+  // Figure out what CSS class to use
+  var sliderClass;
+  if (isDark) {
+    sliderClass = 'toggle-slider dark';
+  } else {
+    sliderClass = 'toggle-slider light';
+  }
+
+  // Figure out what icon to show
+  var icon;
+  if (isDark) {
+    icon = '🌙';
+  } else {
+    icon = '☀️';
+  }
 
   return (
     <button 
       className="theme-toggle"
       onClick={toggleTheme}
-      aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
-      title={`Switch to ${isDark ? 'light' : 'dark'} mode`}
+      aria-label={accessibilityText}
+      title={accessibilityText}
     >
       <div className="toggle-container">
-        <div className={`toggle-slider ${isDark ? 'dark' : 'light'}`}>
+        <div className={sliderClass}>
           <span className="toggle-icon">
-            {isDark ? '🌙' : '☀️'}
+            {icon}
           </span>
         </div>
       </div>

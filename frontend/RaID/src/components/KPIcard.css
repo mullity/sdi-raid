@@ -80,3 +80,17 @@
 .kpi-trend.trend-neutral {
   color: #6b7280;
 }
+
+.kpi-card.clickable {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.kpi-card.clickable:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.kpi-card.clickable:active {
+  transform: translateY(0);
+}

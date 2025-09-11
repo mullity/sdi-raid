@@ -1,13 +1,29 @@
-import { NavLink, Outlet } from "react-router-dom";
-import LeaderHub from "./components/LeaderHub";
-import ThemeToggle from "./components/ThemeToggle";
+import { useState } from 'react';
+import { NavLink, Outlet } from 'react-router-dom';
+import LeaderHub from './components/LeaderHub';
+import ThemeToggle from './components/ThemeToggle';
+import UICSelector from './components/UICSelector';
 import './AppLayout.css';
 
-export default function AppLayout({ user, onLogout }) {
-  const formatRole = (role) => {
-    if (!role) return '';
-    return role.charAt(0).toUpperCase() + role.slice(1);
-  };
+function AppLayout({ user, onLogout }) {
+  // Keep track of which unit is selected
+  var selectedUIC = useState('WAZMB0')[0];
+  var setSelectedUIC = useState('WAZMB0')[1];
+
+  // Function to make the first letter of a role uppercase
+  function formatRole(role) {
+    if (!role) {
+      return '';
+    }
+    var firstLetter = role.charAt(0).toUpperCase();
+    var restOfWord = role.slice(1);
+    return firstLetter + restOfWord;
+  }
+
+  // Function to handle when user changes the unit
+  function handleUICChange(uic) {
+    setSelectedUIC(uic.code);
+  }
 
 export default function AppLayout({ user, onLogout }) {
   const formatRole = (role) => {
@@ -28,17 +44,32 @@ export default function AppLayout({ user, onLogout }) {
             </div>
           </div>
           <nav className="main-nav">
-            <span className="uic-display">WAZMB0</span>
+            <UICSelector 
+              selectedUIC={selectedUIC} 
+              onUICChange={handleUICChange}
+            />
             <ThemeToggle />
             <NavLink 
               to="/dashboard" 
-              className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+              className={function(props) {
+                if (props.isActive) {
+                  return 'nav-link active';
+                } else {
+                  return 'nav-link';
+                }
+              }}
             >
               Dashboard
             </NavLink>
             <NavLink 
               to="/350-1"
-              className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+              className={function(props) {
+                if (props.isActive) {
+                  return 'nav-link active';
+                } else {
+                  return 'nav-link';
+                }
+              }}
             >
               350-1
             </NavLink>
@@ -68,4 +99,6 @@ export default function AppLayout({ user, onLogout }) {
     </div>
   );
 }
+
+export default AppLayout;
 
