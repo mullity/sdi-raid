@@ -1,4 +1,4 @@
-const { VehicleSnapshot } = require('../classes/uiClasses');
+const { VehicleSnapshot, TrainingSnapshot } = require('../classes/uiClasses');
 
 require('dotenv').config()
 
@@ -70,47 +70,10 @@ const vicSnapshot = async (unit, verbose) => {
  * @param {string} verbose indicates if extra data (total, qualified numbers) is returned in the response
  * @returns promise that resolves into a JSON object containing values
  */
-const trainingSnapshot = async (unitString, verbose) => {
-  let qualified = 0
-  let notQualified = 0
-  let unit = Number(unitString)
-  let joined = await joinTaskStatus()
-  let tasks = []
-
-  for(let join of joined){
-    if(join.assigned_unit_id == unit){
-      tasks.push(join)
-    }
-  }
-
-  for(let task of tasks){
-    if(task.status == "qualified" ) {
-      qualified++
-    } else if (task.status == "not_qualified"){
-      notQualified++
-    }
-  }
-
-  let tasksT = tasks.length
-  let tasksPercent = Number(qualified/tasksT) * 100
-  let output
-
-  if(verbose === "true"){
-    output =
-    {id: 'Training', data: {
-      total: tasks.length,
-      QUALIFIED: qualified,
-      NOTQUALIFIED: notQualified,
-      PERCENT: tasksPercent
-    }}
-  } else {
-    output =
-    {id: 'Training', data: {
-      PERCENT: tasksPercent
-    }}
-  }
-
-  return output;
+const trainingSnapshot = async (unit, verbose) => {
+  let myNewSnap = new TrainingSnapshot()
+  return myNewSnap.init(unit)
+  .then(()=>(myNewSnap.generateCard(verbose)))
 }
 
 /**
@@ -651,6 +614,7 @@ module.exports = {
   getAllFields: getAllFields,
   vicMaint:vicMaint,
   modal:modal,
+  joinTaskStatus:joinTaskStatus
 }
 
 // vicModal:vicModal,

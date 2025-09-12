@@ -26,6 +26,63 @@ class Snapshot extends UiCard {
 
 }
 
+class TrainingSnapshot extends Snapshot {
+
+    constructor() {
+        super()
+        this.id="training"
+        this.percent=0
+        this.data={}
+        this.qualified = 0
+        this.notQualified = 0
+        this.tasks = []
+        this.joined = []
+    }
+
+    async init(unit) {
+        const { joinTaskStatus } = require('../cookieUtils/utils.js')
+        this.joined = await joinTaskStatus()
+        this.unit = unit
+    }
+
+    generateCard(verbose) {
+        for(let join of this.joined){
+            if(join.assigned_unit_id == Number(this.unit)){
+            this.tasks.push(join)
+            }
+        }
+
+        for(let task of this.tasks){
+            if(task.status == "qualified" ) {
+            this.qualified++
+            } else if (task.status == "not_qualified"){
+            this.notQualified++
+            }
+        }
+
+        let tasksT = this.tasks.length
+        let tasksPercent = Number(this.qualified/tasksT) * 100
+        let output
+
+        if(verbose === "true"){
+            output =
+            {id: 'Training',
+            percent: tasksPercent,
+            data: {
+            total: this.tasks.length,
+            qualified: this.qualified,
+            notqualified: this.notQualified
+            }}
+        } else {
+            output =
+            {id: 'Training',
+            percent: tasksPercent}
+        }
+
+        return output;
+    }
+
+}
 class VehicleSnapshot extends Snapshot {
 
     constructor() {
@@ -123,6 +180,7 @@ class Modal extends UiCard {
 
 module.exports = {
     VehicleSnapshot:VehicleSnapshot,
+    TrainingSnapshot:TrainingSnapshot,
     UiCard: UiCard,
     Modal: Modal
 }
