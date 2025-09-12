@@ -52,7 +52,8 @@ function Dashboard() {
       </h2>
 
       <div className="kpi-grid">
-        {kpiData.length>0 ? kpiData.map((item,index)=>(
+        {kpiData.length>0 ? kpiData.filter((item)=>(item.value===undefined || item.value===null)?false:true)
+        .map((item,index)=>(
           <KPICard
           key = {index}
           kpiData = {item}

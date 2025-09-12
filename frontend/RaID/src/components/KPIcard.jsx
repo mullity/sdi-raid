@@ -13,6 +13,7 @@ function KPICard({kpiData={}, onClick }) {
   let unit = ''
   if ( valueType === 'percent'){
     unit = '%'
+    value = Math.floor(value*10)/10
   }
 
   let status = 'neutral'
