@@ -19,7 +19,7 @@ exports.seed = function(knex) {
           .then(multiStatus => {
             let data = []
             let fakeUnits = Number(output.length)
-            let faked = 10
+            let faked = 40
             let idNum = 0
 
             let grades = [
