@@ -173,7 +173,7 @@ const snapshot = async (unit, verbose) => {
 const priority = async (unit, verbose) => {
   let safetyNet = await snapshot(unit, verbose)
   let data = JSON.parse(JSON.stringify(safetyNet.slice()))
-  data.sort((a,b) => a.data.PERCENT - b.data.PERCENT)
+  data.sort((a,b) => a.value - b.value)
 
   return data
 
