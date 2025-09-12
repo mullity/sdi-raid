@@ -71,6 +71,7 @@
   transition: border-color 0.2s, box-shadow 0.2s;
   outline: none;
   box-sizing: border-box;
+  color: black
 }
 
 .form-input:focus,
@@ -133,15 +134,15 @@
   .login-container {
     padding: 10px;
   }
-  
+
   .login-card {
     padding: 30px 20px;
   }
-  
+
   .login-header h1 {
     font-size: 2rem;
   }
-  
+
   .login-header h2 {
     font-size: 1.1rem;
   }

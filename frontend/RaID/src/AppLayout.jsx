@@ -73,7 +73,6 @@ function AppLayout({ user, onLogout }) {
       <div className="app-body">
         <aside className="sidebar">
           <LeaderHub />
-          <LeaderHub />
         </aside>
         <main className="main-content">
           <Outlet />
