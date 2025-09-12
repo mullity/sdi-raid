@@ -1,15 +1,28 @@
 import './KPIcard.css';
 
-function KPICard({ title, value, unit, trend, onClick }) {
+function KPICard({ title, value, onClick }) {
+  //PLACEHOLDER - Dynamic Unit symbol for value
+  let unit = ''
+  if (typeof value === 'number'){
+    unit = '%'
+  }
+
   let status = 'neutral'
-  if (value>=90){
+  if (value>=80){
     status = 'good'
-  } else if (value <90 && value >=80){
-    status = 'neutral'
   } else if (value <80 && value >=70){
     status = 'warning'
   } else if (value <70 && value >=0){
     status = 'critical'
+  }
+  //PLACEHOLDER - Trend Value
+  let trend = 0
+  if (value>=80){
+    trend = 1
+  } else if (value <80 && value >=70){
+    trend = 0
+  } else if (value <70 && value >=0){
+    trend = -1
   }
 
   // Function to get the right arrow for the trend

@@ -55,8 +55,6 @@ function Dashboard() {
         <KPICard 
           title="Personnel Readiness" 
           value="87" 
-          unit="%" 
-          trend={2} 
           onClick={function() {
             handleKPIClick('personnel');
           }}
@@ -64,8 +62,6 @@ function Dashboard() {
         <KPICard 
           title="Equipment Status" 
           value={kpiData.find(elem=>elem['id']=='Equipment')? kpiData.find(elem=>elem['id']=='Equipment')['percent'] : 0}
-          unit="%" 
-          trend={-1} 
           onClick={function() {
             handleKPIClick('equipment');
           }}
@@ -73,8 +69,6 @@ function Dashboard() {
         <KPICard 
           title="Training Current" 
           value="78" 
-          unit="%" 
-          trend={5} 
           onClick={function() {
             handleKPIClick('training');
           }}
@@ -82,8 +76,6 @@ function Dashboard() {
         <KPICard 
           title="Medical Readiness" 
           value="94" 
-          unit="%" 
-          trend={0} 
           onClick={function() {
             handleKPIClick('medical');
           }}
