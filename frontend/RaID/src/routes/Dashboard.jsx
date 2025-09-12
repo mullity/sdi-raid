@@ -54,7 +54,7 @@ function Dashboard() {
       <div className="kpi-grid">
         <KPICard 
           title="Personnel Readiness" 
-          value="87" 
+          value={87}
           onClick={function() {
             handleKPIClick('personnel');
           }}
@@ -68,14 +68,14 @@ function Dashboard() {
         />
         <KPICard 
           title="Training Current" 
-          value="78" 
+          value={20}
           onClick={function() {
             handleKPIClick('training');
           }}
         />
         <KPICard 
           title="Medical Readiness" 
-          value="94" 
+          value={94}
           onClick={function() {
             handleKPIClick('medical');
           }}
