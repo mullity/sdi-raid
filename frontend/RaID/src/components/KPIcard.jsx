@@ -4,7 +4,7 @@ function KPICard({kpiData={}, title, value, onClick }) {
   // Object Unpacking Code
   if (kpiData){
     title = kpiData.id? kpiData.id : 'no id found'
-    value = kpiData.percent? kpiData.percent : 'XXX'
+    value = kpiData.percent===undefined? kpiData.percent : 'XXX'
   }
 
   //PLACEHOLDER - Dynamic Unit symbol for value

@@ -52,30 +52,15 @@ function Dashboard() {
       </h2>
 
       <div className="kpi-grid">
-        <KPICard
-          kpiData={kpiData.find(elem => elem['id'] == 'Personnel') ? kpiData.find(elem => elem['id'] == 'Personnel') : {}}
+        {kpiData.length>0 ? kpiData.map((item,index)=>(
+          <KPICard
+          key = {index}
+          kpiData = {item}
           onClick={function () {
-            handleKPIClick('personnel');
+            handleKPIClick(item.id ? item.id : 'noIdFound')
           }}
-        />
-        <KPICard
-          kpiData={kpiData.find(elem => elem['id'] == 'Equipment') ? kpiData.find(elem => elem['id'] == 'Equipment') : {}}
-          onClick={function () {
-            handleKPIClick('equipment');
-          }}
-        />
-        <KPICard
-          kpiData={kpiData.find(elem => elem['id'] == 'Training') ? kpiData.find(elem => elem['id'] == 'Training') : {}}
-          onClick={function () {
-            handleKPIClick('training');
-          }}
-        />
-        <KPICard
-          kpiData={kpiData.find(elem => elem['id'] == 'Medical') ? kpiData.find(elem => elem['id'] == 'Medical') : {}}
-          onClick={function () {
-            handleKPIClick('medical');
-          }}
-        />
+          />
+        )):<></>}
       </div>
 
       <div className="dashboard-content">
