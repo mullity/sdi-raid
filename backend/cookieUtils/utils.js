@@ -187,6 +187,10 @@ const priority = async (unit, verbose) => {
  */
 const vicMaint = async (unit) => {
 
+  // let myNewSnap = new VehicleSnapshot()
+  // return myNewSnap.init(unit)
+  // .then(()=>(myNewSnap.generateCard(verbose)))
+
   let output = {
       true: 75,
       trueData: [
