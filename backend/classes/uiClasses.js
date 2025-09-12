@@ -28,7 +28,7 @@ class Snapshot extends UiCard {
         const dataResponse = {
             'id': this.id,
             'value': this.value,
-            'valueType': valuetype,
+            'valueType': valueType,
             'data': verboseData
         }
         return dataResponse
@@ -82,7 +82,7 @@ class TrainingSnapshot extends Snapshot {
             }
             return this.generateDataResponse('percent', snapData)
         } else {
-            return this.generateDataResponse('percent', snapData)
+            return this.generateDataResponse()
         }
     }
 
