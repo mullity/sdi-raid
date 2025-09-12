@@ -1,15 +1,16 @@
 import './KPIcard.css';
 
-function KPICard({kpiData={}, title, value, onClick }) {
+function KPICard({kpiData={}, onClick }) {
   // Object Unpacking Code
   if (kpiData){
     title = kpiData.id? kpiData.id : 'no id found'
-    value = kpiData.percent===undefined? 'XXX' : kpiData.percent
+    value = kpiData.value===undefined? 'XXX' : kpiData.value
+    valueType = kpiData.valueType===undefined? '' : kpiData.valueType
   }
 
   //PLACEHOLDER - Dynamic Unit symbol for value
   let unit = ''
-  if (typeof value === 'number'){
+  if ( valueType === 'percent'){
     unit = '%'
   }
 
