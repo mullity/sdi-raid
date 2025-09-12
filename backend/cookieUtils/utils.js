@@ -1,4 +1,4 @@
-const { VehicleSnapshot, TrainingSnapshot, PersonnelSnapshot } = require('../classes/uiClasses');
+const { VehicleSnapshot, TrainingSnapshot, PersonnelSnapshot, MedicalSnapshot } = require('../classes/uiClasses');
 
 require('dotenv').config()
 
@@ -86,42 +86,6 @@ const personnelSnapshot = async (unit, verbose) => {
   let myNewSnap = new PersonnelSnapshot()
   return myNewSnap.init(unit)
   .then(()=>(myNewSnap.generateCard(verbose)))
-  // let troops = await getWithUnitId('soldiers', unit)
-  // let deployable = 0
-  // let nonDeployable = 0
-
-  // for(let troop of troops){
-  //   if(troop.deployable_status == "5" || troop.deployable_status == "6" ) {
-  //     deployable++
-  //   } else if (troop.deployable_status == "7"){
-  //     nonDeployable++
-  //   }
-  // }
-
-  // let troopT = troops.length
-  // let troopPercent = Number(deployable/troopT) * 100
-  // let output
-
-
-
-
-  //   if(verbose === "true"){
-  //     output =
-  //     {id: "Personnel", data: {
-  //       total: troops.length,
-  //       DEPLOYABLE: deployable,
-  //       NONDEPLOYABLE: nonDeployable,
-  //       PERCENT: troopPercent
-  //     }}
-  //   } else {
-  //     output =
-  //     {id: "Personnel", data: {
-  //       PERCENT: troopPercent
-  //     }}
-  //   }
-
-  // return output;
-
 }
 
 /**
@@ -131,47 +95,50 @@ const personnelSnapshot = async (unit, verbose) => {
  * @returns promise that resolves into a JSON object containing values
  */
 const medicalSnapshot = async (unit, verbose) => {
-  let troops = await getWithUnitId('soldiers', unit)
-  let green = 0
-  let red = 0
-  let amber = 0
+  let myNewSnap = new MedicalSnapshot()
+  return myNewSnap.init(unit)
+  .then(()=>(myNewSnap.generateCard(verbose)))
+  // let troops = await getWithUnitId('soldiers', unit)
+  // let green = 0
+  // let red = 0
+  // let amber = 0
 
-  for(let troop of troops){
-    if(troop.medical_status == "5"){
-      green++
-    }
-    if(troop.medical_status == "6"){
-      amber++
-    }
-    if (troop.medical_status == "7"){
-      red++
-    }
-  }
+  // for(let troop of troops){
+  //   if(troop.medical_status == "5"){
+  //     green++
+  //   }
+  //   if(troop.medical_status == "6"){
+  //     amber++
+  //   }
+  //   if (troop.medical_status == "7"){
+  //     red++
+  //   }
+  // }
 
-  let troopT = troops.length
-  let troopPercent = Number(green/troopT) * 100
-  let output
-
-
+  // let troopT = troops.length
+  // let troopPercent = Number(green/troopT) * 100
+  // let output
 
 
-    if(verbose === "true"){
-      output =
-      {id: "Medical", data: {
-        total: troops.length,
-        GREEN: green,
-        AMBER: amber,
-        RED: red,
-        PERCENT: troopPercent
-      }}
-    } else {
-      output =
-      {id: "Medical", data: {
-        PERCENT: troopPercent
-      }}
-    }
 
-  return output;
+
+  //   if(verbose === "true"){
+  //     output =
+  //     {id: "Medical", data: {
+  //       total: troops.length,
+  //       GREEN: green,
+  //       AMBER: amber,
+  //       RED: red,
+  //       PERCENT: troopPercent
+  //     }}
+  //   } else {
+  //     output =
+  //     {id: "Medical", data: {
+  //       PERCENT: troopPercent
+  //     }}
+  //   }
+
+  // return output;
 
 }
 

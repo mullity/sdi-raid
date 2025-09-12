@@ -10,7 +10,7 @@ function Dashboard() {
   const [kpiData, setKpiData] = useState([])
 
   useEffect(() => {
-    fetch(`http://localhost:3001/kpi?unit=1&equipmentReadinessScore=true&trainingReadinessScore=true`).then(res => res.json().then(jsonbody => setKpiData(jsonbody)))
+    fetch(`http://localhost:3001/kpi?unit=1&personnelReadinessScore=true&equipmentReadinessScore=true&trainingReadinessScore=true&medicalReadinessScore=true`).then(res => res.json().then(jsonbody => setKpiData(jsonbody)))
   }, [])
 
   console.log(kpiData)
