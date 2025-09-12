@@ -95,9 +95,8 @@ class VehicleSnapshot extends Snapshot {
             }
         } else {
             output = {
-                id: "Equipment", data: {
-                    PERCENT: vicPercent
-                }
+                id: "Equipment",
+                percent: vicPercent,
             }
         }
 

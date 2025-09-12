@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import KPICard from '../components/KPIcard';
 import PrioritiesPanel from '../components/PrioritiesPannel';
 import PriorityTrendAnalysis from '../components/PriorityTrendAnalysis';
