@@ -27,8 +27,8 @@ function KPICard({kpiData={}, title, value, onClick }) {
 
   // Object Unpacking Code
   if (kpiData){
-    title = kpiData.find(elem=>elem['id']=='Equipment')? kpiData.find(elem=>elem['id']=='Equipment')['id'] : 'no id found'
-    value = kpiData.find(elem=>elem['id']=='Equipment')? kpiData.find(elem=>elem['id']=='Equipment')['percent'] : 'no id found'
+    title = kpiData.id? kpiData.id : 'no id found'
+    value = kpiData.percent? kpiData.percent : 'XXX'
   }
 
   // Function to get the right arrow for the trend
