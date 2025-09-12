@@ -119,33 +119,40 @@ app.get('/kpi', async (req, res) => {
   //required query params: unit(number)
   //optional query params: verbose(true/false as string), personnelReadinessScore(true/false as string), equipmentReadinessScore(true/false as string), trainingReadinessScore(true/false as string), medicalReadinessScore(true/false as string)
   let { verbose, unit, personnelReadinessScore, equipmentReadinessScore, trainingReadinessScore, medicalReadinessScore } = req.query
-  try {
-    let vicKpi = await vicSnapshot(unit, verbose)
-    let trainingKpi = await trainingSnapshot(unit, verbose)
-    let personnelKpi = await personnelSnapshot(unit, verbose)
-    let medicalKpi = await medicalSnapshot(unit, verbose)
-    let output= []
-    if(equipmentReadinessScore == undefined && personnelReadinessScore == undefined && trainingReadinessScore == undefined && medicalReadinessScore == undefined){
-      output.push({Error: 'Must select a KPI Score to recieve data'})
+  if(unit === undefined){
+    res.status(400).send("Bad Request")
+  } else {
+    try {
+      let vicKpi = await vicSnapshot(unit, verbose)
+      let trainingKpi = await trainingSnapshot(unit, verbose)
+      let personnelKpi = await personnelSnapshot(unit, verbose)
+      let medicalKpi = await medicalSnapshot(unit, verbose)
+      let output= []
+      if(equipmentReadinessScore == undefined && personnelReadinessScore == undefined && trainingReadinessScore == undefined && medicalReadinessScore == undefined){
+        output.push({Error: 'Must select a KPI Score to recieve data'})
+      }
+      if(equipmentReadinessScore === "true"){
+        output.push(vicKpi)
+      }
+      if (personnelReadinessScore === "true"){
+        output.push(personnelKpi)
+      }
+      if (trainingReadinessScore=== "true"){
+        output.push(trainingKpi)
+      }
+      if (medicalReadinessScore === "true"){
+        output.push(medicalKpi)
+      }
+      if(vicKpi === false ||trainingKpi === false ||personnelKpi === false ||medicalKpi === false){
+        res.status(404).send('One or more of the requested parameters does not exist')
+      } else {
+      res.status(200).send(output)
+      }
     }
-    if(equipmentReadinessScore === "true"){
-      output.push(vicKpi)
+    catch (error) {
+      console.error(error);
+      res.status(500).json({ error: `${error}` });
     }
-    if (personnelReadinessScore === "true"){
-      output.push(personnelKpi)
-    }
-    if (trainingReadinessScore=== "true"){
-      output.push(trainingKpi)
-    }
-    if (medicalReadinessScore === "true"){
-      output.push(medicalKpi)
-    }
-
-    res.status(200).send(output)
-  }
-  catch (error) {
-    console.error(error);
-    res.status(500).json({ error: `${error}` });
   }
 })
 

@@ -22,6 +22,17 @@ function calcEquipmentScore(vehicles) {
   return Math.round((fmc / total) * 100);
 }
 
+const checkUnitId = async (table, unit) => {
+  let data = await getWithUnitId(table, unit)
+  if(data.length !== 0){
+    return true;
+  }
+  else{
+    return false
+  }
+}
+
+
 function getter(table) {
   return knex(table)
   .select()
@@ -588,7 +599,8 @@ module.exports = {
   getAllFields: getAllFields,
   vicMaint:vicMaint,
   modal:modal,
-  joinTaskStatus:joinTaskStatus
+  joinTaskStatus:joinTaskStatus,
+  checkUnitId:checkUnitId
 }
 
 // vicModal:vicModal,

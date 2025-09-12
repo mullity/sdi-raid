@@ -17,6 +17,7 @@ class UiCard {
         }
     }
 
+
 }
 
 class Snapshot extends UiCard {
@@ -33,7 +34,13 @@ class Snapshot extends UiCard {
         }
         return dataResponse
     }
-
+    async checkAuthorizedUnit(unit){
+        //if user is authorized to view unit data && unit id exists
+        //return true
+        // else
+        //return false
+        return true;
+    }
 }
 
 class TrainingSnapshot extends Snapshot {
@@ -198,11 +205,30 @@ class VehicleSnapshot extends Snapshot {
     }
 
     async init(unit) {
-        const { getWithUnitId } = require('../cookieUtils/utils.js')
-        this.vics = await getWithUnitId('vehicle', unit)
+        const { getWithUnitId, checkUnitId } = require('../cookieUtils/utils.js')
+        return checkUnitId('vehicle', unit).then(out => {
+            if(out){
+                return this.checkAuthorizedUnit(unit).then(res => {
+                    if(res){
+                        return getWithUnitId('vehicle', unit).then(data => {
+                            this.vics = data
+                        })
+                    }
+                })
+            }
+            else {
+                this.vics = null
+                return false
+            }
+        })
     }
 
+
+
     generateCard(verbose) {
+        if(this.vics === null){
+            return false
+        }
         for (let vic of this.vics) {
             if (vic.status == 'FMC') {
                 this.fmc++
