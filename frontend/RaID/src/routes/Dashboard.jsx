@@ -57,7 +57,6 @@ function Dashboard() {
           value="87" 
           unit="%" 
           trend={2} 
-          status="good" 
           onClick={function() {
             handleKPIClick('personnel');
           }}
@@ -67,7 +66,6 @@ function Dashboard() {
           value={kpiData.find(elem=>elem['id']=='Equipment')? kpiData.find(elem=>elem['id']=='Equipment')['percent'] : 0}
           unit="%" 
           trend={-1} 
-          status="warning" 
           onClick={function() {
             handleKPIClick('equipment');
           }}
@@ -77,7 +75,6 @@ function Dashboard() {
           value="78" 
           unit="%" 
           trend={5} 
-          status="critical" 
           onClick={function() {
             handleKPIClick('training');
           }}
@@ -87,7 +84,6 @@ function Dashboard() {
           value="94" 
           unit="%" 
           trend={0} 
-          status="good" 
           onClick={function() {
             handleKPIClick('medical');
           }}

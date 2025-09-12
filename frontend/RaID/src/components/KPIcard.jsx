@@ -1,6 +1,16 @@
 import './KPIcard.css';
 
-function KPICard({ title, value, unit, trend, status = 'neutral', onClick }) {
+function KPICard({ title, value, unit, trend, onClick }) {
+  let status = 'neutral'
+  if (value>=90){
+    status = 'good'
+  } else if (value <90 && value >=80){
+    status = 'neutral'
+  } else if (value <80 && value >=70){
+    status = 'warning'
+  } else if (value <70 && value >=0){
+    status = 'critical'
+  }
 
   // Function to get the right arrow for the trend
   function getTrendIcon() {
