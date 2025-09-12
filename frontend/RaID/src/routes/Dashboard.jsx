@@ -64,7 +64,7 @@ function Dashboard() {
         />
         <KPICard 
           title="Equipment Status" 
-          value="92" 
+          value={kpiData.find(elem=>elem['id']=='Equipment')? kpiData.find(elem=>elem['id']=='Equipment')['percent'] : 0}
           unit="%" 
           trend={-1} 
           status="warning" 
