@@ -36,6 +36,7 @@ exports.seed = function(knex) {
               let nameNum = Math.floor(Math.random() * 10)
               let statusNum = Math.floor(Math.random() * 3)
               let date = `${faker.date.past()}`.slice(4, 15)
+              let fuelNum = Math.floor(Math.random() * 100)
 
               idNum++
               data.push({
@@ -44,7 +45,8 @@ exports.seed = function(knex) {
                 lin: `${vicName[nameNum].lin}`,
                 status: `${equipmentStatus[statusNum].name}`,
                 assigned_unit_id: j,
-                date_last_serviced: date
+                date_last_serviced: date,
+                fuel_level: fuelNum
               })
             }
           }

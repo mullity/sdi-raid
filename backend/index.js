@@ -148,14 +148,6 @@ app.get('/kpi', async (req, res) => {
     res.status(500).json({ error: `${error}` });
   }
 })
-// Dashboard.jsx, passed to <KPIcard />
-  // {
-  //   value="87" number as a string
-  //   unit="%" percent symbol as a string
-  //   trend={2} number wrapped in curly
-  //   status="good"
-  // }
-//  in data object, rewrite PERCENT key as value, add unit key with string percent sign as value, add trend (based off helper function???), if percent > 80 status = good/warning/critical
 
 app.get('/priority', async (req,res) =>{
   //required query params: unit(number)

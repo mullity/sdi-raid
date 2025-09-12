@@ -13,6 +13,7 @@ exports.up = function(knex) {
     })
     table.integer('assigned_unit_id').notNullable()
     table.date('date_last_serviced');
+    table.integer('fuel_level')
 
     table.foreign('assigned_unit_id').references('units.id')
 
