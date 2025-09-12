@@ -1,4 +1,4 @@
-const { VehicleSnapshot, TrainingSnapshot } = require('../classes/uiClasses');
+const { VehicleSnapshot, TrainingSnapshot, PersonnelSnapshot } = require('../classes/uiClasses');
 
 require('dotenv').config()
 
@@ -83,41 +83,44 @@ const trainingSnapshot = async (unit, verbose) => {
  * @returns promise that resolves into a JSON object containing values
  */
 const personnelSnapshot = async (unit, verbose) => {
-  let troops = await getWithUnitId('soldiers', unit)
-  let deployable = 0
-  let nonDeployable = 0
+  let myNewSnap = new PersonnelSnapshot()
+  return myNewSnap.init(unit)
+  .then(()=>(myNewSnap.generateCard(verbose)))
+  // let troops = await getWithUnitId('soldiers', unit)
+  // let deployable = 0
+  // let nonDeployable = 0
 
-  for(let troop of troops){
-    if(troop.deployable_status == "5" || troop.deployable_status == "6" ) {
-      deployable++
-    } else if (troop.deployable_status == "7"){
-      nonDeployable++
-    }
-  }
+  // for(let troop of troops){
+  //   if(troop.deployable_status == "5" || troop.deployable_status == "6" ) {
+  //     deployable++
+  //   } else if (troop.deployable_status == "7"){
+  //     nonDeployable++
+  //   }
+  // }
 
-  let troopT = troops.length
-  let troopPercent = Number(deployable/troopT) * 100
-  let output
-
-
+  // let troopT = troops.length
+  // let troopPercent = Number(deployable/troopT) * 100
+  // let output
 
 
-    if(verbose === "true"){
-      output =
-      {id: "Personnel", data: {
-        total: troops.length,
-        DEPLOYABLE: deployable,
-        NONDEPLOYABLE: nonDeployable,
-        PERCENT: troopPercent
-      }}
-    } else {
-      output =
-      {id: "Personnel", data: {
-        PERCENT: troopPercent
-      }}
-    }
 
-  return output;
+
+  //   if(verbose === "true"){
+  //     output =
+  //     {id: "Personnel", data: {
+  //       total: troops.length,
+  //       DEPLOYABLE: deployable,
+  //       NONDEPLOYABLE: nonDeployable,
+  //       PERCENT: troopPercent
+  //     }}
+  //   } else {
+  //     output =
+  //     {id: "Personnel", data: {
+  //       PERCENT: troopPercent
+  //     }}
+  //   }
+
+  // return output;
 
 }
 

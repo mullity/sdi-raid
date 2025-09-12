@@ -83,6 +83,59 @@ class TrainingSnapshot extends Snapshot {
     }
 
 }
+
+class PersonnelSnapshot extends Snapshot {
+
+    constructor() {
+        super()
+        this.id="personnel"
+        this.percent=0
+        this.data={}
+        this.deployable = 0
+        this.nonDeployable = 0
+        this.troops = []
+
+    }
+
+    async init(unit) {
+        const { getWithUnitId } = require('../cookieUtils/utils.js')
+        this.troops = await getWithUnitId('soldiers', unit)
+    }
+
+    generateCard(verbose) {
+        for(let troop of this.troops){
+            if(troop.deployable_status == "5" || troop.deployable_status == "6" ) {
+            this.deployable++
+            } else if (troop.deployable_status == "7"){
+            this.nonDeployable++
+            }
+        }
+
+        let troopT = this.troops.length
+        let troopPercent = Number(this.deployable/troopT) * 100
+        let output
+
+
+
+
+            if(verbose === "true"){
+            output =
+            {id: "Personnel",
+            percent: troopPercent,
+            data: {
+                total: this.troops.length,
+                deployable: this.deployable,
+                nondeployable: this.nonDeployable
+            }}
+            } else {
+            output =
+            {id: "Personnel", percent: troopPercent}
+            }
+
+        return output;
+    }
+}
+
 class VehicleSnapshot extends Snapshot {
 
     constructor() {
@@ -170,9 +223,6 @@ class Modal extends UiCard {
         this.description = description
 
     }
-
-
-
 }
 
 
@@ -181,6 +231,7 @@ class Modal extends UiCard {
 module.exports = {
     VehicleSnapshot:VehicleSnapshot,
     TrainingSnapshot:TrainingSnapshot,
+    PersonnelSnapshot:PersonnelSnapshot,
     UiCard: UiCard,
     Modal: Modal
 }
