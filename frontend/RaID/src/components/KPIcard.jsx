@@ -1,6 +1,12 @@
 import './KPIcard.css';
 
 function KPICard({kpiData={}, title, value, onClick }) {
+  // Object Unpacking Code
+  if (kpiData){
+    title = kpiData.id? kpiData.id : 'no id found'
+    value = kpiData.percent? kpiData.percent : 'XXX'
+  }
+
   //PLACEHOLDER - Dynamic Unit symbol for value
   let unit = ''
   if (typeof value === 'number'){
@@ -23,12 +29,6 @@ function KPICard({kpiData={}, title, value, onClick }) {
     trend = 0
   } else if (value <70 && value >=0){
     trend = -1
-  }
-
-  // Object Unpacking Code
-  if (kpiData){
-    title = kpiData.id? kpiData.id : 'no id found'
-    value = kpiData.percent? kpiData.percent : 'XXX'
   }
 
   // Function to get the right arrow for the trend
@@ -64,7 +64,7 @@ function KPICard({kpiData={}, title, value, onClick }) {
       <h3 className="kpi-title">
         {title}
       </h3>
-      
+
       <div className="kpi-content">
         <div>
           <span className={'kpi-value status-' + status}>
@@ -76,7 +76,7 @@ function KPICard({kpiData={}, title, value, onClick }) {
             </span>
           )}
         </div>
-        
+
         {trend !== undefined && (
           <div className={'kpi-trend ' + getTrendClass()}>
             {getTrendIcon()}
