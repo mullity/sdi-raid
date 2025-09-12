@@ -7,6 +7,14 @@ import './Dashboard.css';
 function Dashboard() {
   // Keep track of which category the user clicked on
   var [selectedCategory, setSelectedCategory] = useState(null);
+  const [kpiData, setKpiData] = useState([])
+
+   useEffect(() => {
+    fetch(`http://localhost:3001/kpi`).then(res=>res.json().then(jsonbody=>setKpiData(jsonbody)))
+  },[])
+
+  console.log(kpiData)
+
 
   // Different priority items for each category
   var categoryPriorityItems = {
