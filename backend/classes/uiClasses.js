@@ -190,6 +190,7 @@ class VehicleSnapshot extends Snapshot {
         this.fmc = 0
         this.pmc = 0
         this.nmc = 0
+        this.fuelLevel = 0
         this.nmcArray = []
         this.bradleyArray = []
         this.hmmwvArray = []
@@ -230,9 +231,15 @@ class VehicleSnapshot extends Snapshot {
             }
         }
 
+        for(let i = 0; i < this.vics.length; i++){
+            this.fuelLevel += this.vics[i].fuel_level
+        }
+
         //calculate all percents/ process data
         let T = this.vics.length
         this.value = Number((this.fmc + this.pmc) / T) * 100
+        this.fuelLevel = Math.round(this.fuelLevel/T)
+
 
         if (verbose === "true") {
             let snapData = {
@@ -240,6 +247,7 @@ class VehicleSnapshot extends Snapshot {
                 fmc: this.fmc,
                 pmc: this.pmc,
                 nmc: this.nmc,
+                fuellevel: this.fuelLevel
             }
             return this.generateDataResponse('percent', snapData)
         } else {
