@@ -10,7 +10,7 @@ function Dashboard() {
   const [kpiData, setKpiData] = useState([])
 
    useEffect(() => {
-    fetch(`http://localhost:3001/kpi?unit=1&equipmentReadinessScore=true`).then(res=>res.json().then(jsonbody=>setKpiData(jsonbody)))
+    fetch(`http://localhost:3001/kpi?unit=1&equipmentReadinessScore=true&trainingReadinessScore=true`).then(res=>res.json().then(jsonbody=>setKpiData(jsonbody)))
   },[])
 
   console.log(kpiData)
@@ -66,8 +66,7 @@ function Dashboard() {
           }}
         />
         <KPICard 
-          title="Training Current" 
-          value={20}
+          kpiData={kpiData.find(elem=>elem['id']=='Training')? kpiData.find(elem=>elem['id']=='Training'):{}}
           onClick={function() {
             handleKPIClick('training');
           }}
