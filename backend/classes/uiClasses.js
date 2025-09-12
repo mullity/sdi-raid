@@ -121,33 +121,19 @@ class MedicalSnapshot extends Snapshot {
         }
 
         let troopT = this.troops.length
-        let troopPercent = Number(this.green / troopT) * 100
-        let output
-
-
-
+        this.value = Number(this.green / troopT) * 100
 
         if (verbose === "true") {
-            output =
-            {
-                id: "Medical",
-                value: troopPercent,
-                data: {
-                    total: this.troops.length,
-                    green: this.green,
-                    amber: this.amber,
-                    red: this.red,
-
-                }
+            let snapData = {
+                total: this.troops.length,
+                green: this.green,
+                amber: this.amber,
+                red: this.red
             }
+            return this.generateDataResponse('percent', snapData)
         } else {
-            output =
-            {
-                id: "Medical", value: troopPercent
-            }
+            return this.generateDataResponse()
         }
-
-        return output;
     }
 }
 
@@ -179,29 +165,18 @@ class PersonnelSnapshot extends Snapshot {
         }
 
         let troopT = this.troops.length
-        let troopPercent = Number(this.deployable / troopT) * 100
-        let output
-
-
-
+        this.value = Number(this.deployable / troopT) * 100
 
         if (verbose === "true") {
-            output =
-            {
-                id: "Personnel",
-                value: troopPercent,
-                data: {
-                    total: this.troops.length,
-                    deployable: this.deployable,
-                    nondeployable: this.nonDeployable
-                }
+            let snapData = {
+                total: this.troops.length,
+                deployable: this.deployable,
+                nondeployable: this.nonDeployable
             }
+            return this.generateDataResponse('percent', snapData)
         } else {
-            output =
-                { id: "Personnel", value: troopPercent }
+            return this.generateDataResponse()
         }
-
-        return output;
     }
 }
 
@@ -257,29 +232,19 @@ class VehicleSnapshot extends Snapshot {
 
         //calculate all percents/ process data
         let T = this.vics.length
-        let vicPercent = Number((this.fmc + this.pmc) / T) * 100
-        let output
+        this.value = Number((this.fmc + this.pmc) / T) * 100
 
         if (verbose === "true") {
-            output =
-            {
-                id: "Equipment",
-                value: vicPercent,
-                data: {
-                    total: this.vics.length,
-                    FMC: this.fmc,
-                    PMC: this.pmc,
-                    NMC: this.nmc,
-                }
+            let snapData = {
+                total: this.vics.length,
+                fmc: this.fmc,
+                pmc: this.pmc,
+                nmc: this.nmc,
             }
+            return this.generateDataResponse('percent', snapData)
         } else {
-            output = {
-                id: "Equipment",
-                value: vicPercent,
-            }
+            return this.generateDataResponse()
         }
-
-        return output;
     }
 
 }
