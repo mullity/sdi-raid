@@ -2,6 +2,7 @@ import './KPIcard.css';
 
 function KPICard({kpiData={}, onClick }) {
   // Object Unpacking Code
+  let title, value, valueType
   if (kpiData){
     title = kpiData.id? kpiData.id : 'no id found'
     value = kpiData.value===undefined? 'XXX' : kpiData.value
