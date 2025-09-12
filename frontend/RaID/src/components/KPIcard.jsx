@@ -1,6 +1,6 @@
 import './KPIcard.css';
 
-function KPICard({ title, value, onClick }) {
+function KPICard({kpiData={}, title, value, onClick }) {
   //PLACEHOLDER - Dynamic Unit symbol for value
   let unit = ''
   if (typeof value === 'number'){
@@ -23,6 +23,12 @@ function KPICard({ title, value, onClick }) {
     trend = 0
   } else if (value <70 && value >=0){
     trend = -1
+  }
+
+  // Object Unpacking Code
+  if (kpiData){
+    title = kpiData.find(elem=>elem['id']=='Equipment')? kpiData.find(elem=>elem['id']=='Equipment')['id'] : 'no id found'
+    value = kpiData.find(elem=>elem['id']=='Equipment')? kpiData.find(elem=>elem['id']=='Equipment')['percent'] : 'no id found'
   }
 
   // Function to get the right arrow for the trend

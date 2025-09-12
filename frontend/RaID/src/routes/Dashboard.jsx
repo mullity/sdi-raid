@@ -60,8 +60,7 @@ function Dashboard() {
           }}
         />
         <KPICard 
-          title="Equipment Status" 
-          value={kpiData.find(elem=>elem['id']=='Equipment')? kpiData.find(elem=>elem['id']=='Equipment')['percent'] : 0}
+          kpiData={kpiData.find(elem=>elem['id']=='Equipment')? kpiData.find(elem=>elem['id']=='Equipment'):0}
           onClick={function() {
             handleKPIClick('equipment');
           }}
