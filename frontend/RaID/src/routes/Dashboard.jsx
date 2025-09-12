@@ -9,9 +9,9 @@ function Dashboard() {
   var [selectedCategory, setSelectedCategory] = useState(null);
   const [kpiData, setKpiData] = useState([])
 
-   useEffect(() => {
-    fetch(`http://localhost:3001/kpi?unit=1&equipmentReadinessScore=true&trainingReadinessScore=true`).then(res=>res.json().then(jsonbody=>setKpiData(jsonbody)))
-  },[])
+  useEffect(() => {
+    fetch(`http://localhost:3001/kpi?unit=1&equipmentReadinessScore=true&trainingReadinessScore=true`).then(res => res.json().then(jsonbody => setKpiData(jsonbody)))
+  }, [])
 
   console.log(kpiData)
 
@@ -50,38 +50,36 @@ function Dashboard() {
       <h2 className="dashboard-title">
         Unit Readiness Dashboard
       </h2>
-      
+
       <div className="kpi-grid">
-        <KPICard 
-          title="Personnel Readiness" 
-          value={87}
-          onClick={function() {
+        <KPICard
+          kpiData={kpiData.find(elem => elem['id'] == 'Personnel') ? kpiData.find(elem => elem['id'] == 'Personnel') : {}}
+          onClick={function () {
             handleKPIClick('personnel');
           }}
         />
-        <KPICard 
-          kpiData={kpiData.find(elem=>elem['id']=='Equipment')? kpiData.find(elem=>elem['id']=='Equipment'):{}}
-          onClick={function() {
+        <KPICard
+          kpiData={kpiData.find(elem => elem['id'] == 'Equipment') ? kpiData.find(elem => elem['id'] == 'Equipment') : {}}
+          onClick={function () {
             handleKPIClick('equipment');
           }}
         />
-        <KPICard 
-          kpiData={kpiData.find(elem=>elem['id']=='Training')? kpiData.find(elem=>elem['id']=='Training'):{}}
-          onClick={function() {
+        <KPICard
+          kpiData={kpiData.find(elem => elem['id'] == 'Training') ? kpiData.find(elem => elem['id'] == 'Training') : {}}
+          onClick={function () {
             handleKPIClick('training');
           }}
         />
-        <KPICard 
-          title="Medical Readiness" 
-          value={94}
-          onClick={function() {
+        <KPICard
+          kpiData={kpiData.find(elem => elem['id'] == 'Medical') ? kpiData.find(elem => elem['id'] == 'Medical') : {}}
+          onClick={function () {
             handleKPIClick('medical');
           }}
         />
       </div>
 
       <div className="dashboard-content">
-        <PrioritiesPanel 
+        <PrioritiesPanel
           priorities={selectedCategory ? categoryPriorityItems[selectedCategory] : []}
           selectedCategory={selectedCategory}
         />
