@@ -78,14 +78,12 @@ function getter(table) {
  */
 function getWithUnitId(table, unitId){
   let arrayId
-  console.log(typeof unitId)
   if(Array.isArray(unitId) === false){
     arrayId = selectParentsAndChildren(unitId)
   }
   else{
     arrayId = unitId
   }
-  console.log(arrayId)
   return knex(table)
     .select()
     .from(table)
