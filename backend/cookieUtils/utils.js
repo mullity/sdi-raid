@@ -1,4 +1,4 @@
-const { VehicleSnapshot, TrainingSnapshot, PersonnelSnapshot, MedicalSnapshot, VehicleModal,VehicleIssuesActions } = require('../classes/uiClasses');
+const { VehicleSnapshot, TrainingSnapshot, PersonnelSnapshot, MedicalSnapshot, VehicleModal, DeploymentModal, VehicleIssuesActions, PersonnelIssuesActions } = require('../classes/uiClasses');
 
 require('dotenv').config()
 
@@ -251,44 +251,6 @@ const vicMaint = async (unit) => {
 const vicIssuesActions = async (percent, fuelLevel, unit, verbose) => {
   let myNewSnap = new VehicleIssuesActions(percent, fuelLevel, unit, verbose)
     return myNewSnap.generateCard(percent, fuelLevel, unit, verbose)
-
-  // let issues= []
-  // let actions= []
-  // let issueTick = 0
-  // let actionTick = 0
-  // let certified = await vicCertified(unit)
-
-  // if(percent < 75){
-  //   issues.push({id: issueTick, text: `${percent}% of vehicles are non-operational`})
-  //   issueTick++
-  //   actions.push({id: actionTick, text: 'Ensure all crew is scheduled for crew training, and all vehicles are on the maintenance schedule'})
-  //   actionTick++
-  // }
-  // // if(maintenance < 75){
-  // //   issues.push({id: issueTick, text: `${maintenance}% of vehicles are non-operational due to maintenance`})
-  // //   issueTick++
-  // //   actions.push({id: actionTick, text: 'Ensure all vehicles are on the maintenance schedule'})
-  // //   actionTick++
-  // // }
-  // if(fuelLevel < 75){
-  //   issues.push({id: issueTick, text: `Average fuel level across the motorpool is ${fuelLevel}%.`})
-  //   issueTick++
-  //   actions.push({id: actionTick, text: 'Ensure operators fill vehicles and fuelers are available for refill of on-site storage'})
-  //   actionTick++
-  // }
-  // if(certified.overall < 75){
-  //   issues.push({id: issueTick, text: `Average operator certification level across the motorpool is ${certified.overall}.`})
-  //   issueTick++
-  //   actions.push({id: actionTick, text: 'Schedule drivers training or refresher training for out of date operators'})
-  //   actionTick++
-  // }
-  // let output =
-  //   {
-  //     issues: issues,
-  //     actions: actions
-  //   }
-  // return output;
-
 }
 
 const vicCertified = async (unit) => {
@@ -308,87 +270,57 @@ const vicCertified = async (unit) => {
 }
 
 const vicModal = async (unit, verbose) => {
-  // let vics = await vicSnapshot(unit, 'true')
-  // let fullMC = vics.data.FMC
-  // let partialMC = vics.data.PMC
-  // let nonMC = vics.data.NMC
-  // let percent = vics.data.PERCENT
-  // let vicMaintdata = await vicMaint(unit)
-  // let issuesActions = await vicIssuesActions(percent, vicMaint.true, vicMaint.fuelLevel, unit)
-  // let certified = await vicCertified(unit)
-  // let vicOutput
-
-  // if(verbose == "true"){
-  //   vicOutput = {
-  //     id: 'vehicle',
-  //     title: 'Vehicle Readiness',
-  //     description: 'Equipment and vehicle operational status',
-  //     percentage: percent,
-  //     data: {
-  //       FMC: fullMC,
-  //       PMC: partialMC,
-  //       NMC: nonMC,
-  //       metrics: [
-  //         { label: 'Operational Vehicles', value: percent},
-  //         { label: 'Maintenance Current', value: vicMaintdata.true},
-  //         { label: 'Fuel Readiness', value: vicMaintdata.fuelLevel},
-  //         { label: 'Driver Certification', value: certified.overall}
-  //       ],
-  //       issues: issuesActions.issues,
-  //       actions: issuesActions.actions
-  //     }
-  //   }
-  // } else {
-  //   vicOutput = {
-  //     id: 'vehicle',
-  //     title: 'Vehicle Readiness',
-  //     description: 'Equipment and vehicle operational status',
-  //     percentage: percent,
-  //     }
-  //   }
-  // return vicOutput
   let myNewSnap = new VehicleModal()
     return myNewSnap.init(unit, verbose)
     .then(()=>(myNewSnap.generateCard(verbose)))
 
 }
 
-const deploymentModal = async (unit, verbose) => {
-  let percent = 75
-  let deploymentOutput
-  //let issuesActions = await deploymentIssuesActions(percent, vicMaint.true, vicMaint.fuelLevel, unit)
-  let issuesActions = {
-    issues: "seed data in utils.js",
-    actions: "seed data in utils.js"
-  }
-  if(verbose == "true") {
-    deploymentOutput = {
-      id: 'deployment',
-      title: 'Deployment Readiness',
-      description: 'Mission deployment preparation status',
-      percentage: percent,
-      data: {
-        metrics:
-          [
-            { label: 'Personnel Ready', value: '45%', status: 'critical' },
-            { label: 'Equipment Staged', value: '23%', status: 'critical' },
-            { label: 'Transport Available', value: '67%', status: 'medium' },
-            { label: 'Mission Planning', value: '12%', status: 'critical' }
-          ],
-        issues: issuesActions.issues,
-        actions: issuesActions.actions
-      }
-    }
-  } else {
-    deploymentOutput = {
-      id: 'deployment',
-      title: 'Deployment Readiness',
-      description: 'Mission deployment preparation status',
-      percentage: percent,
-    }
-  }
+const personnelIssuesActions = async (nondeployable, verbose) => {
+  let myNewSnap = new PersonnelIssuesActions(nondeployable, verbose)
+    return myNewSnap.generateCard(nondeployable, verbose)
+}
 
-  return deploymentOutput
+const deploymentModal = async (unit, verbose) => {
+  let myNewSnap = new DeploymentModal()
+    return myNewSnap.init(unit, verbose)
+    .then(()=>(myNewSnap.generateCard(verbose)))
+
+  // let percent = 75
+  // let deploymentOutput
+  // //let issuesActions = await deploymentIssuesActions(percent, vicMaint.true, vicMaint.fuelLevel, unit)
+  // let issuesActions = {
+  //   issues: "seed data in utils.js",
+  //   actions: "seed data in utils.js"
+  // }
+  // if(verbose == "true") {
+  //   deploymentOutput = {
+  //     id: 'deployment',
+  //     title: 'Deployment Readiness',
+  //     description: 'Mission deployment preparation status',
+  //     percentage: percent,
+  //     data: {
+  //       metrics:
+  //         [
+  //           { label: 'Personnel Ready', value: '45%', status: 'critical' },
+  //           { label: 'Equipment Staged', value: '23%', status: 'critical' },
+  //           { label: 'Transport Available', value: '67%', status: 'medium' },
+  //           { label: 'Mission Planning', value: '12%', status: 'critical' }
+  //         ],
+  //       issues: issuesActions.issues,
+  //       actions: issuesActions.actions
+  //     }
+  //   }
+  // } else {
+  //   deploymentOutput = {
+  //     id: 'deployment',
+  //     title: 'Deployment Readiness',
+  //     description: 'Mission deployment preparation status',
+  //     percentage: percent,
+  //   }
+  // }
+
+  // return deploymentOutput
 }
 
 const crewModal = async (unit, verbose) => {
@@ -617,6 +549,7 @@ module.exports = {
   selectParentsAndChildren:selectParentsAndChildren,
   parentsAndChildrenToArray:parentsAndChildrenToArray,
   vicIssuesActions:vicIssuesActions,
+  personnelIssuesActions:personnelIssuesActions,
   vicCertified:vicCertified
 }
 

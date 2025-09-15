@@ -448,30 +448,99 @@ class VehicleModal extends Modal{
     }
 }
 
+class PersonnelIssuesActions extends IssuesActions{
+    constructor(){
+        super()
+        this.issues= []
+        this.actions= []
+        this.issueTick = 0
+        this.actionTick = 0
+    }
+    generateCard(nondeployable, verbose){
+        let snapData
+        console.log(nondeployable)
+        if(nondeployable > 25){
+            this.issues.push({id: this.issueTick, text: `${nondeployable}% of soldiers are non-deployable`})
+            this.issueTick++
+            this.actions.push({id: this.actionTick, text: 'Ensure all soldiers are green on MEDPROS, have completed DD-93, SGLV, AT LVL1, and have a GTC'})
+            this.actionTick++
+        }
+
+        if(verbose === 'true'){
+            snapData = {
+                issues: this.issues,
+                actions: this.actions
+            }
+            return this.generateDataResponse('issuesActions', snapData)
+        }
+        else {
+            snapData = {
+                issues: this.issues.length
+            }
+            return this.generateDataResponse('issuesActions', snapData)
+        }
+    }
+
+}
+
+class DeploymentModal extends Modal{
+
+    constructor(){
+        super()
+    }
+
+    async init(unit, verbose) {
+        const { personnelSnapshot, selectParentsAndChildren, parentsAndChildrenToArray, personnelIssuesActions ,vicCertified } = require('../cookieUtils/utils.js')
+        this.units = parentsAndChildrenToArray(await selectParentsAndChildren(unit))
+        this.troops = await personnelSnapshot(this.units, 'true')
+        this.issuesActions = await personnelIssuesActions(Number((this.troops.data.nondeployable / this.troops.data.total) * 100), verbose)
+        this.certified = await vicCertified(this.units)
+    }
+
+    generateCard(verbose){
+        let snapData
+        let percent = Number((this.troops.data.deployable / this.troops.data.total) * 100)
+        if(verbose == "true"){
+            snapData = {
+                title: 'Deployment Readiness',
+                description: 'Mission deployment preparation status',
+                percentage: percent,
+                data: {
+                    metrics:
+                    [
+                        { label: 'Personnel Ready', value: percent},
+                        //{ label: 'Equipment Staged', value: '23%', status: 'critical' },
+                        //{ label: 'Transport Available', value: '67%', status: 'medium' },
+                        //{ label: 'Mission Planning', value: '12%', status: 'critical' }
+                    ],
+                    issues: this.issuesActions.data.issues,
+                    actions: this.issuesActions.data.actions
+                }
+            }
+            return this.generateDataResponse('deployment', snapData)
+        } else {
+            snapData = {
+                title: 'Deployment Readiness',
+                description: 'Mission deployment preparation status',
+                percentage: percent,
+                issues: this.issuesActions.data.issues
+                }
+            return this.generateDataResponse('deployment', snapData)
+            }
+
+    }
+
+}
+
 // [
 //     {
-//         "id": "vehicle",
-//         "value": 70,
+//         "id": "personnel",
+//         "value": 64,
 //         "valueType": "percent",
-//         "data": snapData = {
-//                 total: this.vics.length,
-//                 fmc: this.fmc,
-//                 pmc: this.pmc,
-//                 nmc: this.nmc,
-//                 fuellevel: this.fuelLevel,
-//                 nmcVics: {
-//                     m2a4_bradley_fighting_vehicle: this.bradleyArray,
-//                     hmmwv: this.hmmwvArray,
-//                     bride_heavy_assault_scissoring: this.scissorArray,
-//                     loader_skid_steed_type_ii: this.loaderArray,
-//                     joint_light_tactical_vehcile_a1_four_seat_gen_purpo: this.jltvArray,
-//                     truck_cargo: this.truckArray,
-//                     assault_breacher_vehicle: this.breacherArray,
-//                     motorized_grader: this.grader,
-//                     command_post_carrier: this.commandArray,
-//                     joint_light_tactical_vehcile_a1_two_seat_utility: this.jltv2Array
-//                 }
-
+//         "data": {
+//             "total": 200,
+//             "deployable": 128,
+//             "nondeployable": 72
 //         }
 //     }
 // ]
@@ -487,5 +556,7 @@ module.exports = {
     UiCard: UiCard,
     Modal: Modal,
     VehicleModal:VehicleModal,
-    VehicleIssuesActions:VehicleIssuesActions
+    DeploymentModal:DeploymentModal,
+    VehicleIssuesActions:VehicleIssuesActions,
+    PersonnelIssuesActions:PersonnelIssuesActions
 }
