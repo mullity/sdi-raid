@@ -124,38 +124,37 @@
 }
 
 /* === PAGINATION === */
-.equip-pager {
-  display: flex;
-  gap: .75rem;
+.equip-pager .pager-button {
+  display: inline-flex;
   align-items: center;
-  justify-content: flex-end;
-  margin-top: 1rem;
-  font-size: 0.875rem;
-  color: var(--text-primary);
-}
-
-.equip-pager button {
-  padding: .4rem .7rem;
-  border: 1px solid #ddd;
+  gap: .35rem;
+  padding: .45rem .75rem;
+  border: 1px solid var(--border-light);
   border-radius: .5rem;
-  background: white;
+  background: var(--card-bg);
+  color: var(--text-primary);
+  font: inherit;                /* inherit app font so arrows render consistently */
+  line-height: 1.1;
   cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
+  transition: background-color .2s, color .2s, border-color .2s;
+  min-width: 88px;              /* prevents squish that can hide glyphs */
 }
 
-.equip-pager button:hover:not(:disabled) {
+.equip-pager .pager-button:hover:not(:disabled) {
   background-color: var(--bg-header);
   color: var(--text-inverse);
+  border-color: var(--bg-header);
 }
 
-.equip-pager button:disabled {
-  opacity: .45;
+.equip-pager .pager-button:disabled {
+  opacity: .5;
   cursor: not-allowed;
 }
 
-.equip-pager .pager-page {
-  font-weight: 500;
-  color: var(--muted);
+/* In case arrows are SVG icons in the future */
+.equip-pager .pager-button svg {
+  width: 1em; height: 1em;
+  fill: currentColor;
 }
 
 /* === MISC === */

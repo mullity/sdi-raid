@@ -23,11 +23,9 @@ export default function EquipmentDetails() {
     setSummary({ total, counts, pctFMC });
   }, []);
 
-  // filter fake data whenever filters change
   useEffect(() => {
     let data = fakeVehicles;
 
-    // Always WAZMB0
     data = data.filter(v => v.unit_name === FIXED_UIC);
 
     if (status) data = data.filter(v => v.status === status);
@@ -81,7 +79,6 @@ export default function EquipmentDetails() {
           </select>
         </label>
 
-        {/* Fixed UIC badge */}
         <div className="uic-badge">
           UIC: {FIXED_UIC}
         </div>
@@ -136,7 +133,7 @@ export default function EquipmentDetails() {
           onClick={() => setPage(p => p - 1)}
           className="pager-button"
         >
-          ← Prev
+          {'\u2190'} Prev
         </button>
 
         <span className="pager-page">Page {page} / {totalPages}</span>
@@ -146,7 +143,7 @@ export default function EquipmentDetails() {
           onClick={() => setPage(p => p + 1)}
           className="pager-button"
         >
-          Next →
+          Next {'\u2192'}
         </button>
       </footer>
     </div>
