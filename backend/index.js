@@ -1,6 +1,6 @@
 // backend/index.js
 const port = 3001;
-
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const { selectParentsAndChildren ,getter, getAllFields, modal, priority, snapshot, vicSnapshot, trainingSnapshot, personnelSnapshot, medicalSnapshot } = require('./cookieUtils/utils')
@@ -10,9 +10,24 @@ const knex = require('knex')(knexConfig);
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+//Secret_Key from .env
+const secretKey = process.env.SECRET_KEY;
+
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(authenticate());
+
+const authenticate = (req, res, next) => {
+
+    const token = jwt.sign({username}, secretKey, { expiresIn: '1h' });
+    console.log(token); 
+
+    if (!secretKey || token !== secretKey) {
+    return res.status(401).send('Unauthorized: Invalid or missing API key.');
+    next();
+  }
+}
 
 app.post('/login', async (req, res) => {
   console.log(req.body)
@@ -26,13 +41,15 @@ app.post('/login', async (req, res) => {
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
       return res.status(401).send("Username and password combination does not exist");
-}
-    //set JWT????
-    res.status(200).send("Login successful");
+}  authenticate();
+    //set the JWT
+    res.status(200).json({HttpResponse: "Login successful", token});
   } catch (err) {
     res.status(500).send("Server error");
   }
 });
+
+
 
 app.post("/api/:table", async (req, res) => {
     const table = req.params.table;
