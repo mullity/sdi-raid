@@ -328,15 +328,12 @@ class VehicleSnapshot extends Snapshot {
 
 }
 
-class Modal extends UiCard {
-
-    constructor(id, percent, data, title, description) {
-        super(id, percent, data);
-        this.title = title
-        this.description = description
-
+class IssuesActions{
+    constructor(id, data){
+        this.id = id
+        this.data = data
     }
-    generateDataResponce(id, verboseData = {}){
+    generateDataResponse(id, verboseData = {}){
         const dataResponse = {
             'id': id,
             'data': verboseData
@@ -345,22 +342,79 @@ class Modal extends UiCard {
     }
 }
 
+class Modal extends UiCard {
+
+    constructor(id, percent, data, title, description) {
+        super(id, percent, data);
+        this.title = title
+        this.description = description
+
+    }
+    generateDataResponse(id, verboseData = {}){
+        const dataResponse = {
+            'id': id,
+            'data': verboseData
+        }
+        return dataResponse
+    }
+}
+
+class VehicleIssuesActions extends IssuesActions{
+    constructor(){
+        super()
+        this.issues= []
+        this.actions= []
+        this.issueTick = 0
+        this.actionTick = 0
+    }
+    generateCard(percent, fuelLevel, unit, verbose){
+        let snapData
+        if(percent < 75){
+            this.issues.push({id: this.issueTick, text: `${percent}% of vehicles are non-operational`})
+            this.issueTick++
+            this.actions.push({id: this.actionTick, text: 'Ensure all crew is scheduled for crew training, and all vehicles are on the maintenance schedule'})
+            this.actionTick++
+        }
+        if(fuelLevel < 75){
+            this.issues.push({id: this.issueTick, text: `Average fuel level across the motorpool is ${fuelLevel}%.`})
+            this.issueTick++
+            this.actions.push({id: this.actionTick, text: 'Ensure operators fill vehicles and fuelers are available for refill of on-site storage'})
+            this.actionTick++
+        }
+
+
+        if(verbose === 'true'){
+            snapData = {
+                issues: this.issues,
+                actions: this.actions
+            }
+            return this.generateDataResponse('issuesActions', snapData)
+        }
+        else {
+            snapData = {
+                issues: this.issues.length
+            }
+            return this.generateDataResponse('issuesActions', snapData)
+        }
+    }
+
+}
+
 class VehicleModal extends Modal{
     constructor(){
         super()
     }
 
-    async init(unit) {
+    async init(unit, verbose) {
         const { vicSnapshot, selectParentsAndChildren, parentsAndChildrenToArray,vicIssuesActions,vicCertified } = require('../cookieUtils/utils.js')
         this.units = parentsAndChildrenToArray(await selectParentsAndChildren(unit))
         this.vics = await vicSnapshot(this.units, 'true')
-        this.issuesActions = await vicIssuesActions(Number(this.vics.data.pmc + this.vics.data.nmc), 75, this.vics.data.fuelLevel, this.units)
+        this.issuesActions = await vicIssuesActions((Number((this.vics.data.pmc + this.vics.data.nmc)/this.vics.data.total)*100), this.vics.data.fuellevel, this.units, verbose)
         this.certified = await vicCertified(this.units)
     }
 
     generateCard(verbose){
         let snapData
-        console.log(this.issuesActions)
         if(verbose == "true"){
             snapData = {
                 title: 'Vehicle Readiness',
@@ -376,23 +430,23 @@ class VehicleModal extends Modal{
                     { label: 'Fuel Readiness', value: this.vics.data.fuellevel},
                     //{ label: 'Driver Certification', value: certified.overall}
                     ],
-                    issues: this.issuesActions.issues,
-                    actions: this.issuesActions.actions
+                    issues: this.issuesActions.data.issues,
+                    actions: this.issuesActions.data.actions
                 }
             }
-            return this.generateDataResponce('vehicle', snapData)
+            return this.generateDataResponse('vehicle', snapData)
         } else {
             snapData = {
                 title: 'Vehicle Readiness',
                 description: 'Equipment and vehicle operational status',
                 percentage: this.vics.value,
+                issues: this.issuesActions.data.issues
                 }
-            return this.generateDataResponce('vehicle', snapData)
+            return this.generateDataResponse('vehicle', snapData)
             }
 
     }
 }
-
 
 // [
 //     {
@@ -432,5 +486,6 @@ module.exports = {
     MedicalSnapshot: MedicalSnapshot,
     UiCard: UiCard,
     Modal: Modal,
-    VehicleModal:VehicleModal
+    VehicleModal:VehicleModal,
+    VehicleIssuesActions:VehicleIssuesActions
 }

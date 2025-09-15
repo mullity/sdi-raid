@@ -1,4 +1,4 @@
-const { VehicleSnapshot, TrainingSnapshot, PersonnelSnapshot, MedicalSnapshot, VehicleModal } = require('../classes/uiClasses');
+const { VehicleSnapshot, TrainingSnapshot, PersonnelSnapshot, MedicalSnapshot, VehicleModal,VehicleIssuesActions } = require('../classes/uiClasses');
 
 require('dotenv').config()
 
@@ -248,43 +248,46 @@ const vicMaint = async (unit) => {
  * @param {string} verbose indicates if extra data is returned in the response from various snapshots
  * @returns % of vehicles w/lin true && % of vehicles w/lin false && average fuel percentage
  */
-const vicIssuesActions = async (percent, maintenance, fuelLevel, unit) => {
-  let issues= []
-  let actions= []
-  let issueTick = 0
-  let actionTick = 0
-  let certified = await vicCertified(unit)
+const vicIssuesActions = async (percent, fuelLevel, unit, verbose) => {
+  let myNewSnap = new VehicleIssuesActions(percent, fuelLevel, unit, verbose)
+    return myNewSnap.generateCard(percent, fuelLevel, unit, verbose)
 
-  if(percent < 75){
-    issues.push({id: issueTick, text: `${percent}% of vehicles are non-operational`})
-    issueTick++
-    actions.push({id: actionTick, text: 'Ensure all crew is scheduled for crew training, and all vehicles are on the maintenance schedule'})
-    actionTick++
-  }
-  if(maintenance < 75){
-    issues.push({id: issueTick, text: `${maintenance}% of vehicles are non-operational due to maintenance`})
-    issueTick++
-    actions.push({id: actionTick, text: 'Ensure all vehicles are on the maintenance schedule'})
-    actionTick++
-  }
-  if(fuelLevel < 75){
-    issues.push({id: issueTick, text: `Average fuel level across the motorpool is ${fuelLevel}.`})
-    issueTick++
-    actions.push({id: actionTick, text: 'Ensure operators fill vehicles and fuelers are available for refill of on-site storage'})
-    actionTick++
-  }
-  if(certified.overall < 75){
-    issues.push({id: issueTick, text: `Average operator certification level across the motorpool is ${certified.overall}.`})
-    issueTick++
-    actions.push({id: actionTick, text: 'Schedule drivers training or refresher training for out of date operators'})
-    actionTick++
-  }
-  let output =
-    {
-      issues: issues,
-      actions: actions
-    }
-  return output;
+  // let issues= []
+  // let actions= []
+  // let issueTick = 0
+  // let actionTick = 0
+  // let certified = await vicCertified(unit)
+
+  // if(percent < 75){
+  //   issues.push({id: issueTick, text: `${percent}% of vehicles are non-operational`})
+  //   issueTick++
+  //   actions.push({id: actionTick, text: 'Ensure all crew is scheduled for crew training, and all vehicles are on the maintenance schedule'})
+  //   actionTick++
+  // }
+  // // if(maintenance < 75){
+  // //   issues.push({id: issueTick, text: `${maintenance}% of vehicles are non-operational due to maintenance`})
+  // //   issueTick++
+  // //   actions.push({id: actionTick, text: 'Ensure all vehicles are on the maintenance schedule'})
+  // //   actionTick++
+  // // }
+  // if(fuelLevel < 75){
+  //   issues.push({id: issueTick, text: `Average fuel level across the motorpool is ${fuelLevel}%.`})
+  //   issueTick++
+  //   actions.push({id: actionTick, text: 'Ensure operators fill vehicles and fuelers are available for refill of on-site storage'})
+  //   actionTick++
+  // }
+  // if(certified.overall < 75){
+  //   issues.push({id: issueTick, text: `Average operator certification level across the motorpool is ${certified.overall}.`})
+  //   issueTick++
+  //   actions.push({id: actionTick, text: 'Schedule drivers training or refresher training for out of date operators'})
+  //   actionTick++
+  // }
+  // let output =
+  //   {
+  //     issues: issues,
+  //     actions: actions
+  //   }
+  // return output;
 
 }
 
@@ -345,7 +348,7 @@ const vicModal = async (unit, verbose) => {
   //   }
   // return vicOutput
   let myNewSnap = new VehicleModal()
-    return myNewSnap.init(unit)
+    return myNewSnap.init(unit, verbose)
     .then(()=>(myNewSnap.generateCard(verbose)))
 
 }
