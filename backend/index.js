@@ -19,8 +19,8 @@ const environment = process.env.NODE_ENV || "development";
 const knexConfig = require("./knexfile")[environment];
 const knex = require("knex")(knexConfig);
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
+const { createNewToken } = require("./cookieUtils/authUtils")
 
 //Secret_Key from .env
 const secretKey = process.env.SECRET_KEY;
@@ -30,15 +30,7 @@ app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
-const authenticate = (req, res, next) => {
-  const token = jwt.sign({ username }, secretKey, { expiresIn: "1h" });
-  console.log(token);
 
-  if (!secretKey || token !== secretKey) {
-    return res.status(401).send("Unauthorized: Invalid or missing API key.");
-    next();
-  }
-};
 
 app.post("/login", async (req, res) => {
   console.log(req.body);
@@ -60,12 +52,16 @@ app.post("/login", async (req, res) => {
             return res
               .status(401)
               .send("Username and password combination does not exist");
-          } //set the JWT
-          res.cookie("loginToken", "TOKEN", {
-            expires: new Date(Date.now() + 8 * 3600000),
-          });
-          res.status(200).json({ HttpResponse: "Login successful" });
-        });
+          }
+          createNewToken(username, secretKey, knex)
+            .then(token => {
+              res.cookie("loginToken", token, {
+                expires: new Date(Date.now() + 8 * 3600000),
+              })
+              res.status(200).json({ HttpResponse: "Login successful" });
+            });
+
+        })
       });
   } catch (err) {
     res.status(500).send("Server error");
