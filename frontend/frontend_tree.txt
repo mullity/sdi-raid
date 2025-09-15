@@ -1,0 +1,72 @@
+.
+├── RaID
+│   ├── README.md
+│   ├── eslint.config.js
+│   ├── index.html
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── public
+│   │   └── vite.svg
+│   ├── src
+│   │   ├── App.css
+│   │   ├── App.jsx
+│   │   ├── AppLayout.css
+│   │   ├── AppLayout.jsx
+│   │   ├── LeaderDashboard.css
+│   │   ├── LeaderDashboard.jsx
+│   │   ├── Login.css
+│   │   ├── Login.jsx
+│   │   ├── assets
+│   │   │   ├── raidlogo.jpg
+│   │   │   ├── raidlogo.png
+│   │   │   └── react.svg
+│   │   ├── components
+│   │   │   ├── KPIcard.css
+│   │   │   ├── KPIcard.jsx
+│   │   │   ├── LeaderHub.css
+│   │   │   ├── LeaderHub.jsx
+│   │   │   ├── Modal.css
+│   │   │   ├── Modal.jsx
+│   │   │   ├── PrioritiesPannel.css
+│   │   │   ├── PrioritiesPannel.jsx
+│   │   │   ├── PriorityActions.css
+│   │   │   ├── PriorityActions.jsx
+│   │   │   ├── PriorityTrendAnalysis.css
+│   │   │   ├── PriorityTrendAnalysis.jsx
+│   │   │   ├── ReadinessModal.css
+│   │   │   ├── ReadinessModal.jsx
+│   │   │   ├── ThemeToggle.css
+│   │   │   ├── ThemeToggle.jsx
+│   │   │   ├── TopPriorityAreas.css
+│   │   │   ├── TopPriorityAreas.jsx
+│   │   │   ├── TrendChart.css
+│   │   │   ├── TrendChart.jsx
+│   │   │   ├── UICSearch.css
+│   │   │   ├── UICSearch.jsx
+│   │   │   ├── UICSelector.css
+│   │   │   ├── UICSelector.jsx
+│   │   │   ├── UnitDashboard.css
+│   │   │   └── UnitDashboard.jsx
+│   │   ├── contexts
+│   │   │   └── ThemeContext.jsx
+│   │   ├── index.css
+│   │   ├── main.jsx
+│   │   ├── routes
+│   │   │   ├── Administrator.css
+│   │   │   ├── Administrator.jsx
+│   │   │   ├── Dashboard.css
+│   │   │   ├── Dashboard.jsx
+│   │   │   ├── ThreeFiftyOne.css
+│   │   │   ├── ThreeFiftyOne.jsx
+│   │   │   ├── UnitReadiness.css
+│   │   │   └── UnitReadiness.jsx
+│   │   ├── styles
+│   │   │   └── themes.css
+│   │   └── utils
+│   │       └── fetchUIC.js
+│   └── vite.config.js
+├── frontend_tree.txt
+├── package-lock.json
+└── package.json
+
+10 directories, 60 files
