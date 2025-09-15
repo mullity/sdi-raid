@@ -7,11 +7,32 @@ const { getter, getAllFields, modal, priority, snapshot, vicSnapshot, trainingSn
 const environment = process.env.NODE_ENV || 'development';
 const knexConfig = require('./knexfile')[environment];
 const knex = require('knex')(knexConfig);
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.post('/login', async (req, res) => {
+  console.log(req.body)
+  const { username, password } = req.body;
+  console.log(password);
+  try {
+    const user = await knex('users').where({ username }).first();
+    if (!user) {
+      return res.status(401).send("Username and password combination does not exist");
+    }
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) {
+      return res.status(401).send("Username and password combination does not exist");
+}
+    //set JWT????
+    res.status(200).send("Login successful");
+  } catch (err) {
+    res.status(500).send("Server error");
+  }
+});
 
 app.post("/api/:table", async (req, res) => {
     const table = req.params.table;

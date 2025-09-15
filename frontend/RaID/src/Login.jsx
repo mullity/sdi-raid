@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './Login.css';
 import raidLogo from './assets/raidlogo.png';
+import { useNavigate } from 'react-router-dom';
 
 function Login({ onLogin }) {
   // Keep track of what the user types in each field
@@ -8,7 +9,7 @@ function Login({ onLogin }) {
   var [password, setPassword] = useState('');
   var [role, setRole] = useState('');
   var [error, setError] = useState('');
-
+  const navigate = useNavigate();
   // Function to handle when user submits the form
   function handleSubmit(e) {
     e.preventDefault();
@@ -23,6 +24,7 @@ function Login({ onLogin }) {
     if (password.length >= 6) {
       // Login successful - call the function passed from parent
       onLogin({ username, role });
+      navigate("/dashboard");
     } else {
       setError('Password must be at least 6 characters');
     }
