@@ -101,7 +101,6 @@ function getWithUnitId(table, unitId){
 //(SELECT * FROM soldier_task_status s INNER JOIN soldiers ON s.soldier_id = soldiers.id;)
 function joinTaskStatus(unitId) {
   let arrayId
-  console.log(typeof unitId, 1)
   if(Array.isArray(unitId) === false){
     arrayId = selectParentsAndChildren(unitId)
   }
