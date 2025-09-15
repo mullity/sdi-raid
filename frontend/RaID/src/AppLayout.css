@@ -201,18 +201,68 @@
   background-color: #357abd;
 }
 
-@media print {
-
-  /* .logout-button,
-  .print-button,
-  .main-nav {
-    /* display: none; */
-  /* Hide navigation and buttons when printing */
+.upload-button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-*/ body {
-  background: white;
-  color: black;
+.upload-button:hover {
+  background-color: #218838;
+}
+
+@media print {
+  /* Hide all UI elements except print report */
+  .app-header,
+  .logout-button,
+  .print-button,
+  .main-nav,
+  .user-controls,
+  .sidebar,
+  .theme-toggle-right,
+  .dashboard-page,
+  .main-content > *:not(.print-report) {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .app-layout {
+    background: white !important;
+    color: black !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .app-body {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .main-content {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+  }
+
+  /* Ensure print report is visible */
+  .print-report {
+    display: block !important;
+  }
 }
 
 .theme-toggle-right {

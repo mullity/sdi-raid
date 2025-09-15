@@ -1,9 +1,15 @@
 import { useState } from 'react';
 import './PriorityTrendAnalysis.css';
+import RecommendationsModal from './RecommendationsModal';
 
-function PriorityTrendAnalysis() {
+function PriorityTrendAnalysis({ selectedArea, onClose }) {
   // Keep track of which timeframe is selected
   var [selectedTimeframe, setSelectedTimeframe] = useState('30d');
+  var [showPrediction, setShowPrediction] = useState(false);
+
+  // State for modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPriority, setSelectedPriority] = useState(null);
 
   // Data for different time periods
   var priorityDataByTimeframe = {
@@ -153,6 +159,33 @@ function PriorityTrendAnalysis() {
   // Get current data based on selected timeframe
   var priorityData = priorityDataByTimeframe[selectedTimeframe];
 
+  // Function to calculate 30-day prediction based on trend
+  function calculatePrediction(currentValue, trend, days = 30) {
+    // Simple linear projection based on current trend
+    var dailyChange = trend / (selectedTimeframe === '7d' ? 7 : selectedTimeframe === '30d' ? 30 : 90);
+    var predictedChange = dailyChange * days;
+    var predictedValue = Math.max(0, Math.min(100, currentValue + predictedChange));
+    
+    return {
+      predictedValue: Math.round(predictedValue),
+      predictedChange: Math.round(predictedChange),
+      confidenceLevel: calculateConfidence(trend, selectedTimeframe)
+    };
+  }
+
+  // Function to calculate prediction confidence
+  function calculateConfidence(trend, timeframe) {
+    var baseTrend = Math.abs(trend);
+    var timeMultiplier = timeframe === '90d' ? 0.9 : timeframe === '30d' ? 0.8 : 0.6;
+    var trendStabilityFactor = baseTrend > 10 ? 0.7 : baseTrend > 5 ? 0.8 : 0.9;
+    return Math.round((timeMultiplier * trendStabilityFactor) * 100);
+  }
+
+  // If a specific area is selected, filter to show only that area
+  if (selectedArea) {
+    priorityData = priorityData.filter(item => item.title === selectedArea.title);
+  }
+
   // Function to get the right CSS class for a status
   function getStatusClass(status) {
     if (status === 'critical') {
@@ -177,44 +210,80 @@ function PriorityTrendAnalysis() {
     }
   }
 
+  // Function to handle priority card click
+  function handlePriorityClick(priority) {
+    setSelectedPriority(priority);
+    setIsModalOpen(true);
+  }
+
+  // Function to close modal
+  function handleCloseModal() {
+    setIsModalOpen(false);
+    setSelectedPriority(null);
+  }
+
   return (
     <div className="priority-trend-analysis">
       <div className="analysis-header">
-        <h3 className="analysis-title">Top 3 Priority Areas - Trend Analysis</h3>
-        <div className="timeframe-selector">
-          <button 
-            className={selectedTimeframe === '7d' ? 'timeframe-btn active' : 'timeframe-btn'}
-            onClick={function() {
-              setSelectedTimeframe('7d');
-            }}
-          >
-            7D
-          </button>
-          <button 
-            className={selectedTimeframe === '30d' ? 'timeframe-btn active' : 'timeframe-btn'}
-            onClick={function() {
-              setSelectedTimeframe('30d');
-            }}
-          >
-            30D
-          </button>
-          <button 
-            className={selectedTimeframe === '90d' ? 'timeframe-btn active' : 'timeframe-btn'}
-            onClick={function() {
-              setSelectedTimeframe('90d');
-            }}
-          >
-            90D
-          </button>
+        <div className="title-section">
+          <h3 className="analysis-title">
+            {selectedArea ? `${selectedArea.title} - Trend Analysis` : 'Top 3 Priority Areas - Trend Analysis'}
+          </h3>
+          {selectedArea && onClose && (
+            <button className="close-button" onClick={onClose}>
+              ✕
+            </button>
+          )}
+        </div>
+        <div className="controls-section">
+          <div className="timeframe-selector">
+            <button 
+              className={selectedTimeframe === '7d' ? 'timeframe-btn active' : 'timeframe-btn'}
+              onClick={function() {
+                setSelectedTimeframe('7d');
+              }}
+            >
+              7D
+            </button>
+            <button 
+              className={selectedTimeframe === '30d' ? 'timeframe-btn active' : 'timeframe-btn'}
+              onClick={function() {
+                setSelectedTimeframe('30d');
+              }}
+            >
+              30D
+            </button>
+            <button 
+              className={selectedTimeframe === '90d' ? 'timeframe-btn active' : 'timeframe-btn'}
+              onClick={function() {
+                setSelectedTimeframe('90d');
+              }}
+            >
+              90D
+            </button>
+          </div>
+          <div className="prediction-controls">
+            <button 
+              className={showPrediction ? 'prediction-btn active' : 'prediction-btn'}
+              onClick={() => setShowPrediction(!showPrediction)}
+            >
+              30-Day Prediction
+            </button>
+          </div>
         </div>
       </div>
 
       <div className="priorities-grid">
         {priorityData.map(function(priority, index) {
+          var prediction = showPrediction ? calculatePrediction(priority.currentValue, priority.trend) : null;
+          
           return (
-            <div key={priority.id} className={'priority-card ' + getStatusClass(priority.status)}>
+            <div
+              key={priority.id}
+              className={'priority-card ' + getStatusClass(priority.status) + ' clickable'}
+              onClick={() => handlePriorityClick(priority)}
+            >
               <div className="priority-header">
-                <div className="priority-rank">#{index + 1}</div>
                 <div className="priority-info">
                   <h4 className="priority-title">{priority.title}</h4>
                   <p className="priority-description">{priority.description}</p>
@@ -244,6 +313,23 @@ function PriorityTrendAnalysis() {
                 </div>
               </div>
 
+              {prediction && (
+                <div className="prediction-section">
+                  <h5 className="prediction-title">30-Day Prediction:</h5>
+                  <div className="prediction-data">
+                    <div className="prediction-value">
+                      <span className="predicted-percentage">{prediction.predictedValue}%</span>
+                      <span className={`prediction-change ${prediction.predictedChange >= 0 ? 'positive' : 'negative'}`}>
+                        ({prediction.predictedChange >= 0 ? '+' : ''}{prediction.predictedChange}%)
+                      </span>
+                    </div>
+                    <div className="confidence-level">
+                      Confidence: {prediction.confidenceLevel}%
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div className="recommendations">
                 <h5 className="recommendations-title">Recommended Actions:</h5>
                 <ul className="recommendations-list">
@@ -258,6 +344,12 @@ function PriorityTrendAnalysis() {
           );
         })}
       </div>
+
+      <RecommendationsModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        priorityItem={selectedPriority}
+      />
     </div>
   );
 }

@@ -1,6 +1,11 @@
+import { useState } from 'react';
 import './PrioritiesPannel.css';
+import RecommendationsModal from './RecommendationsModal';
 
 function PrioritiesPanel({ priorities = [], selectedCategory }) {
+  // State for modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPriority, setSelectedPriority] = useState(null);
 
   // Data from the Leader Hub about readiness
   var leaderHubData = [
@@ -115,15 +120,27 @@ function PrioritiesPanel({ priorities = [], selectedCategory }) {
     if (!selectedCategory) {
       return 'Priority Items';
     }
-    
+
     var categoryTitles = {
       personnel: 'Personnel Readiness Priority Items',
-      equipment: 'Equipment Status Priority Items', 
+      equipment: 'Equipment Status Priority Items',
       training: 'Training Current Priority Items',
       medical: 'Medical Readiness Priority Items'
     };
-    
+
     return categoryTitles[selectedCategory] || 'Priority Items';
+  }
+
+  // Function to handle view button click
+  function handleViewClick(item) {
+    setSelectedPriority(item);
+    setIsModalOpen(true);
+  }
+
+  // Function to close modal
+  function handleCloseModal() {
+    setIsModalOpen(false);
+    setSelectedPriority(null);
   }
 
   return (
@@ -153,7 +170,10 @@ function PrioritiesPanel({ priorities = [], selectedCategory }) {
                   {item.priority}
                 </span>
                 
-                <button className="priority-view-button">
+                <button
+                  className="priority-view-button"
+                  onClick={() => handleViewClick(item)}
+                >
                   View
                 </button>
               </div>
@@ -161,6 +181,12 @@ function PrioritiesPanel({ priorities = [], selectedCategory }) {
           );
         })}
       </div>
+
+      <RecommendationsModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        priorityItem={selectedPriority}
+      />
     </div>
   );
 }
