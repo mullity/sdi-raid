@@ -3,7 +3,7 @@ const port = 3001;
 
 const express = require('express');
 const cors = require('cors');
-const { getter, getAllFields, modal, priority, snapshot, vicSnapshot, trainingSnapshot, personnelSnapshot, medicalSnapshot } = require('./cookieUtils/utils')
+const { selectParentsAndChildren ,getter, getAllFields, modal, priority, snapshot, vicSnapshot, trainingSnapshot, personnelSnapshot, medicalSnapshot } = require('./cookieUtils/utils')
 const environment = process.env.NODE_ENV || 'development';
 const knexConfig = require('./knexfile')[environment];
 const knex = require('knex')(knexConfig);
@@ -144,24 +144,25 @@ app.get('/kpi', async (req, res) => {
     res.status(400).send("Bad Request")
   } else {
     try {
-      let vicKpi = await vicSnapshot(unit, verbose)
-      let trainingKpi = await trainingSnapshot(unit, verbose)
-      let personnelKpi = await personnelSnapshot(unit, verbose)
-      let medicalKpi = await medicalSnapshot(unit, verbose)
+      let vicKpi, trainingKpi, personnelKpi, medicalKpi
       let output= []
       if(equipmentReadinessScore == undefined && personnelReadinessScore == undefined && trainingReadinessScore == undefined && medicalReadinessScore == undefined){
         output.push({Error: 'Must select a KPI Score to recieve data'})
       }
       if(equipmentReadinessScore === "true"){
+        vicKpi = await vicSnapshot(unit, verbose)
         output.push(vicKpi)
       }
       if (personnelReadinessScore === "true"){
+        personnelKpi = await personnelSnapshot(unit, verbose)
         output.push(personnelKpi)
       }
       if (trainingReadinessScore=== "true"){
+        trainingKpi = await trainingSnapshot(unit, verbose)
         output.push(trainingKpi)
       }
       if (medicalReadinessScore === "true"){
+        medicalKpi = await medicalSnapshot(unit, verbose)
         output.push(medicalKpi)
       }
       if(vicKpi === false ||trainingKpi === false ||personnelKpi === false ||medicalKpi === false){
@@ -197,8 +198,12 @@ app.get('/modal', async (req,res) => {
   //optional query params: verbose(true/false as string), vicModalValue(true/false as string), deploymentModalValue(true/false as string), crewModalValue(true/false as string), medModalValue(true/false as string), weaponModalValue(true/false as string)
   let { verbose, unit, vicModalValue, deploymentModalValue, crewModalValue, medModalValue, weaponModalValue } = req.query
   try {
-    const got = await modal(unit, verbose, vicModalValue, deploymentModalValue, crewModalValue, medModalValue, weaponModalValue)
-    res.status(200).send(got)
+    //const got = await modal(unit, verbose, vicModalValue, deploymentModalValue, crewModalValue, medModalValue, weaponModalValue)
+    //res.status(200).send(got)
+
+    const parentAndChildren = await selectParentsAndChildren(unit)
+    res.status(200).send(parentAndChildren)
+
 
   }
   catch (error) {

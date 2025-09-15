@@ -57,18 +57,12 @@ class TrainingSnapshot extends Snapshot {
     }
 
     async init(unit) {
-        const { joinTaskStatus } = require('../cookieUtils/utils.js')
-        this.joined = await joinTaskStatus()
-        this.unit = unit
+        const { selectParentsAndChildren, parentsAndChildrenToArray, joinTaskStatus } = require('../cookieUtils/utils.js')
+        this.units = parentsAndChildrenToArray(await selectParentsAndChildren(unit))
+        this.tasks = await joinTaskStatus(this.units)
     }
 
     generateCard(verbose) {
-        for (let join of this.joined) {
-            if (join.assigned_unit_id == Number(this.unit)) {
-                this.tasks.push(join)
-            }
-        }
-
         for (let task of this.tasks) {
             if (task.status == "qualified") {
                 this.qualified++
@@ -79,7 +73,6 @@ class TrainingSnapshot extends Snapshot {
 
         let tasksT = this.tasks.length
         this.value = Number(this.qualified / tasksT) * 100
-        let output
 
         if (verbose === "true") {
             let snapData = {
@@ -110,8 +103,12 @@ class MedicalSnapshot extends Snapshot {
     }
 
     async init(unit) {
-        const { getWithUnitId } = require('../cookieUtils/utils.js')
-        this.troops = await getWithUnitId('soldiers', unit)
+        const { getWithUnitId, selectParentsAndChildren, parentsAndChildrenToArray } = require('../cookieUtils/utils.js')
+        this.units = parentsAndChildrenToArray(await selectParentsAndChildren(unit))
+
+        this.troops = await getWithUnitId('soldiers', this.units)
+
+
     }
 
     generateCard(verbose) {

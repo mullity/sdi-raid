@@ -6,9 +6,38 @@ const knex = require('knex')( require('../knexfile')[process.env.NODE_ENV])
 
 
 
-const units = () => {
-  return knex(units)
+const selectParentsAndChildren = (uicVar) => {
 
+  if (typeof uicVar === 'number' || !isNaN(uicVar)){
+
+    let numericUic = Number.parseInt(uicVar)
+    return knex('units')
+      .select('uic')
+      .from('units')
+      .where('id', numericUic)
+      .then(res => {
+        return knex('units')
+          .select()
+          .from('units')
+          .whereLike('uic', res[0].uic)
+          .orWhereLike('parent_unit_uic', res[0].uic)
+      })
+  }
+  else if(typeof uicVar === 'string'){
+    return knex('units')
+    .select()
+    .from('units')
+    .whereLike('uic', uicVar)
+    .orWhereLike('parent_unit_uic', uicVar)
+    .then(res => {
+      return res
+    })
+  }
+
+}
+
+const parentsAndChildrenToArray = (unitArray) => {
+  return unitArray.map(unit => unit.id)
 }
 
 /**
@@ -23,7 +52,9 @@ function calcEquipmentScore(vehicles) {
 }
 
 const checkUnitId = async (table, unit) => {
+  console.log(table, unit)
   let data = await getWithUnitId(table, unit)
+
   if(data.length !== 0){
     return true;
   }
@@ -46,21 +77,42 @@ function getter(table) {
  * @returns array of all columns for any matching entity
  */
 function getWithUnitId(table, unitId){
+  let arrayId
+  console.log(typeof unitId)
+  if(Array.isArray(unitId) === false){
+    arrayId = selectParentsAndChildren(unitId)
+  }
+  else{
+    arrayId = unitId
+  }
+  console.log(arrayId)
   return knex(table)
-  .select()
-  .from(table)
-  .where('assigned_unit_id', unitId)
+    .select()
+    .from(table)
+    .whereIn('assigned_unit_id', unitId)
+
+
 }
 
 /**
  *
  * @returns array of all task statuses joined with their respective soldiers
  */
-//SELECT * FROM soldier_task_status s INNER JOIN soldiers ON s.soldier_id = soldiers.id;
-function joinTaskStatus() {
+//(SELECT * FROM soldier_task_status s INNER JOIN soldiers ON s.soldier_id = soldiers.id;)
+function joinTaskStatus(unitId) {
+  let arrayId
+  console.log(typeof unitId, 1)
+  if(Array.isArray(unitId) === false){
+    arrayId = selectParentsAndChildren(unitId)
+  }
+  else{
+    arrayId = unitId
+  }
+
   return knex('soldier_task_status')
-  .join('soldiers', 'soldier_task_status.soldier_id', 'soldiers.id')
+  .innerJoin('soldiers', 'soldier_task_status.soldier_id', 'soldiers.id')
   .select()
+  .whereIn('assigned_unit_id', unitId)
 }
 
 /**
@@ -586,7 +638,6 @@ async function getAllFields (table){
 }
 
 module.exports = {
-  units: units,
   calcEquipmentScore: calcEquipmentScore,
   getter: getter,
   snapshot: snapshot,
@@ -600,7 +651,9 @@ module.exports = {
   vicMaint:vicMaint,
   modal:modal,
   joinTaskStatus:joinTaskStatus,
-  checkUnitId:checkUnitId
+  checkUnitId:checkUnitId,
+  selectParentsAndChildren:selectParentsAndChildren,
+  parentsAndChildrenToArray:parentsAndChildrenToArray
 }
 
 // vicModal:vicModal,
