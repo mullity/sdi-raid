@@ -155,8 +155,9 @@ class PersonnelSnapshot extends Snapshot {
     }
 
     async init(unit) {
-        const { getWithUnitId } = require('../cookieUtils/utils.js')
-        this.troops = await getWithUnitId('soldiers', unit)
+        const { getWithUnitId, selectParentsAndChildren, parentsAndChildrenToArray } = require('../cookieUtils/utils.js')
+        this.units = parentsAndChildrenToArray(await selectParentsAndChildren(unit))
+        this.troops = await getWithUnitId('soldiers', this.units)
     }
 
     generateCard(verbose) {
@@ -202,22 +203,25 @@ class VehicleSnapshot extends Snapshot {
     }
 
     async init(unit) {
-        const { getWithUnitId, checkUnitId } = require('../cookieUtils/utils.js')
-        return checkUnitId('vehicle', unit).then(out => {
-            if(out){
-                return this.checkAuthorizedUnit(unit).then(res => {
-                    if(res){
-                        return getWithUnitId('vehicle', unit).then(data => {
-                            this.vics = data
-                        })
-                    }
-                })
-            }
-            else {
-                this.vics = null
-                return false
-            }
-        })
+        //const { getWithUnitId, checkUnitId } = require('../cookieUtils/utils.js')
+        const { getWithUnitId, selectParentsAndChildren, parentsAndChildrenToArray } = require('../cookieUtils/utils.js')
+        this.units = parentsAndChildrenToArray(await selectParentsAndChildren(unit))
+        this.vics = await getWithUnitId('vehicle', this.units)
+        // return checkUnitId('vehicle', unit).then(out => {
+        //     if(out){
+        //         return this.checkAuthorizedUnit(unit).then(res => {
+        //             if(res){
+        //                 return getWithUnitId('vehicle', unit).then(data => {
+        //                     this.vics = data
+        //                 })
+        //             }
+        //         })
+        //     }
+        //     else {
+        //         this.vics = null
+        //         return false
+        //     }
+        // })
     }
 
 
