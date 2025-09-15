@@ -458,7 +458,6 @@ class PersonnelIssuesActions extends IssuesActions{
     }
     generateCard(nondeployable, verbose){
         let snapData
-        console.log(nondeployable)
         if(nondeployable > 25){
             this.issues.push({id: this.issueTick, text: `${nondeployable}% of soldiers are non-deployable`})
             this.issueTick++
@@ -531,19 +530,6 @@ class DeploymentModal extends Modal{
     }
 
 }
-
-// [
-//     {
-//         "id": "personnel",
-//         "value": 64,
-//         "valueType": "percent",
-//         "data": {
-//             "total": 200,
-//             "deployable": 128,
-//             "nondeployable": 72
-//         }
-//     }
-// ]
 
 
 
