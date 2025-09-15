@@ -270,6 +270,18 @@ app.get("/modal", async (req, res) => {
   // let weaponModal = await weaponModal(unit, verbose)
 });
 
+app.get('/users/uic', async (req, res) => {
+  //required query params: unit(number or all caps UIC)
+  const { uic } = req.query
+  try {
+    let out = await selectParentsAndChildren(uic)
+    res.status(200).send(out)
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: `${error}` });
+  }
+})
+
 // app.get('/api/training/350-1', function(request, response) {
 //   const trainingData = {
 //     name: '350-1 Individual Training',
