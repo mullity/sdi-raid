@@ -200,6 +200,13 @@ class VehicleSnapshot extends Snapshot {
         this.bradleyArray = []
         this.hmmwvArray = []
         this.scissorArray = []
+        this.loaderArray = []
+        this.jltvArray = []
+        this.truckArray = []
+        this.breacherArray = []
+        this.grader = []
+        this.commandArray = []
+        this.jltv2Array = []
     }
 
     async init(unit) {
@@ -256,6 +263,27 @@ class VehicleSnapshot extends Snapshot {
             else if (broke.lin == 'B31098') {
                 this.scissorArray.push(broke)
             }
+            else if (broke.lin == 'L77147') {
+                this.loaderArray.push(broke)
+            }
+            else if (broke.lin == 'J05029') {
+                this.jltvArray.push(broke)
+            }
+            else if (broke.lin == 'M1078A2') {
+                this.truckArray.push(broke)
+            }
+            else if (broke.lin == 'A05001') {
+                this.breacherArray.push(broke)
+            }
+            else if (broke.lin == 'M05001') {
+                this.grader.push(broke)
+            }
+            else if (broke.lin == 'C05105') {
+                this.commandArray.push(broke)
+            }
+            else if (broke.lin == 'J05028') {
+                this.jltv2Array.push(broke)
+            }
         }
 
         for(let i = 0; i < this.vics.length; i++){
@@ -268,13 +296,29 @@ class VehicleSnapshot extends Snapshot {
         this.fuelLevel = Math.round(this.fuelLevel/T)
 
 
+
+
+
         if (verbose === "true") {
             let snapData = {
                 total: this.vics.length,
                 fmc: this.fmc,
                 pmc: this.pmc,
                 nmc: this.nmc,
-                fuellevel: this.fuelLevel
+                fuellevel: this.fuelLevel,
+                nmcVics: {
+                    m2a4_bradley_fighting_vehicle: this.bradleyArray,
+                    hmmwv: this.hmmwvArray,
+                    bride_heavy_assault_scissoring: this.scissorArray,
+                    loader_skid_steed_type_ii: this.loaderArray,
+                    joint_light_tactical_vehcile_a1_four_seat_gen_purpo: this.jltvArray,
+                    truck_cargo: this.truckArray,
+                    assault_breacher_vehicle: this.breacherArray,
+                    motorized_grader: this.grader,
+                    command_post_carrier: this.commandArray,
+                    joint_light_tactical_vehcile_a1_two_seat_utility: this.jltv2Array
+                }
+
             }
             return this.generateDataResponse('percent', snapData)
         } else {
@@ -292,7 +336,91 @@ class Modal extends UiCard {
         this.description = description
 
     }
+    generateDataResponce(id, verboseData = {}){
+        const dataResponse = {
+            'id': id,
+            'data': verboseData
+        }
+        return dataResponse
+    }
 }
+
+class VehicleModal extends Modal{
+    constructor(){
+        super()
+    }
+
+    async init(unit) {
+        const { vicSnapshot, selectParentsAndChildren, parentsAndChildrenToArray,vicIssuesActions,vicCertified } = require('../cookieUtils/utils.js')
+        this.units = parentsAndChildrenToArray(await selectParentsAndChildren(unit))
+        this.vics = await vicSnapshot(this.units, 'true')
+        this.issuesActions = await vicIssuesActions(Number(this.vics.data.pmc + this.vics.data.nmc), 75, this.vics.data.fuelLevel, this.units)
+        this.certified = await vicCertified(this.units)
+    }
+
+    generateCard(verbose){
+        let snapData
+        console.log(this.issuesActions)
+        if(verbose == "true"){
+            snapData = {
+                title: 'Vehicle Readiness',
+                description: 'Equipment and vehicle operational status',
+                percentage: this.vics.value,
+                data: {
+                    fmc: this.vics.data.fmc,
+                    pmc: this.vics.data.pmc,
+                    nmc: this.vics.data.nmc,
+                    metrics: [
+                    { label: 'Operational Vehicles', value: this.vics.value},
+                    //{ label: 'Maintenance Current', value: vicMaintdata.true},
+                    { label: 'Fuel Readiness', value: this.vics.data.fuellevel},
+                    //{ label: 'Driver Certification', value: certified.overall}
+                    ],
+                    issues: this.issuesActions.issues,
+                    actions: this.issuesActions.actions
+                }
+            }
+            return this.generateDataResponce('vehicle', snapData)
+        } else {
+            snapData = {
+                title: 'Vehicle Readiness',
+                description: 'Equipment and vehicle operational status',
+                percentage: this.vics.value,
+                }
+            return this.generateDataResponce('vehicle', snapData)
+            }
+
+    }
+}
+
+
+// [
+//     {
+//         "id": "vehicle",
+//         "value": 70,
+//         "valueType": "percent",
+//         "data": snapData = {
+//                 total: this.vics.length,
+//                 fmc: this.fmc,
+//                 pmc: this.pmc,
+//                 nmc: this.nmc,
+//                 fuellevel: this.fuelLevel,
+//                 nmcVics: {
+//                     m2a4_bradley_fighting_vehicle: this.bradleyArray,
+//                     hmmwv: this.hmmwvArray,
+//                     bride_heavy_assault_scissoring: this.scissorArray,
+//                     loader_skid_steed_type_ii: this.loaderArray,
+//                     joint_light_tactical_vehcile_a1_four_seat_gen_purpo: this.jltvArray,
+//                     truck_cargo: this.truckArray,
+//                     assault_breacher_vehicle: this.breacherArray,
+//                     motorized_grader: this.grader,
+//                     command_post_carrier: this.commandArray,
+//                     joint_light_tactical_vehcile_a1_two_seat_utility: this.jltv2Array
+//                 }
+
+//         }
+//     }
+// ]
 
 
 
@@ -303,5 +431,6 @@ module.exports = {
     PersonnelSnapshot: PersonnelSnapshot,
     MedicalSnapshot: MedicalSnapshot,
     UiCard: UiCard,
-    Modal: Modal
+    Modal: Modal,
+    VehicleModal:VehicleModal
 }

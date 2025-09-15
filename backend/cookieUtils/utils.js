@@ -1,4 +1,4 @@
-const { VehicleSnapshot, TrainingSnapshot, PersonnelSnapshot, MedicalSnapshot } = require('../classes/uiClasses');
+const { VehicleSnapshot, TrainingSnapshot, PersonnelSnapshot, MedicalSnapshot, VehicleModal } = require('../classes/uiClasses');
 
 require('dotenv').config()
 
@@ -158,48 +158,6 @@ const medicalSnapshot = async (unit, verbose) => {
   let myNewSnap = new MedicalSnapshot()
   return myNewSnap.init(unit)
   .then(()=>(myNewSnap.generateCard(verbose)))
-  // let troops = await getWithUnitId('soldiers', unit)
-  // let green = 0
-  // let red = 0
-  // let amber = 0
-
-  // for(let troop of troops){
-  //   if(troop.medical_status == "5"){
-  //     green++
-  //   }
-  //   if(troop.medical_status == "6"){
-  //     amber++
-  //   }
-  //   if (troop.medical_status == "7"){
-  //     red++
-  //   }
-  // }
-
-  // let troopT = troops.length
-  // let troopPercent = Number(green/troopT) * 100
-  // let output
-
-
-
-
-  //   if(verbose === "true"){
-  //     output =
-  //     {id: "Medical", data: {
-  //       total: troops.length,
-  //       GREEN: green,
-  //       AMBER: amber,
-  //       RED: red,
-  //       PERCENT: troopPercent
-  //     }}
-  //   } else {
-  //     output =
-  //     {id: "Medical", data: {
-  //       PERCENT: troopPercent
-  //     }}
-  //   }
-
-  // return output;
-
 }
 
 /**
@@ -247,41 +205,41 @@ const priority = async (unit, verbose) => {
  */
 const vicMaint = async (unit) => {
 
-  // let myNewSnap = new VehicleSnapshot()
-  // return myNewSnap.init(unit)
-  // .then(()=>(myNewSnap.generateCard(verbose)))
+  let myNewSnap = new VehicleSnapshot()
+  return myNewSnap.init(unit)
+  .then(()=>(myNewSnap.generateCard('verbose')))
 
-  let output = {
-      true: 75,
-      trueData: [
-        {
-          id: 1,
-          assigned_unit_id: 0,
-          lin: 'C05105'
-        },
-        {
-          id: 1,
-          assigned_unit_id: 0,
-          lin: 'C05105'
-        },
-        {
-          id: 1,
-          assigned_unit_id: 0,
-          lin: 'C05105'
-        }
-      ],
-      false: 25,
-      falseData: [
-        {
-          id: 11,
-          assigned_unit_id: 1,
-          lin: 'X05105'
-        }
-      ],
-      fuelLevel: 75
-    }
+  // let output = {
+  //     true: 75,
+  //     trueData: [
+  //       {
+  //         id: 1,
+  //         assigned_unit_id: 0,
+  //         lin: 'C05105'
+  //       },
+  //       {
+  //         id: 1,
+  //         assigned_unit_id: 0,
+  //         lin: 'C05105'
+  //       },
+  //       {
+  //         id: 1,
+  //         assigned_unit_id: 0,
+  //         lin: 'C05105'
+  //       }
+  //     ],
+  //     false: 25,
+  //     falseData: [
+  //       {
+  //         id: 11,
+  //         assigned_unit_id: 1,
+  //         lin: 'X05105'
+  //       }
+  //     ],
+  //     fuelLevel: 75
+  //   }
 
-  return output;
+  // return output;
 }
 
 /**
@@ -347,45 +305,49 @@ const vicCertified = async (unit) => {
 }
 
 const vicModal = async (unit, verbose) => {
-  let vics = await vicSnapshot(unit, 'true')
-  let fullMC = vics.data.FMC
-  let partialMC = vics.data.PMC
-  let nonMC = vics.data.NMC
-  let percent = vics.data.PERCENT
-  let vicMaintdata = await vicMaint(unit)
-  let issuesActions = await vicIssuesActions(percent, vicMaint.true, vicMaint.fuelLevel, unit)
-  let certified = await vicCertified(unit)
-  let vicOutput
+  // let vics = await vicSnapshot(unit, 'true')
+  // let fullMC = vics.data.FMC
+  // let partialMC = vics.data.PMC
+  // let nonMC = vics.data.NMC
+  // let percent = vics.data.PERCENT
+  // let vicMaintdata = await vicMaint(unit)
+  // let issuesActions = await vicIssuesActions(percent, vicMaint.true, vicMaint.fuelLevel, unit)
+  // let certified = await vicCertified(unit)
+  // let vicOutput
 
-  if(verbose == "true"){
-    vicOutput = {
-      id: 'vehicle',
-      title: 'Vehicle Readiness',
-      description: 'Equipment and vehicle operational status',
-      percentage: percent,
-      data: {
-        FMC: fullMC,
-        PMC: partialMC,
-        NMC: nonMC,
-        metrics: [
-          { label: 'Operational Vehicles', value: percent},
-          { label: 'Maintenance Current', value: vicMaintdata.true},
-          { label: 'Fuel Readiness', value: vicMaintdata.fuelLevel},
-          { label: 'Driver Certification', value: certified.overall}
-        ],
-        issues: issuesActions.issues,
-        actions: issuesActions.actions
-      }
-    }
-  } else {
-    vicOutput = {
-      id: 'vehicle',
-      title: 'Vehicle Readiness',
-      description: 'Equipment and vehicle operational status',
-      percentage: percent,
-      }
-    }
-  return vicOutput
+  // if(verbose == "true"){
+  //   vicOutput = {
+  //     id: 'vehicle',
+  //     title: 'Vehicle Readiness',
+  //     description: 'Equipment and vehicle operational status',
+  //     percentage: percent,
+  //     data: {
+  //       FMC: fullMC,
+  //       PMC: partialMC,
+  //       NMC: nonMC,
+  //       metrics: [
+  //         { label: 'Operational Vehicles', value: percent},
+  //         { label: 'Maintenance Current', value: vicMaintdata.true},
+  //         { label: 'Fuel Readiness', value: vicMaintdata.fuelLevel},
+  //         { label: 'Driver Certification', value: certified.overall}
+  //       ],
+  //       issues: issuesActions.issues,
+  //       actions: issuesActions.actions
+  //     }
+  //   }
+  // } else {
+  //   vicOutput = {
+  //     id: 'vehicle',
+  //     title: 'Vehicle Readiness',
+  //     description: 'Equipment and vehicle operational status',
+  //     percentage: percent,
+  //     }
+  //   }
+  // return vicOutput
+  let myNewSnap = new VehicleModal()
+    return myNewSnap.init(unit)
+    .then(()=>(myNewSnap.generateCard(verbose)))
+
 }
 
 const deploymentModal = async (unit, verbose) => {
@@ -650,7 +612,9 @@ module.exports = {
   joinTaskStatus:joinTaskStatus,
   checkUnitId:checkUnitId,
   selectParentsAndChildren:selectParentsAndChildren,
-  parentsAndChildrenToArray:parentsAndChildrenToArray
+  parentsAndChildrenToArray:parentsAndChildrenToArray,
+  vicIssuesActions:vicIssuesActions,
+  vicCertified:vicCertified
 }
 
 // vicModal:vicModal,
