@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './Login.css';
 import raidLogo from './assets/raidlogo.png';
 import { useNavigate } from 'react-router-dom';
+import Orb from './components/Orb';
 
 function Login({ onLogin }) {
   // Keep track of what the user types in each field
@@ -33,6 +34,14 @@ function Login({ onLogin }) {
 
   return (
     <div className="login-container">
+      <div style={{ width: '100%', height: '100vh', position: 'fixed', top: 0, left: 0, zIndex: 0 }}>
+        <Orb
+          hoverIntensity={0.5}
+          rotateOnHover={true}
+          hue={0}
+          forceHoverState={false}
+        />
+      </div>
       <div className="login-card">
         <div>
           <img src={raidLogo} alt="R.A.I.D." className="login-logo" />
