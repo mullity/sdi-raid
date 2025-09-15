@@ -9,7 +9,7 @@ exports.up = function(knex) {
     table.integer('user_id')
     table.string('token_lifespan')
 
-    table.foreign('user_id').references('units.id').deferrable('deferred')
+    table.foreign('user_id').references('users.id').deferrable('deferred')
   })
 };
 
