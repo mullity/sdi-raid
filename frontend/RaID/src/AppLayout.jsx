@@ -20,12 +20,10 @@ function AppLayout({ user, onLogout }) {
     setSelectedUIC(uic.code);
   }
 
-
   const handlePrint = useReactToPrint({
     contentRef: printRef,
     documentTitle: 'RAID_Dashboard'
   });
-
 
   return (
     <div className="app-layout" ref={printRef}>
@@ -44,21 +42,32 @@ function AppLayout({ user, onLogout }) {
               Welcome, {user?.username} ({formatRole(user?.role)})
             </div>
           </div>
+
           <nav className="main-nav">
             <UICSelector selectedUIC={selectedUIC} onUICChange={handleUICChange} />
+
             <NavLink
               to="/dashboard"
               className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
             >
               Dashboard
             </NavLink>
+
             <NavLink
               to="/350-1"
               className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
             >
               350-1
             </NavLink>
+
+            <NavLink
+              to="/equipment"
+              className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+            >
+              Equipment
+            </NavLink>
           </nav>
+
           <div className="user-controls">
             <button onClick={handlePrint} className="print-button">
               Generate Report
@@ -83,8 +92,3 @@ function AppLayout({ user, onLogout }) {
 }
 
 export default AppLayout;
-
-
-
-
-

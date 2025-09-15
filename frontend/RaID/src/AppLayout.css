@@ -218,3 +218,23 @@
 .theme-toggle-right {
   margin-left: auto;
 }
+
+.main-nav .nav-link,
+.main-nav .nav-link.active {
+  display: inline-block;
+  color: white;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: all 0.2s;
+  background: transparent;
+}
+
+.main-nav .nav-link.active {
+  color: #60a5fa;
+  background-color: #374151;
+}
+
+.main-nav .nav-link:hover {
+  background-color: #374151;
+}
