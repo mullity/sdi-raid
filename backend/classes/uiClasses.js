@@ -242,6 +242,7 @@ class VehicleSnapshot extends Snapshot {
             if (vic.status == 'FMC') {
                 this.allVics.push({
                     id: vic.id,
+                    bumpernumber: vic.bumper_number,
                     lin: vic.lin,
                     status: 'fmc',
                     lastService: vic.date_last_serviced.toLocaleDateString(),
@@ -252,6 +253,7 @@ class VehicleSnapshot extends Snapshot {
             } else if (vic.status == 'PMC') {
                 this.allVics.push({
                     id: vic.id,
+                    bumpernumber: vic.bumper_number,
                     lin: vic.lin,
                     status: 'pmc',
                     lastService: vic.date_last_serviced.toLocaleDateString(),
@@ -262,6 +264,7 @@ class VehicleSnapshot extends Snapshot {
             } else if (vic.status == 'NMC') {
                 this.allVics.push({
                     id: vic.id,
+                    bumpernumber: vic.bumper_number,
                     lin: vic.lin,
                     status: 'nmc',
                     lastService: vic.date_last_serviced.toLocaleDateString(),
@@ -271,6 +274,7 @@ class VehicleSnapshot extends Snapshot {
                 this.nmc++
                 this.nmcArray.push({
                     id: vic.id,
+                    bumpernumber: vic.bumper_number,
                     lin: vic.lin,
                     status: 'nmc',
                     lastService: vic.date_last_serviced.toLocaleDateString(),
