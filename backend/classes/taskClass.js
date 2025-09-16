@@ -21,6 +21,7 @@ class CatsRollup {
 }
 
 
+
 class TaskSet {
     /**
    * Creates a modal istance.
@@ -43,7 +44,51 @@ class TaskSet {
 
 }
 
-class Event {
+class TrainingEvent {
+    /**
+   * Creates a modal istance.
+   * @param {string} id - string name of the modal being supplied
+   * @param {number} value - percentage of satisfactory items, expressed as a whole number
+   * @param {object} data - object of key:value pairs for other data, depending on modal type
+   * @property {string} id - string name of the modal being supplied (also documented here for clarity).
+   * @property {number} value - percentage of satisfactory items, expressed as a whole number (also documented here for clarity).
+   * @property {object} data - object of key:value pairs for other verbose data, depending on modal type
+   */
+
+    constructor(options = {}) {
+        const{name, date, taskEvents=[], elements=[]} = options
+        this.name, this.date, this.taskEvents=[], this.elements=[]
+        for (let option in options){
+            this[option] = options[option]
+        }
+    }
+
+    addTaskEvent(taskEventOptions){
+        const newTaskEvent = new TaskEvent(taskEventOptions)
+        this.taskEvents.push(newTaskEvent)
+    }
+
+    getAmmoRollup(){
+        let ammoArray = []
+        for (let task of this.taskEvents){
+            for (let element of task.elements){
+                for(let lin of element.resources){
+                    for (let linAmmo of lin.ammunition){
+                        //Check if ammo of a dodic exists already, if yes, up quanity, if no, add)
+                        if (ammoArray.filter(item=>item['dodic']==linAmmo['dodic']).length>0){
+                            ammoArray.find((item)=>item['dodic']==linAmmo['dodic']).quantity+=linAmmo['quantity']
+                        } else {
+                            ammoArray.push(new ResourceAmmunition(linAmmo))
+                        }
+                    }
+                }
+            }
+        }
+        return ammoArray
+    }
+}
+
+class TaskEvent {
     /**
    * Creates a modal istance.
    * @param {string} id - string name of the modal being supplied
@@ -135,5 +180,5 @@ class ResourceAmmunition {
 }
 
 module.exports = {
-    CatsRollup,TaskSet,Event,EventElement,EventResource,ResourceAmmunition
+    CatsRollup,TaskSet,TaskEvent,EventElement,EventResource,ResourceAmmunition,TrainingEvent
 }
