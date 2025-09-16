@@ -3,10 +3,12 @@ import { NavLink, Outlet } from 'react-router-dom';
 import { useReactToPrint } from 'react-to-print';
 import LeaderHub from './components/LeaderHub';
 import ThemeToggle from './components/ThemeToggle';
+import UICSelector from './components/UICSelector';
 import PrintReport from './components/PrintReport';
 import './AppLayout.css';
 
 function AppLayout({ user, onLogout }) {
+  const [selectedUIC, setSelectedUIC] = useState('WAZMB0');
   const printRef = useRef(); // Reference for content to print
   const fileInputRef = useRef(); // Reference for file input
 
@@ -14,6 +16,10 @@ function AppLayout({ user, onLogout }) {
   function formatRole(role) {
     if (!role) return '';
     return role.charAt(0).toUpperCase() + role.slice(1);
+  }
+
+  function handleUICChange(uic) {
+    setSelectedUIC(uic.code);
   }
 
   const handlePrint = useReactToPrint({
@@ -53,7 +59,9 @@ function AppLayout({ user, onLogout }) {
             </div>
           </div>
 
-          <nav className="main-nav">
+         <nav className="main-nav">
+            <UICSelector selectedUIC={selectedUIC} onUICChange={handleUICChange} />
+
             <NavLink
               to="/dashboard"
               className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
