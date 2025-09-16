@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import fakeVehicles from "../fakeVehicles.json";
-import { getSnapshot } from "../services/api";
 import "./EquipmentDetails.css";
 
 const FIXED_UIC = "WAZMB0";
@@ -9,97 +8,25 @@ export default function EquipmentDetails() {
   const [summary, setSummary] = useState(null);
   const [rows, setRows] = useState([]);
   const [total, setTotal] = useState(0);
-  const [vehicleData, setVehicleData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   const [status, setStatus] = useState(""); // 'FMC' | 'PMC' | 'NMC' | ''
   const [q, setQ] = useState("");           // search term
   const [page, setPage] = useState(1);
   const pageSize = 20;
 
-  // Default unit ID - could be made dynamic
-  const defaultUnit = 1;
-
-  // Fetch real vehicle data from API
+  // build KPI summary from fake data once
   useEffect(() => {
-    const fetchVehicleData = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const snapshotData = await getSnapshot(defaultUnit, true);
-        const vehicleInfo = snapshotData.find(item => item.id === 'vehicle');
-
-        if (vehicleInfo) {
-          setVehicleData(vehicleInfo);
-
-          // Build summary from API data
-          const { fmc, pmc, nmc, total } = vehicleInfo.data;
-          const pctFMC = total ? Math.round((fmc / total) * 1000) / 10 : 0;
-          setSummary({
-            total,
-            counts: { FMC: fmc, PMC: pmc, NMC: nmc },
-            pctFMC
-          });
-
-          // Extract individual vehicles from nmcVics data for display
-          const allVehicles = [];
-          if (vehicleInfo.data.nmcVics) {
-            Object.entries(vehicleInfo.data.nmcVics).forEach(([vehicleType, vehicles]) => {
-              vehicles.forEach(vehicle => {
-                allVehicles.push({
-                  ...vehicle,
-                  name: vehicleType.replace(/_/g, ' ').toUpperCase(),
-                  status: 'NMC',
-                  id: vehicle.lin,
-                  unit_name: FIXED_UIC,
-                  date_last_serviced: vehicle.lastService,
-                  fuel_level: vehicleInfo.data.fuellevel || 0
-                });
-              });
-            });
-          }
-
-          // Fill in missing FMC/PMC vehicles with fake data for now
-          const nmcCount = allVehicles.length;
-          const fakeVehiclesToAdd = fakeVehicles.slice(0, Math.max(0, total - nmcCount));
-
-          setRows([...allVehicles, ...fakeVehiclesToAdd]);
-          setTotal(total);
-        } else {
-          // Fallback to fake data
-          const counts = { FMC: 0, PMC: 0, NMC: 0 };
-          fakeVehicles.forEach(v => counts[v.status]++);
-          const total = counts.FMC + counts.PMC + counts.NMC;
-          const pctFMC = total ? Math.round((counts.FMC / total) * 1000) / 10 : 0;
-          setSummary({ total, counts, pctFMC });
-          setRows(fakeVehicles);
-          setTotal(fakeVehicles.length);
-        }
-
-      } catch (err) {
-        console.error('Failed to fetch vehicle data:', err);
-        setError(err.message);
-
-        // Fallback to fake data
-        const counts = { FMC: 0, PMC: 0, NMC: 0 };
-        fakeVehicles.forEach(v => counts[v.status]++);
-        const total = counts.FMC + counts.PMC + counts.NMC;
-        const pctFMC = total ? Math.round((counts.FMC / total) * 1000) / 10 : 0;
-        setSummary({ total, counts, pctFMC });
-        setRows(fakeVehicles);
-        setTotal(fakeVehicles.length);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchVehicleData();
+    const counts = { FMC: 0, PMC: 0, NMC: 0 };
+    fakeVehicles.forEach(v => counts[v.status]++);
+    const total = counts.FMC + counts.PMC + counts.NMC;
+    const pctFMC = total ? Math.round((counts.FMC / total) * 1000) / 10 : 0;
+    setSummary({ total, counts, pctFMC });
   }, []);
 
   useEffect(() => {
-    let data = rows;
+    let data = fakeVehicles;
+
+    data = data.filter(v => v.unit_name === FIXED_UIC);
 
     if (status) data = data.filter(v => v.status === status);
     if (q) data = data.filter(
@@ -107,11 +34,9 @@ export default function EquipmentDetails() {
         v.lin.toLowerCase().includes(q.toLowerCase())
     );
 
-    // Only update if we have loaded data to avoid infinite loops
-    if (!loading && data.length !== rows.length) {
-      setTotal(data.length);
-    }
-  }, [status, q, page, loading]);
+    setRows(data);
+    setTotal(data.length);
+  }, [status, q, page]);
 
   const StatusBadge = ({ value }) => {
     const cls = value === "FMC" ? "badge badge--ok"
@@ -142,18 +67,6 @@ export default function EquipmentDetails() {
           </div>
         </div>
       </header>
-
-      {loading && (
-        <div className="loading-message">
-          Loading equipment data...
-        </div>
-      )}
-
-      {error && (
-        <div className="error-message">
-          Error loading equipment data: {error}. Using fallback data.
-        </div>
-      )}
 
       <section className="equip-toolbar">
         <label>
