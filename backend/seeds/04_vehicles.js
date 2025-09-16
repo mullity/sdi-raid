@@ -35,7 +35,7 @@ exports.seed = function(knex) {
             for(let i = 0; i < faked; i++){
               let nameNum = Math.floor(Math.random() * 10)
               let statusNum = Math.floor(Math.random() * 3)
-              let date = `${faker.date.past()}`.slice(4, 15)
+              let date = faker.date.past()
               let fuelNum = Math.floor(Math.random() * 100)
 
               idNum++

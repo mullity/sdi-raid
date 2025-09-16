@@ -196,6 +196,7 @@ class VehicleSnapshot extends Snapshot {
         this.pmc = 0
         this.nmc = 0
         this.fuelLevel = 0
+        this.allVics = []
         this.nmcArray = []
         this.bradleyArray = []
         this.hmmwvArray = []
@@ -239,16 +240,42 @@ class VehicleSnapshot extends Snapshot {
         }
         for (let vic of this.vics) {
             if (vic.status == 'FMC') {
+                this.allVics.push({
+                    id: vic.id,
+                    lin: vic.lin,
+                    status: 'fmc',
+                    lastService: vic.date_last_serviced.toLocaleDateString(),
+                    unit: vic.assigned_unit_id,
+                    name: vic.name
+                })
                 this.fmc++
             } else if (vic.status == 'PMC') {
+                this.allVics.push({
+                    id: vic.id,
+                    lin: vic.lin,
+                    status: 'pmc',
+                    lastService: vic.date_last_serviced.toLocaleDateString(),
+                    unit: vic.assigned_unit_id,
+                    name: vic.name
+                })
                 this.pmc++
             } else if (vic.status == 'NMC') {
-                let date = vic.date_last_serviced
+                this.allVics.push({
+                    id: vic.id,
+                    lin: vic.lin,
+                    status: 'nmc',
+                    lastService: vic.date_last_serviced.toLocaleDateString(),
+                    unit: vic.assigned_unit_id,
+                    name: vic.name
+                })
                 this.nmc++
                 this.nmcArray.push({
+                    id: vic.id,
                     lin: vic.lin,
+                    status: 'nmc',
+                    lastService: vic.date_last_serviced.toLocaleDateString(),
                     unit: vic.assigned_unit_id,
-                    lastService: `${date}`.slice(4, 15)
+                    name: vic.name
                 })
             }
         }
@@ -296,9 +323,6 @@ class VehicleSnapshot extends Snapshot {
         this.fuelLevel = Math.round(this.fuelLevel/T)
 
 
-
-
-
         if (verbose === "true") {
             let snapData = {
                 total: this.vics.length,
@@ -307,16 +331,36 @@ class VehicleSnapshot extends Snapshot {
                 nmc: this.nmc,
                 fuellevel: this.fuelLevel,
                 nmcVics: {
-                    m2a4_bradley_fighting_vehicle: this.bradleyArray,
-                    hmmwv: this.hmmwvArray,
-                    bride_heavy_assault_scissoring: this.scissorArray,
-                    loader_skid_steed_type_ii: this.loaderArray,
-                    joint_light_tactical_vehcile_a1_four_seat_gen_purpo: this.jltvArray,
-                    truck_cargo: this.truckArray,
-                    assault_breacher_vehicle: this.breacherArray,
-                    motorized_grader: this.grader,
-                    command_post_carrier: this.commandArray,
-                    joint_light_tactical_vehcile_a1_two_seat_utility: this.jltv2Array
+                    M05073: {name: 'm2a4_bradley_fighting_vehicle',
+                        data: this.bradleyArray,
+                    },
+                    M1079: {name: 'hmmwv',
+                        data: this.hmmwvArray,
+                    },
+                    B31098: {name: 'bride_heavy_assault_scissoring',
+                        data: this.scissorArray,
+                    },
+                    L77147: {name: 'loader_skid_steed_type_ii',
+                        data: this.loaderArray,
+                    },
+                    J05029: {name: 'joint_light_tactical_vehcile_a1_four_seat_gen_purpo',
+                        data: this.jltvArray,
+                    },
+                    M1078A2: {name: 'truck_cargo',
+                        data: this.truckArray,
+                    },
+                    A05001: {name: 'assault_breacher_vehicle',
+                        data: this.breacherArray,
+                    },
+                    M05001: {name: 'motorized_grader',
+                        data: this.grader,
+                    },
+                    C05105: {name: 'command_post_carrier',
+                        data: this.commandArray,
+                    },
+                    J05028: {name: 'joint_light_tactical_vehcile_a1_two_seat_utility',
+                        data: this.jltv2Array
+                    },
                 }
 
             }
