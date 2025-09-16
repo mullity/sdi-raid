@@ -432,26 +432,31 @@ const weaponModal = async (unit, verbose) => {
 }
 
 const modal = async (unit, verbose, vicModalValue, deploymentModalValue, crewModalValue, medModalValue, weaponModalValue) => {
-  let vicModaldata = await vicModal(unit, verbose)
-  let deploymentModaldata = await deploymentModal(unit, verbose)
-  let crewModaldata = await crewModal(unit, verbose)
-  let medModaldata = await medModal(unit, verbose)
-  let weaponModaldata = await weaponModal(unit, verbose)
+  let vicModaldata
+  let deploymentModaldata
+  let crewModaldata
+  let medModaldata
+  let weaponModaldata
   let modalData = []
 
   if(vicModalValue == "true"){
+    vicModaldata = await vicModal(unit, verbose)
     modalData.push(vicModaldata)
   }
   if(deploymentModalValue == "true"){
+    deploymentModaldata = await deploymentModal(unit, verbose)
     modalData.push(deploymentModaldata)
   }
   if(crewModalValue == "true"){
+    crewModaldata = await crewModal(unit, verbose)
     modalData.push(crewModaldata)
   }
   if(medModalValue == "true"){
+    medModaldata = await medModal(unit, verbose)
     modalData.push(medModaldata)
   }
   if(weaponModalValue == "true"){
+    weaponModaldata = await weaponModal(unit, verbose)
     modalData.push(weaponModaldata)
   }
   return modalData;

@@ -406,8 +406,14 @@ class VehicleModal extends Modal{
     }
 
     async init(unit, verbose) {
+
+        // const { getWithUnitId, selectParentsAndChildren, parentsAndChildrenToArray } = require('../cookieUtils/utils.js')
+        // this.units = parentsAndChildrenToArray(await selectParentsAndChildren(unit))
+        // this.vics = await getWithUnitId('vehicle', this.units)
+
         const { vicSnapshot, selectParentsAndChildren, parentsAndChildrenToArray,vicIssuesActions,vicCertified } = require('../cookieUtils/utils.js')
         this.units = parentsAndChildrenToArray(await selectParentsAndChildren(unit))
+        console.log("classes 416", this.units)
         this.vics = await vicSnapshot(this.units, 'true')
         this.issuesActions = await vicIssuesActions((Number((this.vics.data.pmc + this.vics.data.nmc)/this.vics.data.total)*100), this.vics.data.fuellevel, this.units, verbose)
         this.certified = await vicCertified(this.units)

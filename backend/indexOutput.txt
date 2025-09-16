@@ -4,326 +4,328 @@ http://localhost:3001/snapshot?unit=1
 //optional query params: verbose(true/false as string) *Not implemented. No effect on return at this time*
 [
     {
-        "id": "Equipment",
+        "id": "vehicle",
+        "value": 80,
+        "valueType": "percent",
         "data": {
             "total": 10,
-            "FMC": 3,
-            "PMC": 1,
-            "NMC": 6,
-            "PERCENT": 40
+            "fmc": 6,
+            "pmc": 2,
+            "nmc": 2,
+            "fuellevel": 60,
+            "nmcVics": {
+                "m2a4_bradley_fighting_vehicle": [],
+                "hmmwv": [],
+                "bride_heavy_assault_scissoring": [],
+                "loader_skid_steed_type_ii": [],
+                "joint_light_tactical_vehcile_a1_four_seat_gen_purpo": [
+                    {
+                        "lin": "J05029",
+                        "unit": 1,
+                        "lastService": "Aug 14 2025"
+                    }
+                ],
+                "truck_cargo": [],
+                "assault_breacher_vehicle": [],
+                "motorized_grader": [],
+                "command_post_carrier": [
+                    {
+                        "lin": "C05105",
+                        "unit": 1,
+                        "lastService": "Oct 22 2024"
+                    }
+                ],
+                "joint_light_tactical_vehcile_a1_two_seat_utility": []
+            }
         }
     },
     {
-        "id": "Personnel",
+        "id": "personnel",
+        "value": 70,
+        "valueType": "percent",
         "data": {
-            "total": 10,
-            "DEPLOYABLE": 7,
-            "NONDEPLOYABLE": 3,
-            "PERCENT": 70
+            "total": 40,
+            "deployable": 28,
+            "nondeployable": 12
         }
     },
     {
-        "id": "Training",
+        "id": "training",
+        "value": 50.74999999999999,
+        "valueType": "percent",
         "data": {
-            "total": 100,
-            "QUALIFIED": 50,
-            "NOTQUALIFIED": 50,
-            "PERCENT": 50
+            "total": 400,
+            "qualified": 203,
+            "notqualified": 197
         }
     },
     {
-        "id": "Medical",
+        "id": "medical",
+        "value": 32.5,
+        "valueType": "percent",
         "data": {
-            "total": 10,
-            "GREEN": 4,
-            "AMBER": 3,
-            "RED": 3,
-            "PERCENT": 40
+            "total": 40,
+            "green": 13,
+            "amber": 15,
+            "red": 12
         }
     }
 ]
 
 GET: KPI
-http://localhost:3001/kpi?unit=1&verbose=true&personnelReadinessScore=true&equipmentReadinessScore=true&trainingReadinessScore=true&medicalReadinessScore=true
+http://localhost:3001/kpi?unit=8&verbose=true&personnelReadinessScore=true&equipmentReadinessScore=true&trainingReadinessScore=true&medicalReadinessScore=true
 //required query params: unit(number)
 //optional query params: verbose(true/false as string), personnelReadinessScore(true/false as string), equipmentReadinessScore(true/false as string), trainingReadinessScore(true/false as string), medicalReadinessScore(true/false as string)
 [
     {
-        "id": "Equipment",
+        "id": "vehicle",
+        "value": 80,
+        "valueType": "percent",
         "data": {
             "total": 10,
-            "FMC": 3,
-            "PMC": 1,
-            "NMC": 6,
-            "PERCENT": 40
+            "fmc": 6,
+            "pmc": 2,
+            "nmc": 2,
+            "fuellevel": 60,
+            "nmcVics": {
+                "m2a4_bradley_fighting_vehicle": [],
+                "hmmwv": [],
+                "bride_heavy_assault_scissoring": [],
+                "loader_skid_steed_type_ii": [],
+                "joint_light_tactical_vehcile_a1_four_seat_gen_purpo": [
+                    {
+                        "lin": "J05029",
+                        "unit": 1,
+                        "lastService": "Aug 14 2025"
+                    }
+                ],
+                "truck_cargo": [],
+                "assault_breacher_vehicle": [],
+                "motorized_grader": [],
+                "command_post_carrier": [
+                    {
+                        "lin": "C05105",
+                        "unit": 1,
+                        "lastService": "Oct 22 2024"
+                    }
+                ],
+                "joint_light_tactical_vehcile_a1_two_seat_utility": []
+            }
         }
     },
     {
-        "id": "Personnel",
+        "id": "personnel",
+        "value": 70,
+        "valueType": "percent",
         "data": {
-            "total": 10,
-            "DEPLOYABLE": 7,
-            "NONDEPLOYABLE": 3,
-            "PERCENT": 70
+            "total": 40,
+            "deployable": 28,
+            "nondeployable": 12
         }
     },
     {
-        "id": "Training",
+        "id": "training",
+        "value": 50.74999999999999,
+        "valueType": "percent",
         "data": {
-            "total": 100,
-            "QUALIFIED": 50,
-            "NOTQUALIFIED": 50,
-            "PERCENT": 50
+            "total": 400,
+            "qualified": 203,
+            "notqualified": 197
         }
     },
     {
-        "id": "Medical",
+        "id": "medical",
+        "value": 32.5,
+        "valueType": "percent",
         "data": {
-            "total": 10,
-            "GREEN": 4,
-            "AMBER": 3,
-            "RED": 3,
-            "PERCENT": 40
+            "total": 40,
+            "green": 13,
+            "amber": 15,
+            "red": 12
         }
     }
 ]
-
 http://localhost:3001/kpi?unit=1&personnelReadinessScore=true
 [
     {
-        "id": "Personnel",
-        "data": {
-            "PERCENT": 70
-        }
+        "id": "personnel",
+        "value": 70,
+        "valueType": "percent",
+        "data": {}
     }
 ]
 
 GET: Priority
+Same as snapshot, but ordered by value lowest first
 http://localhost:3001/priority?unit=1
 //required query params: unit(number)
 //optional query params: verbose(true/false as string) *Not implemented. No effect on return at this time*
 [
     {
-        "id": "Equipment",
+        "id": "medical",
+        "value": 32.5,
+        "valueType": "percent",
         "data": {
-            "total": 10,
-            "FMC": 3,
-            "PMC": 1,
-            "NMC": 6,
-            "PERCENT": 40
+            "total": 40,
+            "green": 13,
+            "amber": 15,
+            "red": 12
         }
     },
     {
-        "id": "Medical",
+        "id": "training",
+        "value": 50.74999999999999,
+        "valueType": "percent",
         "data": {
-            "total": 10,
-            "GREEN": 4,
-            "AMBER": 3,
-            "RED": 3,
-            "PERCENT": 40
+            "total": 400,
+            "qualified": 203,
+            "notqualified": 197
         }
     },
     {
-        "id": "Training",
+        "id": "personnel",
+        "value": 70,
+        "valueType": "percent",
         "data": {
-            "total": 100,
-            "QUALIFIED": 50,
-            "NOTQUALIFIED": 50,
-            "PERCENT": 50
+            "total": 40,
+            "deployable": 28,
+            "nondeployable": 12
         }
     },
     {
-        "id": "Personnel",
+        "id": "vehicle",
+        "value": 80,
+        "valueType": "percent",
         "data": {
             "total": 10,
-            "DEPLOYABLE": 7,
-            "NONDEPLOYABLE": 3,
-            "PERCENT": 70
+            "fmc": 6,
+            "pmc": 2,
+            "nmc": 2,
+            "fuellevel": 60,
+            "nmcVics": {
+                "m2a4_bradley_fighting_vehicle": [],
+                "hmmwv": [],
+                "bride_heavy_assault_scissoring": [],
+                "loader_skid_steed_type_ii": [],
+                "joint_light_tactical_vehcile_a1_four_seat_gen_purpo": [
+                    {
+                        "lin": "J05029",
+                        "unit": 1,
+                        "lastService": "Aug 14 2025"
+                    }
+                ],
+                "truck_cargo": [],
+                "assault_breacher_vehicle": [],
+                "motorized_grader": [],
+                "command_post_carrier": [
+                    {
+                        "lin": "C05105",
+                        "unit": 1,
+                        "lastService": "Oct 22 2024"
+                    }
+                ],
+                "joint_light_tactical_vehcile_a1_two_seat_utility": []
+            }
         }
     }
 ]
 
 GET: Modal
-http://localhost:3001/modal?unit=1&vicModalValue=true&deploymentModalValue=true&crewModalValue=true&medModalValue=true&weaponModalValue=true
+http://localhost:3001/modal?unit=8&vicModalValue=true&deploymentModalValue=true&verbose=true
+Other params not implemented at this time, will be by EOD tuesday following same format as below
 //required query params: unit(number)
 //optional query params: verbose(true/false as string), vicModalValue(true/false as string), deploymentModalValue(true/false as string), crewModalValue(true/false as string), medModalValue(true/false as string), weaponModalValue(true/false as string)
 [
     {
         "id": "vehicle",
-        "title": "Vehicle Readiness",
-        "description": "Equipment and vehicle operational status",
-        "percentage": 40,
         "data": {
-            "FMC": 3,
-            "PMC": 1,
-            "NMC": 6,
-            "metrics": [
-                {
-                    "label": "Operational Vehicles",
-                    "value": 40
-                },
-                {
-                    "label": "Maintenance Current",
-                    "value": 75
-                },
-                {
-                    "label": "Fuel Readiness",
-                    "value": 75
-                },
-                {
-                    "label": "Driver Certification",
-                    "value": 75
-                }
-            ],
-            "issues": [
-                {
-                    "id": 0,
-                    "text": "40% of vehicles are non-operational"
-                }
-            ],
-            "actions": [
-                {
-                    "id": 0,
-                    "text": "Ensure all crew is scheduled for crew training, and all vehicles are on the maintenance schedule"
-                }
-            ]
+            "title": "Vehicle Readiness",
+            "description": "Equipment and vehicle operational status",
+            "percentage": 80,
+            "data": {
+                "fmc": 3,
+                "pmc": 5,
+                "nmc": 2,
+                "metrics": [
+                    {
+                        "label": "Operational Vehicles",
+                        "value": 80
+                    },
+                    {
+                        "label": "Fuel Readiness",
+                        "value": 53
+                    }
+                ],
+                "issues": [
+                    {
+                        "id": 0,
+                        "text": "70% of vehicles are non-operational"
+                    },
+                    {
+                        "id": 1,
+                        "text": "Average fuel level across the motorpool is 53%."
+                    }
+                ],
+                "actions": [
+                    {
+                        "id": 0,
+                        "text": "Ensure all crew is scheduled for crew training, and all vehicles are on the maintenance schedule"
+                    },
+                    {
+                        "id": 1,
+                        "text": "Ensure operators fill vehicles and fuelers are available for refill of on-site storage"
+                    }
+                ]
+            }
         }
     },
     {
         "id": "deployment",
-        "title": "Deployment Readiness",
-        "description": "Mission deployment preparation status",
-        "percentage": 75,
         "data": {
-            "metrics": [
-                {
-                    "label": "Personnel Ready",
-                    "value": "45%",
-                    "status": "critical"
-                },
-                {
-                    "label": "Equipment Staged",
-                    "value": "23%",
-                    "status": "critical"
-                },
-                {
-                    "label": "Transport Available",
-                    "value": "67%",
-                    "status": "medium"
-                },
-                {
-                    "label": "Mission Planning",
-                    "value": "12%",
-                    "status": "critical"
-                }
-            ],
-            "issues": "seed data in utils.js",
-            "actions": "seed data in utils.js"
-        }
-    },
-    {
-        "id": "crew",
-        "title": "Crew Qualification",
-        "description": "Combat Readiness Evaluation Assessment",
-        "percentage": 75,
-        "data": {
-            "metrics": [
-                {
-                    "label": "Combat Ready",
-                    "value": "89%",
-                    "status": "high"
-                },
-                {
-                    "label": "Team Cohesion",
-                    "value": "92%",
-                    "status": "high"
-                },
-                {
-                    "label": "Equipment Proficiency",
-                    "value": "85%",
-                    "status": "high"
-                },
-                {
-                    "label": "Mission Rehearsals",
-                    "value": "78%",
-                    "status": "medium"
-                }
-            ],
-            "issues": "seed data in utils.js",
-            "actions": "seed data in utils.js"
-        }
-    },
-    {
-        "id": "medical",
-        "title": "Medical Readiness",
-        "description": "Health and medical certification status",
-        "percentage": 75,
-        "data": {
-            "metrics": [
-                {
-                    "label": "Medical Readiness",
-                    "value": "92%",
-                    "status": "high"
-                },
-                {
-                    "label": "Vaccinations Current",
-                    "value": "98%",
-                    "status": "high"
-                },
-                {
-                    "label": "Physical Fitness",
-                    "value": "87%",
-                    "status": "high"
-                },
-                {
-                    "label": "Medical Equipment",
-                    "value": "94%",
-                    "status": "high"
-                }
-            ],
-            "issues": "seed data in utils.js",
-            "actions": "seed data in utils.js"
-        }
-    },
-    {
-        "id": "weapons",
-        "title": "Weapons Qualification",
-        "description": "Weapons training and marksmanship status",
-        "percentage": 75,
-        "data": {
-            "metrics": [
-                {
-                    "label": "Qualified Personnel",
-                    "value": "68%",
-                    "status": "medium"
-                },
-                {
-                    "label": "Range Time Current",
-                    "value": "45%",
-                    "status": "low"
-                },
-                {
-                    "label": "Equipment Status",
-                    "value": "82%",
-                    "status": "high"
-                },
-                {
-                    "label": "Safety Certification",
-                    "value": "95%",
-                    "status": "high"
-                }
-            ],
-            "issues": "seed data in utils.js",
-            "actions": "seed data in utils.js"
+            "title": "Deployment Readiness",
+            "description": "Mission deployment preparation status",
+            "percentage": 62.5,
+            "data": {
+                "metrics": [
+                    {
+                        "label": "Personnel Ready",
+                        "value": 62.5
+                    }
+                ],
+                "issues": [
+                    {
+                        "id": 0,
+                        "text": "37.5% of soldiers are non-deployable"
+                    }
+                ],
+                "actions": [
+                    {
+                        "id": 0,
+                        "text": "Ensure all soldiers are green on MEDPROS, have completed DD-93, SGLV, AT LVL1, and have a GTC"
+                    }
+                ]
+            }
         }
     }
 ]
-http://localhost:3001/modal?unit=1&vicModalValue=true
+http://localhost:3001/modal?unit=8&vicModalValue=true&deploymentModalValue=true
 [
     {
         "id": "vehicle",
-        "title": "Vehicle Readiness",
-        "description": "Equipment and vehicle operational status",
-        "percentage": 40
+        "data": {
+            "title": "Vehicle Readiness",
+            "description": "Equipment and vehicle operational status",
+            "percentage": 80,
+            "issues": 2
+        }
+    },
+    {
+        "id": "deployment",
+        "data": {
+            "title": "Deployment Readiness",
+            "description": "Mission deployment preparation status",
+            "percentage": 62.5,
+            "issues": 1
+        }
     }
 ]
