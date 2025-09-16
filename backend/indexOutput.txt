@@ -232,7 +232,7 @@ http://localhost:3001/priority?unit=1
 
 GET: Modal
 http://localhost:3001/modal?unit=8&vicModalValue=true&deploymentModalValue=true&verbose=true
-Other params not implemented at this time, will be by EOD tuesday following same format as below
+Other params not implemented at this time, will be by EOD tuesday following same format as below. BUG: Cannot call parent uic. Avoid UIC id 4, 9, and both AA uics
 //required query params: unit(number)
 //optional query params: verbose(true/false as string), vicModalValue(true/false as string), deploymentModalValue(true/false as string), crewModalValue(true/false as string), medModalValue(true/false as string), weaponModalValue(true/false as string)
 [
@@ -327,5 +327,41 @@ http://localhost:3001/modal?unit=8&vicModalValue=true&deploymentModalValue=true
             "percentage": 62.5,
             "issues": 1
         }
+    }
+]
+
+GET: users/uic
+localhost:3001/users/uic?uic=WAMZAA
+//required query params: unit(number or all caps UIC)
+[
+    {
+        "id": 0,
+        "uic": "WAMZA0",
+        "name": "173 Engineer Co",
+        "parent_unit_uic": "WAMZAA"
+    },
+    {
+        "id": 1,
+        "uic": "WAMZB0",
+        "name": "82 Signal Co",
+        "parent_unit_uic": "WAMZAA"
+    },
+    {
+        "id": 2,
+        "uic": "WAMZC0",
+        "name": "212 Infantry Co",
+        "parent_unit_uic": "WAMZAA"
+    },
+    {
+        "id": 3,
+        "uic": "WAMZD0",
+        "name": "86 Military Intelligence Co",
+        "parent_unit_uic": "WAMZAA"
+    },
+    {
+        "id": 4,
+        "uic": "WAMZAA",
+        "name": "89 Forward Support Co",
+        "parent_unit_uic": null
     }
 ]
