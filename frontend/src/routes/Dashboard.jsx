@@ -1,12 +1,19 @@
 import { useState, useEffect } from 'react';
+import { useOutletContext } from 'react-router-dom';
 import KPICard from '../components/KPIcard';
 import PrioritiesPanel from '../components/PrioritiesPannel';
 import PriorityTrendAnalysis from '../components/PriorityTrendAnalysis';
 import { getKPI, getSnapshot, getPriority, getAllReadinessData, getUsersUIC } from '../services/api';
 import './Dashboard.css';
 
+const STORAGE_KEYS = {
+  parentUIC: 'dashboard.parentUIC',
+  unitId: 'dashboard.unitId',
+};
+
 function Dashboard() {
-  // Keep track of which category the user clicked on
+  const { selectedUIC, setSelectedUIC } = useOutletContext() || {};
+
   var [selectedCategory, setSelectedCategory] = useState(null);
   const [kpiData, setKpiData] = useState([]);
   const [snapshotData, setSnapshotData] = useState([]);
@@ -14,33 +21,45 @@ function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Unit selection state
   const [units, setUnits] = useState([]);
   const [selectedUnit, setSelectedUnit] = useState(null);
   const [loadingUnits, setLoadingUnits] = useState(true);
 
-  // Parent UIC selection state
-  const [parentUICs] = useState(['WAMZAA']); // Add more parent UICs as needed
-  const [selectedParentUIC, setSelectedParentUIC] = useState('WAMZAA');
+  const [parentUICs] = useState(['WAMZAA']);
 
-  // Default unit ID - could be passed as prop or from context
+  const storedParent = typeof window !== 'undefined' ? sessionStorage.getItem(STORAGE_KEYS.parentUIC) : null;
+  const [selectedParentUIC, setSelectedParentUIC] = useState(storedParent || 'WAMZAA');
+
   const defaultUnit = 1;
 
-  // Fetch units when parent UIC changes
   useEffect(() => {
     const fetchUnits = async () => {
       try {
         setLoadingUnits(true);
-        setSelectedUnit(null); // Reset selected unit when parent changes
+        setSelectedUnit(null);
 
-        // Fetch units using selected parent UIC
         const unitsData = await getUsersUIC(selectedParentUIC);
         setUnits(unitsData || []);
 
-        // Set default selected unit to the first one or find a suitable default
+        let nextUnit = null;
+
+        const storedUnitIdRaw = typeof window !== 'undefined' ? sessionStorage.getItem(STORAGE_KEYS.unitId) : null;
+        const storedUnitId = storedUnitIdRaw ? parseInt(storedUnitIdRaw, 10) : null;
+
         if (unitsData && unitsData.length > 0) {
-          const defaultSelectedUnit = unitsData.find(unit => unit.id === defaultUnit) || unitsData[0];
-          setSelectedUnit(defaultSelectedUnit);
+          if (storedUnitId && unitsData.some(u => u.id === storedUnitId)) {
+            nextUnit = unitsData.find(u => u.id === storedUnitId);
+          } else {
+            nextUnit = unitsData.find(u => u.id === defaultUnit) || unitsData[0];
+          }
+        }
+
+        if (nextUnit) {
+          setSelectedUnit(nextUnit);
+          if (typeof setSelectedUIC === 'function' && nextUnit.uic) {
+            setSelectedUIC(nextUnit.uic);
+          }
+          sessionStorage.setItem(STORAGE_KEYS.unitId, String(nextUnit.id));
         }
       } catch (error) {
         console.error('Failed to fetch units:', error);
@@ -52,10 +71,10 @@ function Dashboard() {
 
     if (selectedParentUIC) {
       fetchUnits();
+      sessionStorage.setItem(STORAGE_KEYS.parentUIC, selectedParentUIC);
     }
-  }, [selectedParentUIC]);
+  }, [selectedParentUIC, setSelectedUIC]);
 
-  // Fetch dashboard data when selected unit changes
   useEffect(() => {
     if (!selectedUnit) return;
 
@@ -64,7 +83,6 @@ function Dashboard() {
         setLoading(true);
         setError(null);
 
-        // Use the selected unit's ID for fetching data
         const unitId = selectedUnit.id;
         const data = await getAllReadinessData(unitId);
 
@@ -75,12 +93,10 @@ function Dashboard() {
         console.log('KPI Data:', data.kpi);
         console.log('Snapshot Data:', data.snapshot);
         console.log('Priority Data:', data.priority);
-
       } catch (error) {
         console.error('Failed to fetch dashboard data:', error);
         setError(error.message);
 
-        // Fallback to individual API calls if the combined call fails
         try {
           const kpiResponse = await getKPI(selectedUnit.id, {
             personnelReadinessScore: true,
@@ -100,8 +116,15 @@ function Dashboard() {
     fetchData();
   }, [selectedUnit]);
 
+  useEffect(() => {
+    if (selectedUnit?.id) {
+      sessionStorage.setItem(STORAGE_KEYS.unitId, String(selectedUnit.id));
+    }
+    if (selectedUnit?.uic && typeof setSelectedUIC === 'function') {
+      setSelectedUIC(selectedUnit.uic);
+    }
+  }, [selectedUnit, setSelectedUIC]);
 
-  // Different priority items for each category
   var categoryPriorityItems = {
     personnel: [
       { id: 1, title: 'Personnel Accountability', priority: 'High', dueDate: '2025-09-12', description: 'Complete personnel roster verification and accountability' },
@@ -123,23 +146,27 @@ function Dashboard() {
       { id: 2, title: 'Immunization Records', priority: 'High', dueDate: '2025-09-14', description: 'Verify and update immunization records' },
       { id: 3, title: 'Dental Readiness', priority: 'Medium', dueDate: '2025-09-19', description: 'Schedule and complete dental examinations' }
     ]
-  }
+  };
 
-  // Function to handle when user clicks on a KPI card
   function handleKPIClick(category) {
     setSelectedCategory(category);
   }
 
-  // Function to handle parent UIC selection change
   function handleParentUICChange(event) {
-    setSelectedParentUIC(event.target.value);
+    const value = event.target.value;
+    setSelectedParentUIC(value);
+    sessionStorage.setItem(STORAGE_KEYS.parentUIC, value);
+    sessionStorage.removeItem(STORAGE_KEYS.unitId);
   }
 
-  // Function to handle unit selection change
   function handleUnitChange(event) {
-    const unitId = parseInt(event.target.value);
+    const unitId = parseInt(event.target.value, 10);
     const unit = units.find(u => u.id === unitId);
     setSelectedUnit(unit);
+    sessionStorage.setItem(STORAGE_KEYS.unitId, String(unitId));
+    if (unit?.uic && typeof setSelectedUIC === 'function') {
+      setSelectedUIC(unit.uic);
+    }
   }
 
   return (

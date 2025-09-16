@@ -59,7 +59,7 @@ function AppLayout({ user, onLogout }) {
             </div>
           </div>
 
-         <nav className="main-nav">
+          <nav className="main-nav">
             <UICSelector selectedUIC={selectedUIC} onUICChange={handleUICChange} />
 
             <NavLink
@@ -81,6 +81,13 @@ function AppLayout({ user, onLogout }) {
               className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
             >
               Equipment
+            </NavLink>
+
+            <NavLink
+              to={`/ammo-calculator?uic=${selectedUIC}`}
+              className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+            >
+              Ammo Calculator
             </NavLink>
           </nav>
 
@@ -110,7 +117,7 @@ function AppLayout({ user, onLogout }) {
           <LeaderHub />
         </aside>
         <main className="main-content">
-          <Outlet />
+          <Outlet context={{ selectedUIC, setSelectedUIC }} />
           <PrintReport />
         </main>
       </div>
