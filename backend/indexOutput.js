@@ -81,3 +81,15 @@ fetch('http://localhost:3001/users/uic?uic=WAMZAA')
     )
     console.dir(data, { depth: null });
   })
+
+  fetch('http://localhost:3001/training/rollup')
+  .then(res => res.json())
+  .then(data=> {
+    let url = 'http://localhost:3001/training/rollup'
+    let fetchName = 'GET: ROLLUP'
+    let vars = 'const { uic, ammoRollup, vehicleRollup } = req.query'
+    console.log(
+      `${fetchName}\n${vars}\nURL:${url}\n`,
+    )
+    console.dir(data, { depth: null });
+  })
