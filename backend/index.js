@@ -279,6 +279,17 @@ app.get('/users/uic', async (req, res) => {
   }
 })
 
+app.get('/training/rollup', async (req, res) =>{
+  const { uic, ammoRollup, vehicleRollup } = req.query
+  try{
+    res.status(200).send({"dodic":"A131","quantity":16500,"nomenclature":"7.62mm LNKD4 Ball-1TR"},{"dodic":"A940","quantity":1200,"nomenclature":"Ctg 25mm TPDS-T M910"},{"dodic":"A976","quantity":880,"nomenclature":"Ctg 25mm TP-T M793"})
+  }
+  catch (error) {
+    console.error(error);
+    res.status(500).json({ error: `${error}` });
+  }
+})
+
 // app.get('/api/training/350-1', function(request, response) {
 //   const trainingData = {
 //     name: '350-1 Individual Training',
