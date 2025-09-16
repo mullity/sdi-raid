@@ -48,6 +48,10 @@ class TaskSet {
     getTaskUrls() {
         return this.collectiveTasks.map(task => task.getUrlPdf())
     }
+
+    getTaskReferences() {
+        return Promise.all(this.collectiveTasks.map(task => Promise.allSettled(task.getReferencePdfs())))
+    }
 }
 
 class TrainingEvent {
@@ -238,6 +242,11 @@ class CollectiveTask {
     }
 
     getReferencePdfs(){
+        if (this['references'].length<1){
+            return []
+        } else {
+            return this['references'].map(reference=>carSearch(reference['id']).then(meta=>getPdfLink(meta)))
+        }
 
     }
 }
@@ -269,13 +278,22 @@ async function carSearch(docId) {
         .then(res => toJSON(res.body)
             .then(jsonBody => jsonBody['catalogitems'][0])
             .then(firstReturn => {
-                if (firstReturn)
+                if (firstReturn['identifier']==docId){
+                    return firstReturn
+                } else {
+                    throw new Error(`First return did not match requested document, wanted ${docId}, received ${firstReturn['identifier']}`)
+                }
             })
         )
 }
 
 function getPdfLink(metadata){
-    return metadata['formats'].find(item => item['path'] == 'report.pdf')['link']['href']
+    if (metadata['formats'].find(item => item['path'] == 'report.pdf')?.['link']?.['href']){
+        return metadata['formats'].find(item => item['path'] == 'report.pdf')['link']['href']
+    } else {
+        return metadata['formats'][0]['link']['href']
+    }
+    
 }
 
 module.exports = {

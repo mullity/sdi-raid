@@ -11,8 +11,8 @@ let myTrainingEvent = new TrainingEvent({
     'taskEvents':[myNewEvent,myNewEvent2]
 })
 
-let myColTask = new CollectiveTask({"id":'17-CW-5424'})
-myColTask.init().then(()=>console.log(myColTask['conditionAndStandard']))
+let myColTask = new CollectiveTask({"id":'17-CW-5969'})
+//myColTask.init().then(()=>console.log(myColTask['conditionAndStandard']))
 
 let myTaskSet = new TaskSet()
-myTaskSet.addCollectiveTask('17-CW-5424').then(()=>console.log(myTaskSet.getTaskUrls()))
+myTaskSet.addCollectiveTask('17-CW-5969').then(()=>myTaskSet.getTaskReferences().then(ref=>console.log(ref)))
