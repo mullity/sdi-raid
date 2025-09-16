@@ -44,9 +44,25 @@
                             "dodic": "A976",
                             "quantity": 88,
                             "nomenclature": "Ctg 25mm TP-T M793"
+                        },
+                        {
+                            "dodic": "L367",
+                            "quantity": 22,
+                            "nomenclature": "Sim Launch Antitank (ATWESS) M22"
+                        },
+                        {
+                            "dodic": "LA53",
+                            "quantity": 101,
+                            "nomenclature": "SIMULATOR, TARGET"
+                        },
+                        {
+                            "dodic": "LA54",
+                            "quantity": 101,
+                            "nomenclature": "Simulator, Hostile Fire"
                         }
                     ]
                 }
+                
             ]
         },
         {
@@ -78,6 +94,21 @@
                             "dodic": "A976",
                             "quantity": 88,
                             "nomenclature": "Ctg 25mm TP-T M793"
+                        },
+                        {
+                            "dodic": "L367",
+                            "quantity": 22,
+                            "nomenclature": "Sim Launch Antitank (ATWESS) M22"
+                        },
+                        {
+                            "dodic": "LA53",
+                            "quantity": 101,
+                            "nomenclature": "SIMULATOR, TARGET"
+                        },
+                        {
+                            "dodic": "LA54",
+                            "quantity": 101,
+                            "nomenclature": "Simulator, Hostile Fire"
                         }
                     ]
                 }
@@ -112,6 +143,21 @@
                             "dodic": "A976",
                             "quantity": 264,
                             "nomenclature": "Ctg 25mm TP-T M793"
+                        },
+                        {
+                            "dodic": "L367",
+                            "quantity": 66,
+                            "nomenclature": "Sim Launch Antitank (ATWESS) M22"
+                        },
+                        {
+                            "dodic": "LA53",
+                            "quantity": 303,
+                            "nomenclature": "SIMULATOR, TARGET"
+                        },
+                        {
+                            "dodic": "LA54",
+                            "quantity": 303,
+                            "nomenclature": "Simulator, Hostile Fire"
                         }
                     ]
                 }
