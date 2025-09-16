@@ -242,7 +242,7 @@ class CollectiveTask {
     }
 
     getReferencePdfs(){
-        if (this['references'].length<1){
+        if (this['references']?.length<1){
             return []
         } else {
             return this['references'].map(reference=>carSearch(reference['id']).then(meta=>getPdfLink(meta)))
