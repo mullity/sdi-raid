@@ -2,19 +2,6 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.seed = async function(knex) {
-  // Deletes ALL existing entries
-  await knex('table_name').del()
-  await knex('table_name').insert([
-    {id: 1, colName: 'rowValue1'},
-    {id: 2, colName: 'rowValue2'},
-    {id: 3, colName: 'rowValue3'}
-  ]);
-};
-
-
-// id | gunnery_level | night_qualified | vehicle_id |
-// soldier_id_1 | soldier_id_2 | soldier_id_3 | soldier_id_4 | soldier_id_5
 
 exports.seed = function(knex){
   return knex('crews').del()
