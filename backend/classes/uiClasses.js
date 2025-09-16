@@ -347,7 +347,7 @@ class VehicleSnapshot extends Snapshot {
                     L77147: {name: 'loader_skid_steed_type_ii',
                         data: this.loaderArray,
                     },
-                    J05029: {name: 'joint_light_tactical_vehcile_a1_four_seat_gen_purpo',
+                    J05029: {name: 'joint_light_tactical_vehicle_a1_four_seat_gen_purpo',
                         data: this.jltvArray,
                     },
                     M1078A2: {name: 'truck_cargo',
