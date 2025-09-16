@@ -1,17 +1,31 @@
-const BASE_URL = 'http://localhost:3001';
+const BASE_URL = "http://localhost:3001";
+
+// Helper to get cookie value
+function getCookie() {
+  return document.cookie.split("=")[1] || undefined;
+}
 
 // Generic API call function with error handling
 const apiCall = async (endpoint, params = {}) => {
   try {
     const queryParams = new URLSearchParams();
-    Object.keys(params).forEach(key => {
+    Object.keys(params).forEach((key) => {
       if (params[key] !== undefined && params[key] !== null) {
         queryParams.append(key, params[key]);
       }
     });
 
     const url = `${BASE_URL}${endpoint}?${queryParams.toString()}`;
-    const response = await fetch(url);
+    const token = getCookie("loginToken");
+    console.log("Sending token:", token); // Debug log
+    const response = await fetch(url, {
+      credentials: "include",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+    });
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -29,7 +43,7 @@ export const getSnapshot = async (unit, verbose = null) => {
   const params = { unit };
   if (verbose !== null) params.verbose = verbose.toString();
 
-  return await apiCall('/snapshot', params);
+  return await apiCall("/snapshot", params);
 };
 
 // GET: KPI - Key Performance Indicators with optional filters
@@ -42,16 +56,20 @@ export const getKPI = async (unit, options = {}) => {
     personnelReadinessScore,
     equipmentReadinessScore,
     trainingReadinessScore,
-    medicalReadinessScore
+    medicalReadinessScore,
   } = options;
 
   if (verbose !== undefined) params.verbose = verbose.toString();
-  if (personnelReadinessScore !== undefined) params.personnelReadinessScore = personnelReadinessScore.toString();
-  if (equipmentReadinessScore !== undefined) params.equipmentReadinessScore = equipmentReadinessScore.toString();
-  if (trainingReadinessScore !== undefined) params.trainingReadinessScore = trainingReadinessScore.toString();
-  if (medicalReadinessScore !== undefined) params.medicalReadinessScore = medicalReadinessScore.toString();
+  if (personnelReadinessScore !== undefined)
+    params.personnelReadinessScore = personnelReadinessScore.toString();
+  if (equipmentReadinessScore !== undefined)
+    params.equipmentReadinessScore = equipmentReadinessScore.toString();
+  if (trainingReadinessScore !== undefined)
+    params.trainingReadinessScore = trainingReadinessScore.toString();
+  if (medicalReadinessScore !== undefined)
+    params.medicalReadinessScore = medicalReadinessScore.toString();
 
-  return await apiCall('/kpi', params);
+  return await apiCall("/kpi", params);
 };
 
 // GET: Priority - Same as snapshot but ordered by value lowest first
@@ -59,7 +77,7 @@ export const getPriority = async (unit, verbose = null) => {
   const params = { unit };
   if (verbose !== null) params.verbose = verbose.toString();
 
-  return await apiCall('/priority', params);
+  return await apiCall("/priority", params);
 };
 
 // GET: Modal - Detailed modal information
@@ -73,22 +91,27 @@ export const getModal = async (unit, options = {}) => {
     deploymentModalValue,
     crewModalValue,
     medModalValue,
-    weaponModalValue
+    weaponModalValue,
   } = options;
 
   if (verbose !== undefined) params.verbose = verbose.toString();
-  if (vicModalValue !== undefined) params.vicModalValue = vicModalValue.toString();
-  if (deploymentModalValue !== undefined) params.deploymentModalValue = deploymentModalValue.toString();
-  if (crewModalValue !== undefined) params.crewModalValue = crewModalValue.toString();
-  if (medModalValue !== undefined) params.medModalValue = medModalValue.toString();
-  if (weaponModalValue !== undefined) params.weaponModalValue = weaponModalValue.toString();
+  if (vicModalValue !== undefined)
+    params.vicModalValue = vicModalValue.toString();
+  if (deploymentModalValue !== undefined)
+    params.deploymentModalValue = deploymentModalValue.toString();
+  if (crewModalValue !== undefined)
+    params.crewModalValue = crewModalValue.toString();
+  if (medModalValue !== undefined)
+    params.medModalValue = medModalValue.toString();
+  if (weaponModalValue !== undefined)
+    params.weaponModalValue = weaponModalValue.toString();
 
-  return await apiCall('/modal', params);
+  return await apiCall("/modal", params);
 };
 
 // GET: Users/UIC - Get unit information by UIC
 export const getUsersUIC = async (uic) => {
-  return await apiCall('/users/uic', { uic });
+  return await apiCall("/users/uic", { uic });
 };
 
 // Convenience functions for specific use cases
@@ -102,17 +125,17 @@ export const getAllReadinessData = async (unit) => {
         personnelReadinessScore: true,
         equipmentReadinessScore: true,
         trainingReadinessScore: true,
-        medicalReadinessScore: true
-      })
+        medicalReadinessScore: true,
+      }),
     ]);
 
     return {
       snapshot,
       priority,
-      kpi
+      kpi,
     };
   } catch (error) {
-    console.error('Failed to fetch all readiness data:', error);
+    console.error("Failed to fetch all readiness data:", error);
     throw error;
   }
 };
@@ -124,6 +147,6 @@ export const getDetailedModal = async (unit) => {
     deploymentModalValue: true,
     crewModalValue: true,
     medModalValue: true,
-    weaponModalValue: true
+    weaponModalValue: true,
   });
 };
