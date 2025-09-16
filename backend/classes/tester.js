@@ -1,9 +1,9 @@
 const fs = require('fs');
-const {TaskEvent, TrainingEvent}=require('./taskClass.js')
+const {TaskEvent, TrainingEvent, CollectiveTask, TaskSet}=require('./taskClass.js')
 let data = JSON.parse(fs.readFileSync('../testdata/bradQualEvent.json','utf-8'))
 let myNewEvent = new TaskEvent(data)
 let myNewEvent2 = new TaskEvent(data)
-console.log(myNewEvent['elements'])
+
 
 let myTrainingEvent = new TrainingEvent({
     'name':'Gunnery Test',
@@ -11,7 +11,8 @@ let myTrainingEvent = new TrainingEvent({
     'taskEvents':[myNewEvent,myNewEvent2]
 })
 
-console.log(myTrainingEvent.taskEvents)
-console.log(myTrainingEvent.getAmmoRollup())
+let myColTask = new CollectiveTask({"id":'17-CW-5424'})
+myColTask.init().then(()=>console.log(myColTask['conditionAndStandard']))
 
-console.log(JSON.stringify(myTrainingEvent.getAmmoRollup()))
+let myTaskSet = new TaskSet()
+myTaskSet.addCollectiveTask('17-CW-5424').then(()=>console.log(myTaskSet.getTaskUrls()))

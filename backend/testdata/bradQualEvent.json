@@ -11,9 +11,9 @@
     "condition": "Run",
     "trainingAudience": "IMPORTANT-PLACEHOLDER",
     "facilities": "IMPORTANT-PLACEHOLDER",
-    "purpose": "IMPORTANT-PLACEHOLDER",
-    "outcome": "IMPORTANT-PLACEHOLDER",
-    "executionGuidance": "IMPORTANT-PLACEHOLDER",
+    "purpose": "To train the crew in tasks associated with BFV Qualification.",
+    "outcome": "The crew demonstrates complete task proficiency in associated tasks and successfully detects, identifies, decides, engages, and assesses (DIDEA) threats in a live fire environment.",
+    "executionGuidance": "This event should emphasize the fundamentals progressing from Basic live fire (Table IV) and Practice live fire (Table V) to Crew Qualification (Table VI), for associated tasks, operating in a dynamic environment, against a single stationary and/or moving threat, as part of a larger force while in an offensive or defensive posture. Higher headquarters provides and/or coordinates for appropriate resources, to include observer, controller/trainers. This event should encompass the execution of tactics, techniques, and procedures for acquiring, suppressing, and/or destroying the threat using direct fire control measures, maneuvering undetected selecting proper firing positions, maintaining continuous communications, along with reporting information requirements. C2 systems should be utilized to facilitate planning and preparation, situational awareness during execution, and consolidation/reorganization. The estimated duration for this event includes time to plan, prepare, execute, assess and retrain as necessary. Conditions should include both daylight and limited visibility scenarios. More complex and challenging conditions should be injected as proficiency increases.Refer to TC 3-20.31 \\\"Training and Qualification, Crew\\\" for specific guidance. Recommend this event be conducted while unit is in a “green” cycle (Active Army).",
     "elements": [
         {
             "name": "COMPANY HQ",
