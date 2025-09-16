@@ -1,5 +1,5 @@
 const { VehicleSnapshot, TrainingSnapshot, PersonnelSnapshot, MedicalSnapshot, VehicleModal, DeploymentModal, VehicleIssuesActions, PersonnelIssuesActions } = require('../classes/uiClasses');
-
+const { TrainingEvent }=require('../classes/taskClass.js')
 require('dotenv').config()
 
 const knex = require('knex')( require('../knexfile')[process.env.NODE_ENV])
@@ -461,6 +461,25 @@ const modal = async (unit, verbose, vicModalValue, deploymentModalValue, crewMod
   return modalData;
 }
 
+const formParser = (form, ammoRollup, vehicleRollup) => {
+  let output = []
+  let ammo
+  let vehicle
+
+  if(ammoRollup === 'true'){
+    ammo = new TrainingEvent(form).getAmmoRollup()
+    output.push({ammunition: ammo})
+  }
+  if(vehicleRollup === 'true'){
+    ammo = new TrainingEvent(form).getAmmoRollup()
+    output.push({vehicles: ammo})
+  }
+
+
+
+  return output
+}
+
 
 
 // //selectable by type,
@@ -554,7 +573,8 @@ module.exports = {
   parentsAndChildrenToArray:parentsAndChildrenToArray,
   vicIssuesActions:vicIssuesActions,
   personnelIssuesActions:personnelIssuesActions,
-  vicCertified:vicCertified
+  vicCertified:vicCertified,
+  formParser:formParser
 }
 
 // vicModal:vicModal,

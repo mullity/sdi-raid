@@ -14,6 +14,7 @@ const {
   trainingSnapshot,
   personnelSnapshot,
   medicalSnapshot,
+  formParser,
 } = require("./cookieUtils/utils");
 const environment = process.env.NODE_ENV || "development";
 const knexConfig = require("./knexfile")[environment];
@@ -288,6 +289,24 @@ app.get('/training/rollup', async (req, res) =>{
     console.error(error);
     res.status(500).json({ error: `${error}` });
   }
+})
+
+app.post('/training' , async (req, res) => {
+  let form = req.body
+  const { ammoRollup, vehicleRollup } = req.query
+  if(Array.isArray(form.taskEvents) === false || form.taskEvents.length < 1 === true){
+    res.status(404).send('Improperly formated training event. Please select at least one Task Event')
+  } else {
+    try {
+    let output = await formParser(form, ammoRollup, vehicleRollup)
+    res.status(200).send(output)
+  }
+  catch (error) {
+    console.error(error);
+    res.status(500).json({ error: `${error}` });
+  }
+  }
+
 })
 
 // app.get('/api/training/350-1', function(request, response) {
