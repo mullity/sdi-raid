@@ -30,16 +30,16 @@ let nameType = [
 
 //Static UIC
 
-let unitNum0 = Math.floor(Math.random() * (300 - 1 + 1)) + 1
-let unitNum1 = Math.floor(Math.random() * (300 - 1 + 1)) + 1
-let unitNum2 = Math.floor(Math.random() * (300 - 1 + 1)) + 1
-let unitNum3 = Math.floor(Math.random() * (300 - 1 + 1)) + 1
-let unitNum4 = Math.floor(Math.random() * (300 - 1 + 1)) + 1
-let unitNum5 = Math.floor(Math.random() * (300 - 1 + 1)) + 1
-let unitNum6 = Math.floor(Math.random() * (300 - 1 + 1)) + 1
-let unitNum7 = Math.floor(Math.random() * (300 - 1 + 1)) + 1
-let unitNum8 = Math.floor(Math.random() * (300 - 1 + 1)) + 1
-let unitNum9 = Math.floor(Math.random() * (300 - 1 + 1)) + 1
+let unitNum0 = Math.floor(Math.random() * (300 - 100 + 1)) + 100
+let unitNum1 = Math.floor(Math.random() * (300 - 100 + 1)) + 100
+let unitNum2 = Math.floor(Math.random() * (300 - 100 + 1)) + 100
+let unitNum3 = Math.floor(Math.random() * (300 - 100 + 1)) + 100
+let unitNum4 = Math.floor(Math.random() * (300 - 100 + 1)) + 100
+let unitNum5 = Math.floor(Math.random() * (300 - 100 + 1)) + 100
+let unitNum6 = Math.floor(Math.random() * (300 - 100 + 1)) + 100
+let unitNum7 = Math.floor(Math.random() * (300 - 100 + 1)) + 100
+let unitNum8 = Math.floor(Math.random() * (300 - 100 + 1)) + 100
+let unitNum9 = Math.floor(Math.random() * (300 - 100 + 1)) + 100
 
 data.push({
   id: 0,

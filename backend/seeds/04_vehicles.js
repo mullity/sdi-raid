@@ -7,7 +7,7 @@ const { faker } = require('@faker-js/faker');
 exports.seed = function(knex) {
   return knex('vehicle').del()
     .then(one => {
-      return knex('units').select('id').from('units')
+      return knex('units').select().from('units')
         .then(output => {
           let data = []
           let fakeUnits = Number(output.length)
@@ -32,6 +32,7 @@ exports.seed = function(knex) {
 
           let idNum = 0
           for(let j = 0; j < fakeUnits; j++) {
+            let unitNumber = `${output[j].name}`.slice(0,3)
             for(let i = 0; i < faked; i++){
               let nameNum = Math.floor(Math.random() * 10)
               let statusNum = Math.floor(Math.random() * 3)
@@ -46,7 +47,8 @@ exports.seed = function(knex) {
                 status: `${equipmentStatus[statusNum].name}`,
                 assigned_unit_id: j,
                 date_last_serviced: date,
-                fuel_level: fuelNum
+                fuel_level: fuelNum,
+                bumper_number: `${unitNumber}-${i}`
               })
             }
           }
