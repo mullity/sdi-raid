@@ -376,6 +376,55 @@ class VehicleSnapshot extends Snapshot {
 
 }
 
+class CrewSnapshot extends Snapshot{
+    constructor() {
+        super()
+        this.id = "personnel"
+        this.value = 0
+        this.data = {}
+        this.deployable = 0
+        this.nonDeployable = 0
+        this.troops = []
+
+    }
+
+    async init(unit) {
+        const { getWithUnitId, selectParentsAndChildren, parentsAndChildrenToArray } = require('../cookieUtils/utils.js')
+        this.units = parentsAndChildrenToArray(await selectParentsAndChildren(unit))
+        this.crews = await getWithUnitId('crews', this.units)
+    }
+
+    generateCard(verbose) {
+        let crewsArray = []
+
+        for(let crew of this.crews){
+            crewsArray.push(crew)
+            if(crew.gunnery_level < 6){
+                this.nonDeployable++
+            }
+            else if(crew.gunnery_level = 6){
+                this.deployable++
+            }
+        }
+
+
+
+        if (verbose === "true") {
+            let snapData = {
+                total: this.crews.length,
+                deployable: this.deployable,
+                nondeployable: this.nonDeployable,
+                data: {
+                    crews: crewsArray
+                }
+            }
+            return this.generateDataResponse('percent', snapData)
+        } else {
+            return this.generateDataResponse()
+        }
+    }
+}
+
 class IssuesActions{
     constructor(id, data){
         this.id = id
@@ -581,6 +630,84 @@ class DeploymentModal extends Modal{
 
 }
 
+class CrewIssuesActions extends IssuesActions{
+    constructor(){
+        super()
+        this.issues= []
+        this.actions= []
+        this.issueTick = 0
+        this.actionTick = 0
+    }
+    generateCard(nondeployable, verbose){
+        let snapData
+        if(nondeployable > 25){
+            this.issues.push({id: this.issueTick, text: `${nondeployable}% of crews are non-deployable`})
+            this.issueTick++
+            this.actions.push({id: this.actionTick, text: 'Schedule remedial or initial gunnery training'})
+            this.actionTick++
+        }
+
+        if(verbose === 'true'){
+            snapData = {
+                issues: this.issues,
+                actions: this.actions
+            }
+            return this.generateDataResponse('issuesActions', snapData)
+        }
+        else {
+            snapData = {
+                issues: this.issues.length
+            }
+            return this.generateDataResponse('issuesActions', snapData)
+        }
+    }
+}
+
+class CrewModal extends Modal{
+    constructor(){
+        super()
+    }
+
+    async init(unit, verbose) {
+        const { crewSnapshot, selectParentsAndChildren, parentsAndChildrenToArray, crewIssuesActions } = require('../cookieUtils/utils.js')
+        this.units = parentsAndChildrenToArray(await selectParentsAndChildren(unit))
+        this.crews = await crewSnapshot(unit, 'true')
+        this.issuesActions = await crewIssuesActions(Number((this.crews.data.nondeployable/this.crews.data.total)*100), verbose)
+    }
+
+    generateCard(verbose){
+        let snapData
+        let percent = Number((this.crews.data.deployable / this.crews.data.total) * 100)
+        console.log('issuesactinos in crewmodal',this.issuesActions)
+        if(verbose == "true"){
+            snapData = {
+                title: 'Crew Qualification',
+                description: 'Combat Readiness Evaluation Assessment',
+                percentage: percent,
+                data: {
+                    metrics: [
+                        { label: 'Combat Ready', value: '89%', status: 'high' },
+                        { label: 'Team Cohesion', value: '92%', status: 'high' },
+                        { label: 'Equipment Proficiency', value: '85%', status: 'high' },
+                        { label: 'Mission Rehearsals', value: '78%', status: 'medium' }
+                    ],
+                    issues: this.issuesActions.data.issues,
+                    actions: this.issuesActions.data.actions
+                }
+            }
+            return this.generateDataResponse('crew', snapData)
+        } else {
+            snapData = {
+                title: 'Crew Qualification',
+                description: 'Combat Readiness Evaluation Assessment',
+                percentage: percent,
+                issues: this.issuesActions.data.issues
+            }
+            return this.generateDataResponse('crew', snapData)
+            }
+    }
+}
+
 
 
 
@@ -589,10 +716,13 @@ module.exports = {
     TrainingSnapshot: TrainingSnapshot,
     PersonnelSnapshot: PersonnelSnapshot,
     MedicalSnapshot: MedicalSnapshot,
+    CrewSnapshot:CrewSnapshot,
     UiCard: UiCard,
     Modal: Modal,
     VehicleModal:VehicleModal,
     DeploymentModal:DeploymentModal,
+    CrewModal:CrewModal,
     VehicleIssuesActions:VehicleIssuesActions,
-    PersonnelIssuesActions:PersonnelIssuesActions
+    PersonnelIssuesActions:PersonnelIssuesActions,
+    CrewIssuesActions:CrewIssuesActions
 }

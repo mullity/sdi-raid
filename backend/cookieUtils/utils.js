@@ -1,4 +1,4 @@
-const { VehicleSnapshot, TrainingSnapshot, PersonnelSnapshot, MedicalSnapshot, VehicleModal, DeploymentModal, VehicleIssuesActions, PersonnelIssuesActions } = require('../classes/uiClasses');
+const { CrewModal,CrewIssuesActions,CrewSnapshot,VehicleSnapshot, TrainingSnapshot, PersonnelSnapshot, MedicalSnapshot, VehicleModal, DeploymentModal, VehicleIssuesActions, PersonnelIssuesActions } = require('../classes/uiClasses');
 const { TrainingEvent }=require('../classes/taskClass.js')
 require('dotenv').config()
 
@@ -159,6 +159,12 @@ const medicalSnapshot = async (unit, verbose) => {
   .then(()=>(myNewSnap.generateCard(verbose)))
 }
 
+const crewSnapshot = async (unit, verbose) => {
+  let myNewSnap = new CrewSnapshot()
+  return myNewSnap.init(unit)
+  .then(()=>(myNewSnap.generateCard(verbose)))
+}
+
 /**
  *
  * @param {number} unit unitId
@@ -280,6 +286,11 @@ const personnelIssuesActions = async (nondeployable, verbose) => {
     return myNewSnap.generateCard(nondeployable, verbose)
 }
 
+const crewIssuesActions = async (nondeployable, verbose) => {
+  let myNewSnap = new CrewIssuesActions(nondeployable, verbose)
+    return myNewSnap.generateCard(nondeployable, verbose)
+}
+
 const deploymentModal = async (unit, verbose) => {
   let myNewSnap = new DeploymentModal()
     return myNewSnap.init(unit, verbose)
@@ -323,39 +334,43 @@ const deploymentModal = async (unit, verbose) => {
 }
 
 const crewModal = async (unit, verbose) => {
-  let crewModal
-  let percent = 75
-  let issuesActions = {
-    issues: "seed data in utils.js",
-    actions: "seed data in utils.js"
-  }
-  if(verbose == "true"){
-    crewModal = {
-      id: 'crew',
-      title: 'Crew Qualification',
-      description: 'Combat Readiness Evaluation Assessment',
-      percentage: percent,
-      data: {
-        metrics: [
-          { label: 'Combat Ready', value: '89%', status: 'high' },
-          { label: 'Team Cohesion', value: '92%', status: 'high' },
-          { label: 'Equipment Proficiency', value: '85%', status: 'high' },
-          { label: 'Mission Rehearsals', value: '78%', status: 'medium' }
-        ],
-        issues: issuesActions.issues,
-        actions: issuesActions.actions
-      }
-    }
-  } else {
-    crewModal = {
-      id: 'crew',
-      title: 'Crew Qualification',
-      description: 'Combat Readiness Evaluation Assessment',
-      percentage: percent
-    }
-  }
 
-  return crewModal;
+  let myNewSnap = new CrewModal()
+    return myNewSnap.init(unit, verbose)
+    .then(()=>(myNewSnap.generateCard(verbose)))
+  // let crewModal
+  // let percent = 75
+  // let issuesActions = {
+  //   issues: "seed data in utils.js",
+  //   actions: "seed data in utils.js"
+  // }
+  // if(verbose == "true"){
+  //   crewModal = {
+  //     id: 'crew',
+  //     title: 'Crew Qualification',
+  //     description: 'Combat Readiness Evaluation Assessment',
+  //     percentage: percent,
+  //     data: {
+  //       metrics: [
+  //         { label: 'Combat Ready', value: '89%', status: 'high' },
+  //         { label: 'Team Cohesion', value: '92%', status: 'high' },
+  //         { label: 'Equipment Proficiency', value: '85%', status: 'high' },
+  //         { label: 'Mission Rehearsals', value: '78%', status: 'medium' }
+  //       ],
+  //       issues: issuesActions.issues,
+  //       actions: issuesActions.actions
+  //     }
+  //   }
+  // } else {
+  //   crewModal = {
+  //     id: 'crew',
+  //     title: 'Crew Qualification',
+  //     description: 'Combat Readiness Evaluation Assessment',
+  //     percentage: percent
+  //   }
+  // }
+
+  // return crewModal;
 }
 
 const medModal = async (unit, verbose) => {
@@ -563,6 +578,7 @@ module.exports = {
   trainingSnapshot:trainingSnapshot,
   personnelSnapshot:personnelSnapshot,
   medicalSnapshot:medicalSnapshot,
+  crewSnapshot:crewSnapshot,
   priority:priority,
   getAllFields: getAllFields,
   vicMaint:vicMaint,
@@ -573,6 +589,7 @@ module.exports = {
   parentsAndChildrenToArray:parentsAndChildrenToArray,
   vicIssuesActions:vicIssuesActions,
   personnelIssuesActions:personnelIssuesActions,
+  crewIssuesActions:crewIssuesActions,
   vicCertified:vicCertified,
   formParser:formParser
 }

@@ -46,10 +46,10 @@ fetch('http://localhost:3001/priority?unit=1')
     console.dir(data, { depth: null });
   })
 
-fetch('http://localhost:3001/modal?unit=8&vicModalValue=true&deploymentModalValue=true&verbose=true')
+fetch('http://localhost:3001/modal?unit=4&vicModalValue=true&deploymentModalValue=true&crewModalValue=true&verbose=true')
   .then(res => res.json())
   .then(data=> {
-    let url = 'http://localhost:3001/modal?unit=8&vicModalValue=true&deploymentModalValue=true&verbose=true'
+    let url = 'http://localhost:3001/modal?unit=4&vicModalValue=true&deploymentModalValue=true&crewModalValue=true&verbose=true'
     let fetchName = 'GET: MODAL'
     let vars = 'Other params not implemented at this time, will be by EOD tuesday following same format as below \nrrequired query params: unit(number) \noptional query params: verbose(true/false as string), vicModalValue(true/false as string), deploymentModalValue(true/false as string), crewModalValue(true/false as string), medModalValue(true/false as string), weaponModalValue(true/false as string)'
     console.log(

@@ -71,6 +71,7 @@ exports.seed = function(knex){
                 gunnery_level: levelNum,
                 night_qualified: nightNum,
                 vehicle_id: brad.id,
+                assigned_unit_id: brad.assigned_unit_id,
                 soldier_id_1: soldier1,
                 soldier_id_2: soldier2,
                 soldier_id_3: soldier3,
