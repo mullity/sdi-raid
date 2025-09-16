@@ -13,8 +13,8 @@ export default function EquipmentDetails() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const [status, setStatus] = useState(""); // 'FMC' | 'PMC' | 'NMC' | ''
-  const [q, setQ] = useState("");           // search term
+  const [status, setStatus] = useState("");
+  const [q, setQ] = useState("");
   const [page, setPage] = useState(1);
   const pageSize = 20;
 
