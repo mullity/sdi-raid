@@ -4,6 +4,7 @@ import KPICard from '../components/KPIcard';
 import PrioritiesPanel from '../components/PrioritiesPannel';
 import PriorityTrendAnalysis from '../components/PriorityTrendAnalysis';
 import { getKPI, getSnapshot, getPriority, getAllReadinessData, getUsersUIC } from '../services/api';
+import { getKPI, getSnapshot, getPriority, getAllReadinessData, getUsersUIC } from '../services/api';
 import './Dashboard.css';
 
 const STORAGE_KEYS = {
