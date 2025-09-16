@@ -406,18 +406,15 @@ class VehicleModal extends Modal{
     }
 
     async init(unit, verbose) {
-
-        // const { getWithUnitId, selectParentsAndChildren, parentsAndChildrenToArray } = require('../cookieUtils/utils.js')
-        // this.units = parentsAndChildrenToArray(await selectParentsAndChildren(unit))
-        // this.vics = await getWithUnitId('vehicle', this.units)
-
         const { vicSnapshot, selectParentsAndChildren, parentsAndChildrenToArray,vicIssuesActions,vicCertified } = require('../cookieUtils/utils.js')
-        this.units = parentsAndChildrenToArray(await selectParentsAndChildren(unit))
-        console.log("classes 416", this.units)
-        this.vics = await vicSnapshot(this.units, 'true')
+        this.intermediate = await selectParentsAndChildren(unit)
+        this.units = parentsAndChildrenToArray(this.intermediate)
+        this.vics = await vicSnapshot(unit, 'true')
         this.issuesActions = await vicIssuesActions((Number((this.vics.data.pmc + this.vics.data.nmc)/this.vics.data.total)*100), this.vics.data.fuellevel, this.units, verbose)
         this.certified = await vicCertified(this.units)
     }
+
+
 
     generateCard(verbose){
         let snapData
@@ -497,9 +494,8 @@ class DeploymentModal extends Modal{
     async init(unit, verbose) {
         const { personnelSnapshot, selectParentsAndChildren, parentsAndChildrenToArray, personnelIssuesActions ,vicCertified } = require('../cookieUtils/utils.js')
         this.units = parentsAndChildrenToArray(await selectParentsAndChildren(unit))
-        this.troops = await personnelSnapshot(this.units, 'true')
+        this.troops = await personnelSnapshot(unit, 'true')
         this.issuesActions = await personnelIssuesActions(Number((this.troops.data.nondeployable / this.troops.data.total) * 100), verbose)
-        this.certified = await vicCertified(this.units)
     }
 
     generateCard(verbose){

@@ -7,7 +7,6 @@ const knex = require('knex')( require('../knexfile')[process.env.NODE_ENV])
 
 
 const selectParentsAndChildren = (uicVar) => {
-
   if (typeof uicVar === 'number' || !isNaN(uicVar)){
 
     let numericUic = Number.parseInt(uicVar)
