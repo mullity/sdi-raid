@@ -443,7 +443,7 @@ fetch('http://localhost:3001/training?ammoRollup=true&vehicleRollup=true', {
   .then(data=> {
     let url = 'http://localhost:3001/training?ammoRollup=true&vehicleRollup=true'
     let fetchName = 'GET: ROLLUP'
-    let vars = 'let form = req.body const { ammoRollup, vehicleRollup } = req.query'
+    let vars = '\nrequired query params: ammoRollup(true) OR vehicleRollup(true), body of a JSON'
     console.log(
       `${fetchName}\n${vars}\nURL:${url}\n`,
     )

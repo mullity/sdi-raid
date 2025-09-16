@@ -294,17 +294,21 @@ app.get('/training/rollup', async (req, res) =>{
 app.post('/training' , async (req, res) => {
   let form = req.body
   const { ammoRollup, vehicleRollup } = req.query
-  if(Array.isArray(form.taskEvents) === false || form.taskEvents.length < 1 === true){
-    res.status(404).send('Improperly formated training event. Please select at least one Task Event')
+  if( ammoRollup === undefined && vehicleRollup === undefined){
+    res.status(404).send('Please select a type of rollup')
   } else {
-    try {
-    let output = await formParser(form, ammoRollup, vehicleRollup)
-    res.status(200).send(output)
-  }
-  catch (error) {
-    console.error(error);
-    res.status(500).json({ error: `${error}` });
-  }
+    if(Array.isArray(form.taskEvents) === false || form.taskEvents.length < 1 === true){
+      res.status(404).send('Improperly formated training event. Please select at least one Task Event')
+    } else {
+      try {
+        let output = await formParser(form, ammoRollup, vehicleRollup)
+        res.status(200).send(output)
+      }
+      catch (error) {
+        console.error(error);
+        res.status(500).json({ error: `${error}` });
+      }
+    }
   }
 
 })
