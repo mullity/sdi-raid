@@ -21,17 +21,23 @@ const knexConfig = require("./knexfile")[environment];
 const knex = require("knex")(knexConfig);
 const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
-const { createNewToken } = require("./cookieUtils/authUtils")
+const {
+  createNewToken,
+  authenticateToken,
+} = require("./cookieUtils/authUtils");
 
 //Secret_Key from .env
 const secretKey = process.env.SECRET_KEY;
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
-
-
 
 app.post("/login", async (req, res) => {
   console.log(req.body);
@@ -54,15 +60,13 @@ app.post("/login", async (req, res) => {
               .status(401)
               .send("Username and password combination does not exist");
           }
-          createNewToken(username, secretKey, knex)
-            .then(token => {
-              res.cookie("loginToken", token, {
-                expires: new Date(Date.now() + 8 * 3600000),
-              })
-              res.status(200).json({ HttpResponse: "Login successful" });
+          createNewToken(username, secretKey, knex).then((token) => {
+            res.cookie("loginToken", token, {
+              expires: new Date(Date.now() + 8 * 3600000),
             });
-
-        })
+            res.status(200).json({ HttpResponse: "Login successful" });
+          });
+        });
       });
   } catch (err) {
     res.status(500).send("Server error");
@@ -168,7 +172,7 @@ app.get("/snapshot", async (req, res) => {
   }
 });
 
-app.get("/kpi", async (req, res) => {
+app.get("/kpi", authenticateToken, async (req, res) => {
   //required query params: unit(number)
   //optional query params: verbose(true/false as string), personnelReadinessScore(true/false as string), equipmentReadinessScore(true/false as string), trainingReadinessScore(true/false as string), medicalReadinessScore(true/false as string)
   let {
@@ -254,8 +258,16 @@ app.get("/modal", async (req, res) => {
     weaponModalValue,
   } = req.query;
   try {
-    const got = await modal(unit, verbose, vicModalValue, deploymentModalValue, crewModalValue, medModalValue, weaponModalValue)
-    res.status(200).send(got)
+    const got = await modal(
+      unit,
+      verbose,
+      vicModalValue,
+      deploymentModalValue,
+      crewModalValue,
+      medModalValue,
+      weaponModalValue
+    );
+    res.status(200).send(got);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: `${error}` });
@@ -268,28 +280,35 @@ app.get("/modal", async (req, res) => {
   // let weaponModal = await weaponModal(unit, verbose)
 });
 
-app.get('/users/uic', async (req, res) => {
+app.get("/users/uic", async (req, res) => {
   //required query params: unit(number or all caps UIC)
-  const { uic } = req.query
+  const { uic } = req.query;
   try {
-    let out = await selectParentsAndChildren(uic)
-    res.status(200).send(out)
+    let out = await selectParentsAndChildren(uic);
+    res.status(200).send(out);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: `${error}` });
   }
-})
+});
 
-app.get('/training/rollup', async (req, res) =>{
-  const { uic, ammoRollup, vehicleRollup } = req.query
-  try{
-    res.status(200).send({"dodic":"A131","quantity":16500,"nomenclature":"7.62mm LNKD4 Ball-1TR"},{"dodic":"A940","quantity":1200,"nomenclature":"Ctg 25mm TPDS-T M910"},{"dodic":"A976","quantity":880,"nomenclature":"Ctg 25mm TP-T M793"})
-  }
-  catch (error) {
+app.get("/training/rollup", async (req, res) => {
+  const { uic, ammoRollup, vehicleRollup } = req.query;
+  try {
+    res.status(200).send(
+      {
+        dodic: "A131",
+        quantity: 16500,
+        nomenclature: "7.62mm LNKD4 Ball-1TR",
+      },
+      { dodic: "A940", quantity: 1200, nomenclature: "Ctg 25mm TPDS-T M910" },
+      { dodic: "A976", quantity: 880, nomenclature: "Ctg 25mm TP-T M793" }
+    );
+  } catch (error) {
     console.error(error);
     res.status(500).json({ error: `${error}` });
   }
-})
+});
 
 app.post('/training' , async (req, res) => {
   let form = req.body

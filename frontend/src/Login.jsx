@@ -5,32 +5,35 @@ import { useNavigate } from 'react-router-dom';
 import Orb from './components/Orb';
 
 function Login({ onLogin }) {
-  // Keep track of what the user types in each field
+
   var [username, setUsername] = useState('');
   var [password, setPassword] = useState('');
   var [role, setRole] = useState('');
   var [error, setError] = useState('');
   const navigate = useNavigate();
-  // Function to handle when user submits the form
-  function handleSubmit(e) {
+  
+  async function handleSubmit(e) {
     e.preventDefault();
-    
-    // Check if all fields are filled in
-    if (!username || !password || !role) {
-      setError('Please fill in all fields');
-      return;
-    }
-
-    // Check if password is long enough
-    if (password.length >= 6) {
-      // Login successful - call the function passed from parent
+  //Sends the cookie and username, password to the login/
+   try {
+    const response = await fetch('http://localhost:3001/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ username, password })
+    });
+    //If credentials match, send to dashboard
+    if (response.ok) {
       onLogin({ username, role });
       navigate("/dashboard");
     } else {
-      setError('Password must be at least 6 characters');
+      const errorMsg = await response.text();
+      setError(errorMsg || 'Login failed');
     }
-  
+  } catch (err) {
+    setError({'Server error': err});
   }
+}
 
   return (
     <div className="login-container">
