@@ -1,0 +1,186 @@
+/* === PAGE CONTAINER === */
+.equip-page {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+  max-width: 1100px;       /* centers content */
+  margin-inline: auto;
+}
+
+/* === HEADER & KPI === */
+.equip-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;  /* title left, KPI right */
+  gap: 2rem;
+}
+
+.equip-sub {
+  color: var(--text-muted, #666);
+  margin-top: .25rem;
+}
+
+/* KPI card */
+.equip-kpi {
+  text-align: center;
+  background: var(--card-bg);
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  box-shadow: var(--shadow-light);
+  padding: 1rem 1.25rem;
+  min-width: 220px;
+}
+
+.kpi-number {
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.kpi-label {
+  font-size: .875rem;
+  color: var(--text-muted, #666);
+}
+
+.kpi-split {
+  margin-top: .25rem;
+  display: flex;
+  gap: .75rem;
+  justify-content: center;   /* center inside card */
+  font-size: .875rem;
+  color: var(--text-muted, #666);
+}
+
+/* === TOOLBAR === */
+.equip-toolbar {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: end;
+}
+
+.equip-toolbar label {
+  display: grid;
+  gap: .25rem;
+  font-size: .875rem;
+}
+
+.equip-toolbar select,
+.equip-toolbar input {
+  padding: .5rem .6rem;
+  border: 1px solid #ddd;
+  border-radius: .5rem;
+}
+
+.equip-toolbar .search {
+  min-width: 220px;
+}
+
+/* === TABLE === */
+.equip-table-wrap {
+  overflow: auto;
+}
+
+.equip-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.equip-table th,
+.equip-table td {
+  padding: .6rem .5rem;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+.equip-table th {
+  font-weight: 600;
+  background: #fafafa;
+  position: sticky;
+  top: 0;
+}
+
+/* === BADGES === */
+.badge {
+  padding: .2rem .5rem;
+  border-radius: .5rem;
+  font-size: .75rem;
+  font-weight: 600;
+}
+
+.badge--ok {
+  background: #e6f7ed;
+  color: #116a3a;
+}
+
+.badge--warn {
+  background: #fff5e6;
+  color: #8a5a00;
+}
+
+.badge--bad {
+  background: #fdeaea;
+  color: #8a1020;
+}
+
+/* === PAGINATION === */
+.equip-pager .pager-button {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .45rem .75rem;
+  border: 1px solid var(--border-light);
+  border-radius: .5rem;
+  background: var(--card-bg);
+  color: var(--text-primary);
+  font: inherit;                /* inherit app font so arrows render consistently */
+  line-height: 1.1;
+  cursor: pointer;
+  transition: background-color .2s, color .2s, border-color .2s;
+  min-width: 88px;              /* prevents squish that can hide glyphs */
+}
+
+.equip-pager .pager-button:hover:not(:disabled) {
+  background-color: var(--bg-header);
+  color: var(--text-inverse);
+  border-color: var(--bg-header);
+}
+
+.equip-pager .pager-button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+/* In case arrows are SVG icons in the future */
+.equip-pager .pager-button svg {
+  width: 1em; height: 1em;
+  fill: currentColor;
+}
+
+/* === MISC === */
+.empty {
+  text-align: center;
+  color: #888;
+}
+
+.uic-badge {
+  padding: .5rem .6rem;
+  border: 1px solid var(--border-light);
+  border-radius: .5rem;
+  background: rgba(255,255,255,0.05);
+  font-weight: 600;
+}
+
+.view {
+  padding: .35rem .6rem;
+  border: 1px solid var(--border-light);
+  border-radius: .5rem;
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.view:hover {
+  background: var(--bg-header);
+  color: var(--text-inverse);
+}
