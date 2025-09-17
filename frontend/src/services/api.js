@@ -150,3 +150,54 @@ export const getDetailedModal = async (unit) => {
     weaponModalValue: true,
   });
 };
+
+// recommendations data - currently using mock data until backend endpoint is implemented
+export const getRecommendations = async (unit, priorityItem) => {
+  // Mock implementation that returns fallback data
+  // In the future, this could call a real backend endpoint
+  const fallbackRecommendations = {
+    'Medical Readiness Review': {
+      title: 'Medical Readiness Review',
+      urgency: 'High',
+      recommendations: [
+        'Schedule immediate MEDPROS updates for all personnel',
+        'Coordinate with medical personnel for overdue physicals',
+        'Review and update immunization records',
+        'Ensure dental readiness is current for deployment',
+        'Complete vision and hearing tests for critical personnel'
+      ],
+      resources: [
+        'MEDPROS System Access',
+        'Unit Medical Personnel',
+        'AR 40-501 Standards of Medical Fitness'
+      ],
+      timeline: '7 days',
+      impact: 'Required for deployment certification and personnel health'
+    },
+    'Training Records Update': {
+      title: 'Training Records Update',
+      urgency: 'Medium',
+      recommendations: [
+        'Audit individual training records in DTMS',
+        'Update expired certifications and qualifications',
+        'Schedule make-up training for deficient personnel',
+        'Verify MOS-specific training requirements',
+        'Document all training completions properly'
+      ],
+      resources: [
+        'DTMS (Digital Training Management System)',
+        'Training NCO',
+        'Unit Training Records'
+      ],
+      timeline: '14 days',
+      impact: 'Ensures unit maintains training readiness standards'
+    }
+  };
+
+  // Simulate API delay
+  await new Promise(resolve => setTimeout(resolve, 500));
+
+  // Return recommendations based on priority item or default
+  const priorityType = priorityItem?.type || priorityItem?.title || 'Training Records Update';
+  return fallbackRecommendations[priorityType] || fallbackRecommendations['Training Records Update'];
+};

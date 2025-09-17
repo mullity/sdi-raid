@@ -45,6 +45,8 @@ app.post("/login", async (req, res) => {
   console.log(password);
   try {
     knex("users")
+      .select('users.*', 'roles.name as role_name')
+      .leftJoin('roles', 'users.role_id', 'roles.id')
       .where({ username })
       .first()
       .then((user) => {
@@ -64,7 +66,24 @@ app.post("/login", async (req, res) => {
             res.cookie("loginToken", token, {
               expires: new Date(Date.now() + 8 * 3600000),
             });
-            res.status(200).json({ HttpResponse: "Login successful" });
+
+            // Map database roles to frontend roles
+            let role = 'viewer'; // default
+            if (user.role_name === 'ADMIN') {
+              role = 'administrator';
+            } else if (user.role_name === 'DEV') {
+              role = 'commander';
+            } else if (user.role_name === 'USER') {
+              role = 'viewer';
+            }
+
+            res.status(200).json({
+              HttpResponse: "Login successful",
+              user: {
+                username: user.username,
+                role: role
+              }
+            });
           });
         });
       });

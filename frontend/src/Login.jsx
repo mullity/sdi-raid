@@ -24,7 +24,8 @@ function Login({ onLogin }) {
     });
     //If credentials match, send to dashboard
     if (response.ok) {
-      onLogin({ username, role });
+      const data = await response.json();
+      onLogin(data.user);
       navigate("/dashboard");
     } else {
       const errorMsg = await response.text();

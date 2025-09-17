@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { useReactToPrint } from 'react-to-print';
 import LeaderHub from './components/LeaderHub';
@@ -9,6 +9,7 @@ import './AppLayout.css';
 function AppLayout({ user, onLogout }) {
   const printRef = useRef(); // for printing stuff
   const fileInputRef = useRef(); // file upload button
+  const [selectedUIC, setSelectedUIC] = useState(null);
 
   // just capitalizes role name
   function formatRole(role) {
