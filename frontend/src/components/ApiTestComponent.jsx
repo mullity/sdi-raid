@@ -70,7 +70,7 @@ const ApiTestComponent = () => {
             }}>
               {testResults[test.name].success ? (
                 <>
-                  <strong>✅ Success!</strong>
+                  <strong>Success!</strong>
                   <pre style={{ fontSize: '12px', maxHeight: '100px', overflow: 'auto' }}>
                     {JSON.stringify(testResults[test.name].data, null, 2)}
                   </pre>

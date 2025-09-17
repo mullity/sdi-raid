@@ -1,6 +1,6 @@
 const BASE_URL = 'http://localhost:3001';
 
-// Generic API call function with error handling
+// just does fetch requests to backend
 const apiCall = async (endpoint, params = {}) => {
   try {
     const queryParams = new URLSearchParams();
@@ -24,7 +24,7 @@ const apiCall = async (endpoint, params = {}) => {
   }
 };
 
-// GET: Snapshot - Unit readiness snapshot data
+// gets the main dashboard data
 export const getSnapshot = async (unit, verbose = null) => {
   const params = { unit };
   if (verbose !== null) params.verbose = verbose.toString();
@@ -32,11 +32,11 @@ export const getSnapshot = async (unit, verbose = null) => {
   return await apiCall('/snapshot', params);
 };
 
-// GET: KPI - Key Performance Indicators with optional filters
+// gets kpi stuff with filters
 export const getKPI = async (unit, options = {}) => {
   const params = { unit };
 
-  // Add optional parameters
+  // bunch of optional params
   const {
     verbose,
     personnelReadinessScore,
@@ -54,7 +54,7 @@ export const getKPI = async (unit, options = {}) => {
   return await apiCall('/kpi', params);
 };
 
-// GET: Priority - Same as snapshot but ordered by value lowest first
+// snapshot data but sorted by worst first
 export const getPriority = async (unit, verbose = null) => {
   const params = { unit };
   if (verbose !== null) params.verbose = verbose.toString();
@@ -62,11 +62,11 @@ export const getPriority = async (unit, verbose = null) => {
   return await apiCall('/priority', params);
 };
 
-// GET: Modal - Detailed modal information
+// modal popup data
 export const getModal = async (unit, options = {}) => {
   const params = { unit };
 
-  // Add optional parameters
+  // more params
   const {
     verbose,
     vicModalValue,
@@ -86,12 +86,12 @@ export const getModal = async (unit, options = {}) => {
   return await apiCall('/modal', params);
 };
 
-// GET: Users/UIC - Get unit information by UIC
+// lookup unit by uic code
 export const getUsersUIC = async (uic) => {
   return await apiCall('/users/uic', { uic });
 };
 
-// Convenience functions for specific use cases
+// grabs everything at once
 export const getAllReadinessData = async (unit) => {
   try {
     const [snapshot, priority, kpi] = await Promise.all([
@@ -126,4 +126,13 @@ export const getDetailedModal = async (unit) => {
     medModalValue: true,
     weaponModalValue: true
   });
+};
+
+// gets recommendations for specific priority items
+export const getRecommendations = async (unit, priorityItem) => {
+  const params = { unit };
+  if (priorityItem) {
+    params.priorityItem = priorityItem;
+  }
+  return await apiCall('/recommendations', params);
 };

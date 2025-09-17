@@ -1,4 +1,5 @@
 import './PrintReport.css';
+import KPICard from './KPIcard';
 
 function PrintReport() {
   // Get the same data as TopPriorityAreas component
@@ -137,6 +138,26 @@ function PrintReport() {
         <h1>Unit Readiness Assessment Report</h1>
         <p className="report-date">Generated: {formatDate()}</p>
         <p className="report-unit">Unit: WAZMB0</p>
+      </div>
+
+      <div className="report-section">
+        <h2>Readiness Overview</h2>
+        <div className="kpi-grid">
+          {readinessCategoriesData.map((item, index) => (
+            <KPICard
+              key={index}
+              kpiData={{
+                id: item.id,
+                value: item.percentage,
+                valueType: 'percent',
+                data: {
+                  title: item.title,
+                  description: item.description
+                }
+              }}
+            />
+          ))}
+        </div>
       </div>
 
       <div className="report-section">

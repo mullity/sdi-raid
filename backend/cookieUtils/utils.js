@@ -348,78 +348,99 @@ const vicCertified = async (unit) => {
 
 const vicModal = async (unit, verbose) => {
   let vics = await vicSnapshot(unit, 'true')
-  let fullMC = vics.data.FMC
-  let partialMC = vics.data.PMC
-  let nonMC = vics.data.NMC
-  let percent = vics.data.PERCENT
+  let fullMC = vics.data.fmc
+  let partialMC = vics.data.pmc
+  let nonMC = vics.data.nmc
+  let percent = vics.value
   let vicMaintdata = await vicMaint(unit)
-  let issuesActions = await vicIssuesActions(percent, vicMaint.true, vicMaint.fuelLevel, unit)
+  let issuesActions = await vicIssuesActions(percent, vicMaintdata.true, vicMaintdata.fuelLevel, unit)
   let certified = await vicCertified(unit)
   let vicOutput
 
   if(verbose == "true"){
     vicOutput = {
       id: 'vehicle',
-      title: 'Vehicle Readiness',
-      description: 'Equipment and vehicle operational status',
-      percentage: percent,
       data: {
-        FMC: fullMC,
-        PMC: partialMC,
-        NMC: nonMC,
-        metrics: [
-          { label: 'Operational Vehicles', value: percent},
-          { label: 'Maintenance Current', value: vicMaintdata.true},
-          { label: 'Fuel Readiness', value: vicMaintdata.fuelLevel},
-          { label: 'Driver Certification', value: certified.overall}
-        ],
-        issues: issuesActions.issues,
-        actions: issuesActions.actions
+        title: 'Vehicle Readiness',
+        description: 'Equipment and vehicle operational status',
+        percentage: percent,
+        data: {
+          fmc: fullMC,
+          pmc: partialMC,
+          nmc: nonMC,
+          metrics: [
+            { label: 'Operational Vehicles', value: percent},
+            { label: 'Fuel Readiness', value: vicMaintdata.fuelLevel}
+          ],
+          issues: issuesActions.issues,
+          actions: issuesActions.actions
+        }
       }
     }
   } else {
     vicOutput = {
       id: 'vehicle',
-      title: 'Vehicle Readiness',
-      description: 'Equipment and vehicle operational status',
-      percentage: percent,
+      data: {
+        title: 'Vehicle Readiness',
+        description: 'Equipment and vehicle operational status',
+        percentage: percent,
+        issues: issuesActions.issues.length
       }
     }
+  }
   return vicOutput
 }
 
 const deploymentModal = async (unit, verbose) => {
-  let percent = 75
+  let personnel = await personnelSnapshot(unit, 'true')
+  let percent = personnel.value
+  let deployable = personnel.data.deployable
+  let nonDeployable = personnel.data.nondeployable
+  let total = personnel.data.total
+
   let deploymentOutput
-  //let issuesActions = await deploymentIssuesActions(percent, vicMaint.true, vicMaint.fuelLevel, unit)
-  let issuesActions = {
-    issues: "seed data in utils.js",
-    actions: "seed data in utils.js"
+  let issues = []
+  let actions = []
+
+  if (percent < 75) {
+    let nonDeployablePercent = ((nonDeployable / total) * 100).toFixed(1)
+    issues.push({
+      id: 0,
+      text: `${nonDeployablePercent}% of soldiers are non-deployable`
+    })
+    actions.push({
+      id: 0,
+      text: "Ensure all soldiers are green on MEDPROS, have completed DD-93, SGLV, AT LVL1, and have a GTC"
+    })
   }
+
+  let issuesActions = { issues, actions }
   if(verbose == "true") {
     deploymentOutput = {
       id: 'deployment',
-      title: 'Deployment Readiness',
-      description: 'Mission deployment preparation status',
-      percentage: percent,
       data: {
-        metrics:
-          [
-            { label: 'Personnel Ready', value: '45%', status: 'critical' },
-            { label: 'Equipment Staged', value: '23%', status: 'critical' },
-            { label: 'Transport Available', value: '67%', status: 'medium' },
-            { label: 'Mission Planning', value: '12%', status: 'critical' }
-          ],
-        issues: issuesActions.issues,
-        actions: issuesActions.actions
+        title: 'Deployment Readiness',
+        description: 'Mission deployment preparation status',
+        percentage: percent,
+        data: {
+          metrics:
+            [
+              { label: 'Personnel Ready', value: percent }
+            ],
+          issues: issuesActions.issues,
+          actions: issuesActions.actions
+        }
       }
     }
   } else {
     deploymentOutput = {
       id: 'deployment',
-      title: 'Deployment Readiness',
-      description: 'Mission deployment preparation status',
-      percentage: percent,
+      data: {
+        title: 'Deployment Readiness',
+        description: 'Mission deployment preparation status',
+        percentage: percent,
+        issues: issues.length
+      }
     }
   }
 

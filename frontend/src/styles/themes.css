@@ -1,4 +1,4 @@
-/* Light Theme Variables */
+/* light mode colors */
 :root {
   --bg-primary: #f3f4f6;
   --bg-secondary: #ffffff;
@@ -39,7 +39,7 @@
   --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
-/* Dark Theme Variables */
+/* dark mode colors */
 [data-theme="dark"] {
   --bg-primary: #0f172a;
   --bg-secondary: #1e293b;

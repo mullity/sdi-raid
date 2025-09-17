@@ -274,7 +274,21 @@ class VehicleSnapshot extends Snapshot {
                 fmc: this.fmc,
                 pmc: this.pmc,
                 nmc: this.nmc,
-                fuellevel: this.fuelLevel
+                fuellevel: this.fuelLevel,
+                nmcVics: {
+                    bradley: {
+                        name: "BRADLEY",
+                        data: this.bradleyArray
+                    },
+                    hmmwv: {
+                        name: "HMMWV",
+                        data: this.hmmwvArray
+                    },
+                    scissor: {
+                        name: "SCISSOR",
+                        data: this.scissorArray
+                    }
+                }
             }
             return this.generateDataResponse('percent', snapData)
         } else {

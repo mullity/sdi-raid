@@ -48,7 +48,7 @@ export default function ThreeFiftyOne() {
       </div>
 
       <div className="threefiftyone-content">
-        <PrioritiesPanel priorities={armyTrainingPriorities} />
+        <PrioritiesPanel priorities={armyTrainingPriorities} unit={1} />
       </div>
     </div>
   );

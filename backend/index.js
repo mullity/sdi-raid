@@ -253,11 +253,8 @@ app.get("/modal", async (req, res) => {
     weaponModalValue,
   } = req.query;
   try {
-    //const got = await modal(unit, verbose, vicModalValue, deploymentModalValue, crewModalValue, medModalValue, weaponModalValue)
-    //res.status(200).send(got)
-
-    const parentAndChildren = await selectParentsAndChildren(unit);
-    res.status(200).send(parentAndChildren);
+    const got = await modal(unit, verbose, vicModalValue, deploymentModalValue, crewModalValue, medModalValue, weaponModalValue)
+    res.status(200).send(got)
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: `${error}` });
