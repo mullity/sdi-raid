@@ -116,7 +116,7 @@ app.post("/login", async (req, res) => {
             if (user.role_name === 'ADMIN') {
               role = 'administrator';
             } else if (user.role_name === 'DEV') {
-              role = 'commander';
+              role = 'viewer';
             } else if (user.role_name === 'USER') {
               role = 'viewer';
             }
