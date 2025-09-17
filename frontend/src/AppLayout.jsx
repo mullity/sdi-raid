@@ -43,7 +43,7 @@ function AppLayout({ user, onLogout }) {
           <div className="header-left">
             <div className="title-row">
               <h1 className="app-title">
-                R.A.I.D — Dashboard
+                R.a.i.D — Dashboard
               </h1>
               <div className="theme-toggle-right">
                 <ThemeToggle />

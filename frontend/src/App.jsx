@@ -6,6 +6,7 @@ import ThreeFiftyOne from './routes/ThreeFiftyOne';
 import Administrator from './routes/Administrator';
 import EquipmentDetails from './routes/EquipmentDetails';
 import AmmoCalculator from './routes/AmmoCalculator';
+import ViewerDashboard from './routes/ViewerDashboard';
 import Login from './Login';
 import './App.css';
 
@@ -54,7 +55,35 @@ function App() {
     );
   }
 
-  // For normal users, show the dashboard with navigation
+  // If the user is a viewer, show the training tasks dashboard
+  if (user.role === 'viewer') {
+    return (
+      <div className="app-layout">
+        <header className="app-header">
+          <div className="header-content">
+            <div className="header-left">
+              <h1 className="app-title">
+                R.a.i.D — Training Tasks
+              </h1>
+              <div className="welcome-message">
+                Welcome, {user.username} (Viewer)
+              </div>
+            </div>
+            <div className="user-controls">
+              <button className="logout-button" onClick={handleLogout}>
+                Logout
+              </button>
+            </div>
+          </div>
+        </header>
+        <main className="main-content" style={{ padding: '0' }}>
+          <ViewerDashboard user={user} />
+        </main>
+      </div>
+    );
+  }
+
+  // For normal users (commanders), show the dashboard with navigation
   return (
     <Routes>
       <Route element={<AppLayout user={user} onLogout={handleLogout} />}>
