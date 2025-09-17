@@ -69,9 +69,10 @@ export default function EquipmentDetails() {
           const nmcCount = allVehicles.length;
           const fakeVehiclesToAdd = fakeVehicles.slice(0, Math.max(0, total - nmcCount));
 
-          setRows([...allVehicles, ...fakeVehiclesToAdd]);
+          setRows([...allVehicles]);
           setTotal(total);
-        } else {
+        } 
+        else {
           // no data from api, use fake stuff
           const counts = { FMC: 0, PMC: 0, NMC: 0 };
           fakeVehicles.forEach(v => counts[v.status]++);
