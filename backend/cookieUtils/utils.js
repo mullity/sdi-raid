@@ -35,6 +35,37 @@ const selectParentsAndChildren = (uicVar) => {
 
 }
 
+const postToTable = async(table, input) => {
+  try {
+      const columns = await getAllFields(table);
+      const required = columns.filter((col) => col !== "id");
+      console.log(JSON.stringify(required));
+      const getId = await getter(table);
+
+      const inputKeys = Object.keys(input);
+      console.log(JSON.stringify(inputKeys));
+
+      if (!required.every((key) => inputKeys.includes(key))) {
+        return res
+          .status(400)
+          .json({ error: "All fields have not been entered" });
+      }
+      if (inputKeys.length > required.length) {
+        return res
+          .status(400)
+          .json({ error: "Too many fields have been entered" });
+      }
+
+      input["id"] = getId.length;
+
+      const inserted = await knex(table).insert(input).returning("*");
+      res.status(201).json(inserted[0]);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Server error" });
+    }
+}
+
 const getByRole = (input) => {
 
   if (typeof input === 'number' || !isNaN(input)){
@@ -330,39 +361,6 @@ const medModal = async (unit, verbose) => {
   let myNewSnap = new MedicalModal()
     return myNewSnap.init(unit, verbose)
     .then(()=>(myNewSnap.generateCard(verbose)))
-  // let percent = 75
-  // let issuesActions = {
-  //   issues: "seed data in utils.js",
-  //   actions: "seed data in utils.js"
-  // }
-  // let medOutput
-  // if(verbose == "true"){
-  //   medOutput = {
-  //     id: 'medical',
-  //     title: 'Medical Readiness',
-  //     description: 'Health and medical certification status',
-  //     percentage: percent,
-  //     data: {
-  //       metrics: [
-  //         { label: 'Medical Readiness', value: '92%', status: 'high' },
-  //         { label: 'Vaccinations Current', value: '98%', status: 'high' },
-  //         { label: 'Physical Fitness', value: '87%', status: 'high' },
-  //         { label: 'Medical Equipment', value: '94%', status: 'high' }
-  //       ],
-  //       issues: issuesActions.issues,
-  //       actions: issuesActions.actions
-  //     }
-  //   }
-  // } else {
-  //   medOutput = {
-  //     id: 'medical',
-  //     title: 'Medical Readiness',
-  //     description: 'Health and medical certification status',
-  //     percentage: percent
-  //   }
-  // }
-
-  // return medOutput;
 }
 
 const weaponModal = async (unit, verbose) => {
@@ -370,39 +368,6 @@ const weaponModal = async (unit, verbose) => {
   let myNewSnap = new WeaponModal()
     return myNewSnap.init(unit, verbose)
     .then(()=>(myNewSnap.generateCard(verbose)))
-  // let percent = 75
-  // let issuesActions = {
-  //   issues: "seed data in utils.js",
-  //   actions: "seed data in utils.js"
-  // }
-  // let weaponOutput
-  // if(verbose == "true"){
-  //   weaponOutput = {
-  //     id: 'weapons',
-  //     title: 'Weapons Qualification',
-  //     description: 'Weapons training and marksmanship status',
-  //     percentage: percent,
-  //     data: {
-  //       metrics: [
-  //         { label: 'Qualified Personnel', value: '68%', status: 'medium' },
-  //         { label: 'Range Time Current', value: '45%', status: 'low' },
-  //         { label: 'Equipment Status', value: '82%', status: 'high' },
-  //         { label: 'Safety Certification', value: '95%', status: 'high' }
-  //       ],
-  //       issues: issuesActions.issues,
-  //       actions: issuesActions.actions
-  //     }
-  //   }
-  // } else {
-  //   weaponOutput = {
-  //     id: 'weapons',
-  //     title: 'Weapons Qualification',
-  //     description: 'Weapons training and marksmanship status',
-  //     percentage: percent
-  //   }
-  // }
-
-  // return weaponOutput;
 }
 
 const modal = async (unit, verbose, vicModalValue, deploymentModalValue, crewModalValue, medModalValue, weaponModalValue) => {
@@ -457,70 +422,6 @@ const formParser = (form, ammoRollup, vehicleRollup) => {
 
 
 
-// //selectable by type,
-// let actionItems = [
-//   {type: equipment,
-//     data: [{
-//     status: '55% of vehicles are non-operational due to maintenance issues',
-//     reason: [
-//       {
-//         equipSn: 1234,
-//         equipStatus: 'parts on order'
-//       },
-//       {
-//         equipSn: 1234,
-//         equipStatus: 'needs annual services'
-//       },
-//       {
-//         equipSn: 1234,
-//         equipStatus: 'X fault due to lighting'
-//       },
-//     ],
-//     fix: "Implement emergency maintenance schedule for critical vehicles"
-//   }
-// ]
-//   },
-//   {type: personnel,
-//     data: [{
-//     status: '20% down on Rifle Qual',
-//     reason: 'Last Rifle Range was 13 months ago',
-//     fix: "Schedule Rifle Range"
-//   }
-// ]
-//   },
-//   {type: medical,
-//     data: [{
-//     status: '',
-//     reason: 'Track thrown',
-//     fix: "reason"
-//   }
-// ]
-//   },
-//   {type: trainingCurrent,
-//     data: [{
-//     status: 'NMC',
-//     reason: 'Track thrown',
-//     fix: "reason"
-//   }
-// ]
-//   },
-//   {type: deploymentReadiness,
-//     percent: 70,
-//     data: [
-//       {type: training,
-//         message: "8 Soldiers red on SHARP"
-//       },
-//       {type: equipment,
-//         message: "8 tracks NMC"
-//       },
-//       {type: medical,
-//         message: "8 Soldiers red on Dental"
-//       }
-//     ]
-//   }
-// ]
-
-
 //get all fields in  a table
 async function getAllFields (table){
   const columns = await knex('information_schema.columns')
@@ -553,7 +454,8 @@ module.exports = {
   medicalIssuesActions:medicalIssuesActions,
   vicCertified:vicCertified,
   formParser:formParser,
-  getByRole:getByRole
+  getByRole:getByRole,
+  postToTable:postToTable
 }
 
 // vicModal:vicModal,
