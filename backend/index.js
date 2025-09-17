@@ -16,6 +16,7 @@ const {
   medicalSnapshot,
   formParser,
   postToTable,
+  destructureUsers,
 } = require("./cookieUtils/utils");
 const environment = process.env.NODE_ENV || "development";
 const knexConfig = require("./knexfile")[environment];
@@ -77,7 +78,7 @@ const upload = multer({
 const app = express();
 app.use(
   cors({
-    origin: ["http://127.0.0.1:5173","http://localhost:5173"],
+    origin: ["http://127.0.0.1:5173", "http://localhost:5173"],
     credentials: true,
   })
 );
@@ -90,8 +91,8 @@ app.post("/login", async (req, res) => {
   console.log(password);
   try {
     knex("users")
-      .select('users.*', 'roles.name as role_name')
-      .leftJoin('roles', 'users.role_id', 'roles.id')
+      .select("users.*", "roles.name as role_name")
+      .leftJoin("roles", "users.role_id", "roles.id")
       .where({ username })
       .first()
       .then((user) => {
@@ -113,13 +114,13 @@ app.post("/login", async (req, res) => {
             });
 
             // Map database roles to frontend roles
-            let role = 'viewer'; // default
-            if (user.role_name === 'ADMIN') {
-              role = 'administrator';
-            } else if (user.role_name === 'DEV') {
-              role = 'viewer';
-            } else if (user.role_name === 'USER') {
-              role = 'viewer';
+            let role = "viewer"; // default
+            if (user.role_name === "ADMIN") {
+              role = "administrator";
+            } else if (user.role_name === "DEV") {
+              role = "commander";
+            } else if (user.role_name === "USER") {
+              role = "viewer";
             }
 
             res.status(200).json({
@@ -140,32 +141,44 @@ app.post("/login", async (req, res) => {
 
 app.post("/api/:table", async (req, res) => {
   const table = req.params.table;
-  const input = req.body;
+  const keys = await destructureUsers(req.body);
+  let {} = req.body;
+  // const reqObject = keys.split(",")
+  if (table == "users") {
+    let { email, password, unit_id, username, role_id } = req.body;
+  } else if (table == "") {
+  }
+
+  console.log(keys);
 
   try {
     const columns = await getAllFields(table);
-    const required = columns.filter((col) => col !== "id");
+    const required = columns.filter((col) => col !== "id"); // all fields not ID
     console.log(JSON.stringify(required));
     const getId = await getter(table);
 
-    const inputKeys = Object.keys(input);
-    console.log(JSON.stringify(inputKeys));
+    if (input.userType !== null) {
+      const roleId = getByRole(input.userType);
+    } else {
+      const inputKeys = Object.keys(input); //front-end key:value pairs
+      console.log(JSON.stringify(inputKeys));
 
-    if (!required.every((key) => inputKeys.includes(key))) {
-      return res
-        .status(400)
-        .json({ error: "All fields have not been entered" });
+      if (!required.every((key) => inputKeys.includes(key))) {
+        return res
+          .status(400)
+          .json({ error: "All fields have not been entered" });
+      }
+      if (inputKeys.length > required.length) {
+        return res
+          .status(400)
+          .json({ error: "Too many fields have been entered" });
+      }
+
+      input["id"] = getId.length;
+
+      const inserted = await knex(table).insert(input).returning("*");
+      res.status(201).json(inserted[0]);
     }
-    if (inputKeys.length > required.length) {
-      return res
-        .status(400)
-        .json({ error: "Too many fields have been entered" });
-    }
-
-    input["id"] = getId.length;
-
-    const inserted = await knex(table).insert(input).returning("*");
-    res.status(201).json(inserted[0]);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Server error" });
@@ -379,16 +392,24 @@ app.get("/users/uic", async (req, res) => {
   }
 });
 
-app.get('/training/rollup', async (req, res) => {
+app.get("/training/rollup", async (req, res) => {
   const { uic, ammoRollup, vehicleRollup } = req.query;
   try {
     const rows = [
-      {"dodic":"A131","quantity":16500,"nomenclature":"7.62mm LNKD4 Ball-1TR"},
-      {"dodic":"A940","quantity":1200,"nomenclature":"Ctg 25mm TPDS-T M910"},
-      {"dodic":"A976","quantity":880,"nomenclature":"Ctg 25mm TP-T M793"},
-      {"dodic":"L367","quantity":220,"nomenclature":"Sim Launch Antitank (ATWESS) M22"},
-      {"dodic":"LA53","quantity":1010,"nomenclature":"SIMULATOR, TARGET"},
-      {"dodic":"LA54","quantity":1010,"nomenclature":"Simulator, Hostile Fire"}
+      { dodic: "A131", quantity: 16500, nomenclature: "7.62mm LNKD4 Ball-1TR" },
+      { dodic: "A940", quantity: 1200, nomenclature: "Ctg 25mm TPDS-T M910" },
+      { dodic: "A976", quantity: 880, nomenclature: "Ctg 25mm TP-T M793" },
+      {
+        dodic: "L367",
+        quantity: 220,
+        nomenclature: "Sim Launch Antitank (ATWESS) M22",
+      },
+      { dodic: "LA53", quantity: 1010, nomenclature: "SIMULATOR, TARGET" },
+      {
+        dodic: "LA54",
+        quantity: 1010,
+        nomenclature: "Simulator, Hostile Fire",
+      },
     ];
     res.json(rows);
   } catch (error) {
@@ -397,20 +418,26 @@ app.get('/training/rollup', async (req, res) => {
   }
 });
 
-app.post('/training' , async (req, res) => {
-  let form = req.body
-  const { ammoRollup, vehicleRollup } = req.query
-  if( ammoRollup === undefined && vehicleRollup === undefined){
-    res.status(404).send('Please select a type of rollup')
+app.post("/training", async (req, res) => {
+  let form = req.body;
+  const { ammoRollup, vehicleRollup } = req.query;
+  if (ammoRollup === undefined && vehicleRollup === undefined) {
+    res.status(404).send("Please select a type of rollup");
   } else {
-    if(Array.isArray(form.taskEvents) === false || form.taskEvents.length < 1 === true){
-      res.status(404).send('Improperly formated training event. Please select at least one Task Event')
+    if (
+      Array.isArray(form.taskEvents) === false ||
+      form.taskEvents.length < 1 === true
+    ) {
+      res
+        .status(404)
+        .send(
+          "Improperly formated training event. Please select at least one Task Event"
+        );
     } else {
       try {
-        let output = await formParser(form, ammoRollup, vehicleRollup)
-        res.status(200).send(output)
-      }
-      catch (error) {
+        let output = await formParser(form, ammoRollup, vehicleRollup);
+        res.status(200).send(output);
+      } catch (error) {
         console.error(error);
         res.status(500).json({ error: `${error}` });
       }
