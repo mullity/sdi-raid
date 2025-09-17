@@ -16,10 +16,28 @@ exports.seed = async function(knex) {
 
   data.push({
       id: idNum,
-      email: `joe.p.snuffy.mil@army.mil`,
+      email: `joe.a.snuffy.mil@army.mil`,
       password: await bcrypt.hash("pass123", saltRounds),
-      username: 'joe.p.snuffy',
+      username: 'joe.a.snuffy',
       role_id: 1,
+      unit_id: 4
+    });
+    idNum++
+  data.push({
+      id: idNum,
+      email: `joe.b.snuffy.mil@army.mil`,
+      password: await bcrypt.hash("pass123", saltRounds),
+      username: 'joe.b.snuffy',
+      role_id: 2,
+      unit_id: 4
+    });
+    idNum++
+  data.push({
+      id: idNum,
+      email: `joe.c.snuffy.mil@army.mil`,
+      password: await bcrypt.hash("pass123", saltRounds),
+      username: 'joe.c.snuffy',
+      role_id: 3,
       unit_id: 4
     });
     idNum++
