@@ -46,23 +46,21 @@ export default function EquipmentDetails() {
 
           // pull out individual vehicles for the table
           const allVehicles = [];
-          if (vehicleInfo.data.nmcVics) {
-            Object.entries(vehicleInfo.data.nmcVics).forEach(([, vehicleGroup]) => {
-              // vehicleGroup = { name: string, data: array }
-              if (vehicleGroup.data && Array.isArray(vehicleGroup.data)) {
-                vehicleGroup.data.forEach(vehicle => {
+          if (vehicleInfo.data.allVics) {
+            console.log(vehicleInfo.data.allVics,'allVic')
+            vehicleInfo.data.allVics.forEach((vehicle) => {
+              console.log(vehicle,'vic')
+              // vehicle = { name: string, data: array }               
                   allVehicles.push({
                     ...vehicle,
-                    name: vehicleGroup.name.replace(/_/g, ' ').toUpperCase(),
-                    status: 'NMC',
-                    id: vehicle.lin,
+                    name: vehicle.name.replace(/_/g, ' ').toUpperCase()+` BUMPER#: ${vehicle.bumpernumber}`,
+                    status: vehicle.status.toUpperCase(),
+                    lin: vehicle.lin,
                     unit_name: FIXED_UIC,
                     date_last_serviced: vehicle.lastService,
                     fuel_level: vehicleInfo.data.fuellevel || 0
                   });
-                });
-              }
-            });
+              })
           }
 
           // pad with fake data since we only get NMC vehicles from backend

@@ -365,7 +365,8 @@ class VehicleSnapshot extends Snapshot {
                     J05028: {name: 'joint_light_tactical_vehcile_a1_two_seat_utility',
                         data: this.jltv2Array
                     },
-                }
+                },
+                allVics:this.allVics
 
             }
             return this.generateDataResponse('percent', snapData)

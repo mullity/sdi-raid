@@ -315,9 +315,12 @@ app.get('/training/rollup', async (req, res) => {
   const { uic, ammoRollup, vehicleRollup } = req.query;
   try {
     const rows = [
-      { dodic: 'A131', quantity: 16500, nomenclature: '7.62mm LNKD4 Ball-1TR' },
-      { dodic: 'A940', quantity: 1200,  nomenclature: 'Ctg 25mm TPDS-T M910' },
-      { dodic: 'A976', quantity: 880,   nomenclature: 'Ctg 25mm TP-T M793' }
+      {"dodic":"A131","quantity":16500,"nomenclature":"7.62mm LNKD4 Ball-1TR"},
+      {"dodic":"A940","quantity":1200,"nomenclature":"Ctg 25mm TPDS-T M910"},
+      {"dodic":"A976","quantity":880,"nomenclature":"Ctg 25mm TP-T M793"},
+      {"dodic":"L367","quantity":220,"nomenclature":"Sim Launch Antitank (ATWESS) M22"},
+      {"dodic":"LA53","quantity":1010,"nomenclature":"SIMULATOR, TARGET"},
+      {"dodic":"LA54","quantity":1010,"nomenclature":"Simulator, Hostile Fire"}
     ];
     res.json(rows);
   } catch (error) {

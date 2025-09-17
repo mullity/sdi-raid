@@ -17,3 +17,5 @@ let myColTask = new CollectiveTask({"id":'17-CW-5969'})
 let myTaskSet = new TaskSet()
 myTaskSet.addCollectiveTask('17-CW-5969').then(()=>myTaskSet.getTaskReferences().then(ref=>console.log(ref)))
 myTaskSet.addCollectiveTask('17-CW-5424').then(()=>console.log(myTaskSet.getTaskUrls()))
+
+console.log(JSON.stringify(myTrainingEvent.getAmmoRollup()))
