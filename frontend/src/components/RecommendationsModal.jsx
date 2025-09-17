@@ -419,9 +419,6 @@ function RecommendationsModal({ isOpen, onClose, priorityItem, unit }) {
         </div>
 
         <div className="modal-footer">
-          <button className="action-button primary" onClick={onClose}>
-            Acknowledge
-          </button>
           <button className="action-button secondary" onClick={onClose}>
             Close
           </button>
