@@ -42,6 +42,12 @@ console.log(Object.keys(currentTask),'curtask keys')
                 
                 </li>)) || "No references found or metadata supplied"}
             </ul>
+            <ul> Supporting Tasks from this document:
+              {currentTask.taskSteps?.map((refer,index)=>(<li key={index} >
+                <a onClick={()=>updateTask(refer.id)} style={{cursor:'pointer'}}>{refer.id} - {refer.title}</a>
+                
+                </li>)) || "No references found or metadata supplied"}
+            </ul>
           </div>
         </header>
 
