@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
+import TaskDetailModal from '../components/TaskDetailModal';
 import './ViewerDashboard.css';
 
 function ViewerDashboard({ user }) {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     fetchMOSTasks();
@@ -121,6 +124,16 @@ function ViewerDashboard({ user }) {
     return new Date(dateString).toLocaleDateString();
   };
 
+  const handleTaskClick = (task) => {
+    setSelectedTask(task.number);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedTask(null);
+  };
+
   if (loading) {
     return (
       <div className="viewer-dashboard">
@@ -132,7 +145,7 @@ function ViewerDashboard({ user }) {
   return (
     <div className="viewer-dashboard">
       <div className="dashboard-header">
-        <h2>350-1 Army Training Tasks</h2>
+        <h2>Soldier Training Tasks</h2>
         <div className="mos-info">
           <span className="mos-badge">MOS: {user?.mos || '11B'}</span>
         </div>
@@ -152,7 +165,7 @@ function ViewerDashboard({ user }) {
         ) : (
           <div className="tasks-grid">
             {tasks.map((task) => (
-              <div key={task.id} className="task-card">
+              <div key={task.id} className="task-card" onClick={() => handleTaskClick(task)}>
                 <div className="task-header">
                   <h3 className="task-number">{task.number}</h3>
                   {getStatusBadge(task)}
@@ -170,11 +183,20 @@ function ViewerDashboard({ user }) {
                     <span className="date">{formatDate(task.date_last_completed)}</span>
                   </div>
                 </div>
+                <div className="task-actions-overlay">
+                  <span className="view-details-text">Click to view details</span>
+                </div>
               </div>
             ))}
           </div>
         )}
       </div>
+
+      <TaskDetailModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        taskNumber={selectedTask}
+      />
     </div>
   );
 }
