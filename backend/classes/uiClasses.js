@@ -678,7 +678,6 @@ class CrewModal extends Modal{
     generateCard(verbose){
         let snapData
         let percent = Number((this.crews.data.deployable / this.crews.data.total) * 100)
-        console.log('issuesactinos in crewmodal',this.issuesActions)
         if(verbose == "true"){
             snapData = {
                 title: 'Crew Qualification',
