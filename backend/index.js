@@ -30,6 +30,7 @@ const {
   createNewToken,
   authenticateToken,
 } = require("./cookieUtils/authUtils");
+const { CollectiveTask } = require("./classes/taskClass");
 
 //Secret_Key from .env
 const secretKey = process.env.SECRET_KEY;
@@ -515,6 +516,17 @@ app.post('/api/users', async (req, res) => {
   } catch (error) {
     console.error('Error creating user:', error);
     res.status(500).json({ error: 'Server error' });
+  }
+});
+
+app.get('/cars/metadata', async (req, res) => {
+  const { taskId } = req.query;
+  try {
+    const fetchedTask = new CollectiveTask({ "id": taskId })
+    fetchedTask.init().then(()=>res.json(JSON.stringify(fetchedTask)))
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: String(error) });
   }
 });
 

@@ -93,7 +93,7 @@ function App() {
         <Route path="/350-1" element={<ThreeFiftyOne />} />
         <Route path="/equipment" element={<EquipmentDetails />} />
         <Route path="/ammo-calculator" element={<AmmoCalculator />} />
-        <Route path="/task-viewer" element={<TaskViewer />} />
+        <Route path="/task-viewer/:taskId" element={<TaskViewer />} />
       </Route>
     </Routes>
   );

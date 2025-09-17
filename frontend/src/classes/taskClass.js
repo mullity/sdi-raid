@@ -1,4 +1,4 @@
-class CatsRollup {
+export class CatsRollup {
     /**
    * Creates a modal istance.
    * @param {string} id - string name of the modal being supplied
@@ -20,7 +20,7 @@ class CatsRollup {
 
 }
 
-class TaskSet {
+export class TaskSet {
     /**
    * Creates a modal istance.
    * @param {string} id - string name of the modal being supplied
@@ -54,7 +54,7 @@ class TaskSet {
     }
 }
 
-class TrainingEvent {
+export class TrainingEvent {
     /**
    * Creates a modal istance.
    * @param {string} id - string name of the modal being supplied
@@ -98,7 +98,7 @@ class TrainingEvent {
     }
 }
 
-class TaskEvent {
+export class TaskEvent {
     /**
    * Creates a modal istance.
    * @param {string} id - string name of the modal being supplied
@@ -128,7 +128,7 @@ class TaskEvent {
 
 }
 
-class EventElement {
+export class EventElement {
     /**
    * Creates a modal istance.
    * @param {string} id - string name of the modal being supplied
@@ -154,7 +154,7 @@ class EventElement {
 
 }
 
-class EventResource {
+export class EventResource {
     /**
    * Creates a modal istance.
    * @param {string} id - string name of the modal being supplied
@@ -180,7 +180,7 @@ class EventResource {
 
 }
 
-class ResourceAmmunition {
+export class ResourceAmmunition {
     constructor(options = {}) {
         const { dodic, quantity = 0, nomenclature } = options
         this.dodic = dodic
@@ -189,7 +189,7 @@ class ResourceAmmunition {
     }
 }
 
-class CollectiveTask {
+export class CollectiveTask {
     constructor(options = {}) {
         const { id } = options
         this.id = id
@@ -251,7 +251,7 @@ class CollectiveTask {
     }
 }
 
-async function toJSON(body) {
+export async function toJSON(body) {
     const reader = body.getReader(); // `ReadableStreamDefaultReader`
     const decoder = new TextDecoder();
     const chunks = [];
@@ -272,7 +272,7 @@ async function toJSON(body) {
     return read();
 }
 
-async function carSearch(docId) {
+export async function carSearch(docId) {
     return fetch(`https://rdl.train.army.mil/catalog-ws/api/catalogitems.json?current=true
             &search_terms=${docId}&page=1&pagesize=20&field_list=*`)
         .then(res => toJSON(res.body)
@@ -287,15 +287,11 @@ async function carSearch(docId) {
         )
 }
 
-function getPdfLink(metadata){
+export function getPdfLink(metadata){
     if (metadata['formats'].find(item => item['path'] == 'report.pdf')?.['link']?.['href']){
         return metadata['formats'].find(item => item['path'] == 'report.pdf')['link']['href']
     } else {
         return metadata['formats'][0]['link']['href']
     }
     
-}
-
-module.exports = {
-    CatsRollup, TaskSet, TaskEvent, EventElement, EventResource, ResourceAmmunition, TrainingEvent, CollectiveTask
 }
