@@ -96,48 +96,10 @@ app.post("/login", async (req, res) => {
 
 app.post("/api/:table", async (req, res) => {
   const table = req.params.table;
-  const keys = await destructureUsers(req.body);
-  let {} = req.body;
-  // const reqObject = keys.split(",")
-  if (table == "users") {
-    let { email, password, unit_id, username, role_id } = req.body;
-  } else if (table == "") {
-  }
+  const input = req.body;
 
-  console.log(keys);
-
-  try {
-    const columns = await getAllFields(table);
-    const required = columns.filter((col) => col !== "id"); // all fields not ID
-    console.log(JSON.stringify(required));
-    const getId = await getter(table);
-
-    if (input.userType !== null) {
-      const roleId = getByRole(input.userType);
-    } else {
-      const inputKeys = Object.keys(input); //front-end key:value pairs
-      console.log(JSON.stringify(inputKeys));
-
-      if (!required.every((key) => inputKeys.includes(key))) {
-        return res
-          .status(400)
-          .json({ error: "All fields have not been entered" });
-      }
-      if (inputKeys.length > required.length) {
-        return res
-          .status(400)
-          .json({ error: "Too many fields have been entered" });
-      }
-
-      input["id"] = getId.length;
-
-      const inserted = await knex(table).insert(input).returning("*");
-      res.status(201).json(inserted[0]);
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Server error" });
-  }
+  const output = await postToTable(table, input);
+  res.status(201).json(output);
 });
 
 app.patch("/api/soldiers/:id", async (req, res) => {

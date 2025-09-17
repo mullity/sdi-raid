@@ -14,8 +14,11 @@ const {
   VehicleIssuesActions,
   PersonnelIssuesActions,
 } = require("../classes/uiClasses");
+const bcrypt = require("bcrypt");
 const { TrainingEvent } = require("../classes/taskClass.js");
 require("dotenv").config();
+
+const saltRounds = 10;
 
 const knex = require("knex")(require("../knexfile")[process.env.NODE_ENV]);
 
@@ -43,11 +46,24 @@ const selectParentsAndChildren = (uicVar) => {
         return res;
       });
   }
+};
 
-}
+const getByUIC = (uic) => {
+  return knex("units")
+    .select("id")
+    .where("uic", uic)
+    .then((res) => {
+      console.log(res);
+      return res;
+    });
+};
 
-const postToTable = async(table, input) => {
-  try {
+const postToTable = async (table, input) => {
+  if (table == "users") {
+    let { email, password, unit_id, username, role_id } = input;
+    let roleId = await getByRole(role_id);
+    let unitId = await getByUIC(unit_id);
+    try {
       const columns = await getAllFields(table);
       const required = columns.filter((col) => col !== "id");
       console.log(JSON.stringify(required));
@@ -57,25 +73,59 @@ const postToTable = async(table, input) => {
       console.log(JSON.stringify(inputKeys));
 
       if (!required.every((key) => inputKeys.includes(key))) {
-        return res
-          .status(400)
-          .json({ error: "All fields have not been entered" });
+        return "All fields have not been entered";
       }
       if (inputKeys.length > required.length) {
-        return res
-          .status(400)
-          .json({ error: "Too many fields have been entered" });
+        return "Too many fields have been entered";
+      }
+      console.log(
+        ` id.length: ${typeof getId.length}, email ${typeof email}, password ${typeof password}, unitId ${typeof unitId[0]
+          .id}, username ${typeof username}, roleId ${typeof roleId} `
+      );
+
+      input["id"] = getId.length;
+      console.log(unitId[0].id);
+      const inserted = await knex(table)
+        .insert({
+          id: getId.length + 1,
+          email: email,
+          password: await bcrypt.hash(password, saltRounds),
+          unit_id: Number(unitId[0].id),
+          username: username,
+          role_id: Number(roleId[0].id),
+        })
+        .returning("*");
+      return inserted;
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  } else {
+    try {
+      const columns = await getAllFields(table);
+      const required = columns.filter((col) => col !== "id");
+      console.log(JSON.stringify(required));
+      const getId = await getter(table);
+
+      const inputKeys = Object.keys(input);
+      console.log(JSON.stringify(inputKeys));
+
+      if (!required.every((key) => inputKeys.includes(key))) {
+        return "All fields have not been entered";
+      }
+      if (inputKeys.length > required.length) {
+        return "Too many fields have been entered";
       }
 
       input["id"] = getId.length;
 
       const inserted = await knex(table).insert(input).returning("*");
-      res.status(201).json(inserted[0]);
+      return inserted;
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: "Server error" });
+      return error;
     }
-}
+  }
 };
 
 const destructureUsers = (request) => {
@@ -344,92 +394,17 @@ const crewModal = async (unit, verbose) => {
 };
 
 const medModal = async (unit, verbose) => {
-  let myNewSnap = new MedicalModal()
-    return myNewSnap.init(unit, verbose)
-    .then(()=>(myNewSnap.generateCard(verbose)))
-}
   let myNewSnap = new MedicalModal();
   return myNewSnap
     .init(unit, verbose)
     .then(() => myNewSnap.generateCard(verbose));
-  // let percent = 75
-  // let issuesActions = {
-  //   issues: "seed data in utils.js",
-  //   actions: "seed data in utils.js"
-  // }
-  // let medOutput
-  // if(verbose == "true"){
-  //   medOutput = {
-  //     id: 'medical',
-  //     title: 'Medical Readiness',
-  //     description: 'Health and medical certification status',
-  //     percentage: percent,
-  //     data: {
-  //       metrics: [
-  //         { label: 'Medical Readiness', value: '92%', status: 'high' },
-  //         { label: 'Vaccinations Current', value: '98%', status: 'high' },
-  //         { label: 'Physical Fitness', value: '87%', status: 'high' },
-  //         { label: 'Medical Equipment', value: '94%', status: 'high' }
-  //       ],
-  //       issues: issuesActions.issues,
-  //       actions: issuesActions.actions
-  //     }
-  //   }
-  // } else {
-  //   medOutput = {
-  //     id: 'medical',
-  //     title: 'Medical Readiness',
-  //     description: 'Health and medical certification status',
-  //     percentage: percent
-  //   }
-  // }
-
-  // return medOutput;
 };
 
 const weaponModal = async (unit, verbose) => {
-
-  let myNewSnap = new WeaponModal()
-    return myNewSnap.init(unit, verbose)
-    .then(()=>(myNewSnap.generateCard(verbose)))
-}
   let myNewSnap = new WeaponModal();
   return myNewSnap
     .init(unit, verbose)
     .then(() => myNewSnap.generateCard(verbose));
-  // let percent = 75
-  // let issuesActions = {
-  //   issues: "seed data in utils.js",
-  //   actions: "seed data in utils.js"
-  // }
-  // let weaponOutput
-  // if(verbose == "true"){
-  //   weaponOutput = {
-  //     id: 'weapons',
-  //     title: 'Weapons Qualification',
-  //     description: 'Weapons training and marksmanship status',
-  //     percentage: percent,
-  //     data: {
-  //       metrics: [
-  //         { label: 'Qualified Personnel', value: '68%', status: 'medium' },
-  //         { label: 'Range Time Current', value: '45%', status: 'low' },
-  //         { label: 'Equipment Status', value: '82%', status: 'high' },
-  //         { label: 'Safety Certification', value: '95%', status: 'high' }
-  //       ],
-  //       issues: issuesActions.issues,
-  //       actions: issuesActions.actions
-  //     }
-  //   }
-  // } else {
-  //   weaponOutput = {
-  //     id: 'weapons',
-  //     title: 'Weapons Qualification',
-  //     description: 'Weapons training and marksmanship status',
-  //     percentage: percent
-  //   }
-  // }
-
-  // return weaponOutput;
 };
 
 const modal = async (
@@ -480,17 +455,6 @@ const formParser = (form, ammoRollup, vehicleRollup) => {
     ammo = new TrainingEvent(form).getAmmoRollup();
     output.push({ ammunition: ammo });
   }
-  if(vehicleRollup === 'true'){
-    ammo = new TrainingEvent(form).getAmmoRollup()
-    output.push({vehicles: ammo})
-  }
-
-
-
-  return output
-}
-
-
   if (vehicleRollup === "true") {
     ammo = new TrainingEvent(form).getAmmoRollup();
     output.push({ vehicles: ammo });
@@ -582,21 +546,6 @@ module.exports = {
   crewSnapshot: crewSnapshot,
   priority: priority,
   getAllFields: getAllFields,
-  vicMaint:vicMaint,
-  modal:modal,
-  joinTaskStatus:joinTaskStatus,
-  checkUnitId:checkUnitId,
-  selectParentsAndChildren:selectParentsAndChildren,
-  parentsAndChildrenToArray:parentsAndChildrenToArray,
-  vicIssuesActions:vicIssuesActions,
-  personnelIssuesActions:personnelIssuesActions,
-  crewIssuesActions:crewIssuesActions,
-  medicalIssuesActions:medicalIssuesActions,
-  vicCertified:vicCertified,
-  formParser:formParser,
-  getByRole:getByRole,
-  postToTable:postToTable
-}
   vicMaint: vicMaint,
   modal: modal,
   joinTaskStatus: joinTaskStatus,
@@ -610,7 +559,7 @@ module.exports = {
   vicCertified: vicCertified,
   formParser: formParser,
   getByRole: getByRole,
-  destructureUsers: destructureUsers,
+  postToTable: postToTable,
 };
 
 // vicModal:vicModal,
