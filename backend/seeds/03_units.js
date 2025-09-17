@@ -8,10 +8,10 @@ let data = []
 
 let nameType = [
   {name: 'Engineer Co'},
-  {name: 'Signal Co'},
-  {name: 'Infantry Co'},
-  {name: 'Military Intelligence Co'},
-  {name: 'Forward Support Co'}
+  {name: 'Engineer Co'},
+  {name: 'Engineer Co'},
+  {name: 'Engineer Co'},
+  {name: 'Headquarters and Headquarters Co'}
 ]
 
 // Dynamic UIC

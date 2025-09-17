@@ -404,10 +404,10 @@ class CrewSnapshot extends Snapshot{
 
         for(let crew of this.crews){
             crewsArray.push(crew)
-            if(crew.gunnery_level < 6){
+            if(crew.gunnery_level < 4){
                 this.nonDeployable++
             }
-            else if(crew.gunnery_level = 6){
+            else if(crew.gunnery_level > 4){
                 this.deployable++
             }
         }
@@ -472,7 +472,7 @@ class VehicleIssuesActions extends IssuesActions{
     generateCard(percent, fuelLevel, unit, verbose){
         let snapData
         if(percent < 75){
-            this.issues.push({id: this.issueTick, text: `${percent}% of vehicles are non-operational`})
+            this.issues.push({id: this.issueTick, text: `${percent}% of vehicles are not fully operational`})
             this.issueTick++
             this.actions.push({id: this.actionTick, text: 'Ensure all crew is scheduled for crew training, and all vehicles are on the maintenance schedule'})
             this.actionTick++

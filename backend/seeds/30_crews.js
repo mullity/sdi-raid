@@ -58,7 +58,7 @@ exports.seed = function(knex){
 
 
             for(let brad of bradleys){
-              let levelNum = Math.floor(Math.random() * 6)
+              let levelNum = Math.floor(Math.random() * 2)
               let nightNum = Math.floor(Math.random() * 2)
               let soldier1 = soldierTicker
               soldierTicker++
@@ -68,7 +68,7 @@ exports.seed = function(knex){
               soldierTicker++
               data.push({
                 id: idTicker,
-                gunnery_level: levelNum,
+                gunnery_level: Number(levelNum + 4),
                 night_qualified: nightNum,
                 vehicle_id: brad.id,
                 assigned_unit_id: brad.assigned_unit_id,

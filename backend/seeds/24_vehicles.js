@@ -36,9 +36,9 @@ exports.seed = function(knex) {
             let unitNumber = `${output[j].name}`.slice(0,3)
             for(let i = 0; i < faked; i++){
               let nameNum = Math.floor(Math.random() * 8)
-              let statusNum = Math.floor(Math.random() * 3)
+              let statusNum = Math.floor(Math.random() * 2)
               let date = faker.date.past()
-              let fuelNum = Math.floor(Math.random() * 100)
+              let fuelNum = Math.floor(Math.random() * (100 - 80 + 1) + 80)
 
               idNum++
               data.push({
@@ -54,9 +54,9 @@ exports.seed = function(knex) {
             }
 
             for(let i = 0; i < fakedBrads; i++){
-              let statusNum = Math.floor(Math.random() * 3)
+              let statusNum = Math.floor(Math.random() * 2)
               let date = faker.date.past()
-              let fuelNum = Math.floor(Math.random() * 100)
+              let fuelNum = Math.floor(Math.random() * (100 - 80 + 1) + 80)
 
               idNum++
               data.push({

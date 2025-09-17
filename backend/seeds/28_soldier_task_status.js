@@ -21,7 +21,7 @@ exports.seed = function(knex) {
 
           for(let j = 0; j < fakeTasks; j++){
             for(let i = 0; i < fakeSoldiers; i++){
-              let statusNum = Math.floor(Math.random() * 2)
+              let statusNum = Math.floor(Math.random() * 1)
               idNum++
               data.push({
                 id: idNum,
