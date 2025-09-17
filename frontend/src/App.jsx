@@ -4,7 +4,8 @@ import AppLayout from './AppLayout';
 import Dashboard from './routes/Dashboard';
 import ThreeFiftyOne from './routes/ThreeFiftyOne';
 import Administrator from './routes/Administrator';
-import EquipmentDetails from './routes/EquipmentDetails'; // ← NEW
+import EquipmentDetails from './routes/EquipmentDetails';
+import AmmoCalculator from './routes/AmmoCalculator';
 import Login from './Login';
 import './App.css';
 
@@ -60,7 +61,8 @@ function App() {
         <Route path="/" element={<Dashboard />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/350-1" element={<ThreeFiftyOne />} />
-        <Route path="/equipment" element={<EquipmentDetails />} /> {/* ← NEW */}
+        <Route path="/equipment" element={<EquipmentDetails />} />
+        <Route path="/ammo-calculator" element={<AmmoCalculator />} />
       </Route>
     </Routes>
   );

@@ -295,42 +295,44 @@ app.get("/users/uic", async (req, res) => {
 app.get("/training/rollup", async (req, res) => {
   const { uic, ammoRollup, vehicleRollup } = req.query;
   try {
-    res.status(200).send(
-      {
-        dodic: "A131",
-        quantity: 16500,
-        nomenclature: "7.62mm LNKD4 Ball-1TR",
-      },
+    const rows = [
+      { dodic: "A131", quantity: 16500, nomenclature: "7.62mm LNKD4 Ball-1TR" },
       { dodic: "A940", quantity: 1200, nomenclature: "Ctg 25mm TPDS-T M910" },
-      { dodic: "A976", quantity: 880, nomenclature: "Ctg 25mm TP-T M793" }
-    );
+      { dodic: "A976", quantity: 880, nomenclature: "Ctg 25mm TP-T M793" },
+    ];
+    res.json(rows);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: `${error}` });
+    res.status(500).json({ error: String(error) });
   }
 });
 
-app.post('/training' , async (req, res) => {
-  let form = req.body
-  const { ammoRollup, vehicleRollup } = req.query
-  if( ammoRollup === undefined && vehicleRollup === undefined){
-    res.status(404).send('Please select a type of rollup')
+app.post("/training", async (req, res) => {
+  let form = req.body;
+  const { ammoRollup, vehicleRollup } = req.query;
+  if (ammoRollup === undefined && vehicleRollup === undefined) {
+    res.status(404).send("Please select a type of rollup");
   } else {
-    if(Array.isArray(form.taskEvents) === false || form.taskEvents.length < 1 === true){
-      res.status(404).send('Improperly formated training event. Please select at least one Task Event')
+    if (
+      Array.isArray(form.taskEvents) === false ||
+      form.taskEvents.length < 1 === true
+    ) {
+      res
+        .status(404)
+        .send(
+          "Improperly formated training event. Please select at least one Task Event"
+        );
     } else {
       try {
-        let output = await formParser(form, ammoRollup, vehicleRollup)
-        res.status(200).send(output)
-      }
-      catch (error) {
+        let output = await formParser(form, ammoRollup, vehicleRollup);
+        res.status(200).send(output);
+      } catch (error) {
         console.error(error);
         res.status(500).json({ error: `${error}` });
       }
     }
   }
-
-})
+});
 
 // app.get('/api/training/350-1', function(request, response) {
 //   const trainingData = {

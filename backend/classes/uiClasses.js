@@ -525,10 +525,10 @@ class VehicleModal extends Modal{
                     pmc: this.vics.data.pmc,
                     nmc: this.vics.data.nmc,
                     metrics: [
-                    { label: 'Operational Vehicles', value: this.vics.value},
-                    //{ label: 'Maintenance Current', value: vicMaintdata.true},
-                    { label: 'Fuel Readiness', value: this.vics.data.fuellevel},
-                    //{ label: 'Driver Certification', value: certified.overall}
+                        { label: 'Operational Vehicles', value: this.vics.value},
+                        { label: 'Maintenance Current', value: 'supplied by front end'},
+                        { label: 'Fuel Readiness', value: this.vics.data.fuellevel},
+                        //{ label: 'Driver Certification', value: certified.overall}
                     ],
                     issues: this.issuesActions.data.issues,
                     actions: this.issuesActions.data.actions
@@ -607,9 +607,9 @@ class DeploymentModal extends Modal{
                     metrics:
                     [
                         { label: 'Personnel Ready', value: percent},
-                        //{ label: 'Equipment Staged', value: '23%', status: 'critical' },
-                        //{ label: 'Transport Available', value: '67%', status: 'medium' },
-                        //{ label: 'Mission Planning', value: '12%', status: 'critical' }
+                        { label: 'Equipment Staged', value: 23},
+                        { label: 'Transport Available', value: 67},
+                        { label: 'Mission Planning', value: 12}
                     ],
                     issues: this.issuesActions.data.issues,
                     actions: this.issuesActions.data.actions
@@ -678,7 +678,6 @@ class CrewModal extends Modal{
     generateCard(verbose){
         let snapData
         let percent = Number((this.crews.data.deployable / this.crews.data.total) * 100)
-        console.log('issuesactinos in crewmodal',this.issuesActions)
         if(verbose == "true"){
             snapData = {
                 title: 'Crew Qualification',
@@ -686,10 +685,10 @@ class CrewModal extends Modal{
                 percentage: percent,
                 data: {
                     metrics: [
-                        { label: 'Combat Ready', value: '89%', status: 'high' },
-                        { label: 'Team Cohesion', value: '92%', status: 'high' },
-                        { label: 'Equipment Proficiency', value: '85%', status: 'high' },
-                        { label: 'Mission Rehearsals', value: '78%', status: 'medium' }
+                        { label: 'Combat Ready', value: 89},
+                        { label: 'Team Cohesion', value: 92},
+                        { label: 'Equipment Proficiency', value: 85},
+                        { label: 'Mission Rehearsals', value: 78}
                     ],
                     issues: this.issuesActions.data.issues,
                     actions: this.issuesActions.data.actions
@@ -708,7 +707,133 @@ class CrewModal extends Modal{
     }
 }
 
+class MedicalIssuesActions extends IssuesActions{
+    constructor(){
+        super()
+        this.issues= []
+        this.actions= []
+        this.issueTick = 0
+        this.actionTick = 0
+    }
+    generateCard(nondeployable, verbose){
+        let snapData
+        if(nondeployable > 25){
+            this.issues.push({id: this.issueTick, text: `${nondeployable}% of soldiers are non-deployable`})
+            this.issueTick++
+            this.actions.push({id: this.actionTick, text: 'Ensure all soldiers are green on MEDPROS, have completed DD-93, SGLV, AT LVL1, and have a GTC'})
+            this.actionTick++
+        }
 
+        if(verbose === 'true'){
+            snapData = {
+                issues: this.issues,
+                actions: this.actions
+            }
+            return this.generateDataResponse('issuesActions', snapData)
+        }
+        else {
+            snapData = {
+                issues: this.issues.length
+            }
+            return this.generateDataResponse('issuesActions', snapData)
+        }
+    }
+}
+
+class MedicalModal extends Modal{
+    constructor(){
+        super()
+    }
+
+    async init(unit, verbose) {
+        const { medicalSnapshot, selectParentsAndChildren, parentsAndChildrenToArray, medicalIssuesActions } = require('../cookieUtils/utils.js')
+        this.units = parentsAndChildrenToArray(await selectParentsAndChildren(unit))
+        this.troops = await medicalSnapshot(unit, 'true')
+        this.issuesActions = await medicalIssuesActions(Number((this.troops.data.red / this.troops.data.total) * 100), verbose)
+    }
+
+    generateCard(verbose){
+        let snapData
+        let percent = Number((this.troops.data.green / this.troops.data.total) * 100)
+        if(verbose == "true"){
+            snapData = {
+                    title: 'Medical Readiness',
+                    description: 'Health and medical certification status',
+                    percentage: percent,
+                    data: {
+                        metrics: [
+                            { label: 'Medical Readiness', value: Number(((this.troops.data.green + this.troops.data.amber)/this.troops.data.total)*100)},
+                            { label: 'Vaccinations Current', value: 98},
+                            { label: 'Physical Fitness', value: 87},
+                            { label: 'Medical Equipment', value: 94}
+                        ],
+                        issues: this.issuesActions.data.issues,
+                        actions: this.issuesActions.data.actions
+                    }
+                }
+            return this.generateDataResponse('medical', snapData)
+        } else {
+            snapData = {
+                title: 'Medical Readiness',
+                description: 'Health and medical certification status',
+                percentage: percent,
+                issues: this.issuesActions.data.issues
+                }
+            return this.generateDataResponse('medical', snapData)
+            }
+
+    }
+}
+
+class WeaponModal extends Modal{
+    constructor(){
+        super()
+    }
+
+    async init(unit, verbose) {
+        const { medicalSnapshot, selectParentsAndChildren, parentsAndChildrenToArray, medicalIssuesActions } = require('../cookieUtils/utils.js')
+        this.units = parentsAndChildrenToArray(await selectParentsAndChildren(unit))
+        //this.troops = await medicalSnapshot(unit, 'true')
+        //this.issuesActions = await medicalIssuesActions(Number((this.troops.data.red / this.troops.data.total) * 100), verbose)
+    }
+
+    generateCard(verbose){
+
+        let issuesActions = {
+        issues: "seed data in utils.js",
+        actions: "seed data in utils.js"
+    }
+        let snapData
+        let percent = 75
+        if(verbose == "true"){
+            snapData = {
+                title: 'Weapons Qualification',
+                description: 'Weapons training and marksmanship status',
+                percentage: percent,
+                data: {
+                    metrics: [
+                        { label: 'Qualified Personnel', value: 68},
+                        { label: 'Range Time Current', value: 45},
+                        { label: 'Equipment Status', value: 82},
+                        { label: 'Safety Certification', value: 95}
+                    ],
+                    issues: issuesActions.issues,
+                    actions: issuesActions.actions
+                }
+            }
+            return this.generateDataResponse('weapons', snapData)
+        } else {
+            snapData = {
+                title: 'Weapons Qualification',
+                description: 'Weapons training and marksmanship status',
+                percentage: percent,
+                issues: 1
+            }
+            return this.generateDataResponse('weapons', snapData)
+            }
+
+    }
+}
 
 
 module.exports = {
@@ -722,7 +847,10 @@ module.exports = {
     VehicleModal:VehicleModal,
     DeploymentModal:DeploymentModal,
     CrewModal:CrewModal,
+    MedicalModal:MedicalModal,
+    WeaponModal:WeaponModal,
     VehicleIssuesActions:VehicleIssuesActions,
     PersonnelIssuesActions:PersonnelIssuesActions,
-    CrewIssuesActions:CrewIssuesActions
+    CrewIssuesActions:CrewIssuesActions,
+    MedicalIssuesActions:MedicalIssuesActions
 }

@@ -1,4 +1,4 @@
-const { CrewModal,CrewIssuesActions,CrewSnapshot,VehicleSnapshot, TrainingSnapshot, PersonnelSnapshot, MedicalSnapshot, VehicleModal, DeploymentModal, VehicleIssuesActions, PersonnelIssuesActions } = require('../classes/uiClasses');
+const { WeaponModal,MedicalModal,MedicalIssuesActions,CrewModal,CrewIssuesActions,CrewSnapshot,VehicleSnapshot, TrainingSnapshot, PersonnelSnapshot, MedicalSnapshot, VehicleModal, DeploymentModal, VehicleIssuesActions, PersonnelIssuesActions } = require('../classes/uiClasses');
 const { TrainingEvent }=require('../classes/taskClass.js')
 require('dotenv').config()
 
@@ -291,158 +291,100 @@ const crewIssuesActions = async (nondeployable, verbose) => {
     return myNewSnap.generateCard(nondeployable, verbose)
 }
 
+const medicalIssuesActions = async (nondeployable, verbose) => {
+  let myNewSnap = new MedicalIssuesActions(nondeployable, verbose)
+    return myNewSnap.generateCard(nondeployable, verbose)
+}
+
 const deploymentModal = async (unit, verbose) => {
   let myNewSnap = new DeploymentModal()
     return myNewSnap.init(unit, verbose)
     .then(()=>(myNewSnap.generateCard(verbose)))
-
-  // let percent = 75
-  // let deploymentOutput
-  // //let issuesActions = await deploymentIssuesActions(percent, vicMaint.true, vicMaint.fuelLevel, unit)
-  // let issuesActions = {
-  //   issues: "seed data in utils.js",
-  //   actions: "seed data in utils.js"
-  // }
-  // if(verbose == "true") {
-  //   deploymentOutput = {
-  //     id: 'deployment',
-  //     title: 'Deployment Readiness',
-  //     description: 'Mission deployment preparation status',
-  //     percentage: percent,
-  //     data: {
-  //       metrics:
-  //         [
-  //           { label: 'Personnel Ready', value: '45%', status: 'critical' },
-  //           { label: 'Equipment Staged', value: '23%', status: 'critical' },
-  //           { label: 'Transport Available', value: '67%', status: 'medium' },
-  //           { label: 'Mission Planning', value: '12%', status: 'critical' }
-  //         ],
-  //       issues: issuesActions.issues,
-  //       actions: issuesActions.actions
-  //     }
-  //   }
-  // } else {
-  //   deploymentOutput = {
-  //     id: 'deployment',
-  //     title: 'Deployment Readiness',
-  //     description: 'Mission deployment preparation status',
-  //     percentage: percent,
-  //   }
-  // }
-
-  // return deploymentOutput
 }
 
 const crewModal = async (unit, verbose) => {
-
   let myNewSnap = new CrewModal()
     return myNewSnap.init(unit, verbose)
     .then(()=>(myNewSnap.generateCard(verbose)))
-  // let crewModal
+}
+
+const medModal = async (unit, verbose) => {
+  let myNewSnap = new MedicalModal()
+    return myNewSnap.init(unit, verbose)
+    .then(()=>(myNewSnap.generateCard(verbose)))
   // let percent = 75
   // let issuesActions = {
   //   issues: "seed data in utils.js",
   //   actions: "seed data in utils.js"
   // }
+  // let medOutput
   // if(verbose == "true"){
-  //   crewModal = {
-  //     id: 'crew',
-  //     title: 'Crew Qualification',
-  //     description: 'Combat Readiness Evaluation Assessment',
+  //   medOutput = {
+  //     id: 'medical',
+  //     title: 'Medical Readiness',
+  //     description: 'Health and medical certification status',
   //     percentage: percent,
   //     data: {
   //       metrics: [
-  //         { label: 'Combat Ready', value: '89%', status: 'high' },
-  //         { label: 'Team Cohesion', value: '92%', status: 'high' },
-  //         { label: 'Equipment Proficiency', value: '85%', status: 'high' },
-  //         { label: 'Mission Rehearsals', value: '78%', status: 'medium' }
+  //         { label: 'Medical Readiness', value: '92%', status: 'high' },
+  //         { label: 'Vaccinations Current', value: '98%', status: 'high' },
+  //         { label: 'Physical Fitness', value: '87%', status: 'high' },
+  //         { label: 'Medical Equipment', value: '94%', status: 'high' }
   //       ],
   //       issues: issuesActions.issues,
   //       actions: issuesActions.actions
   //     }
   //   }
   // } else {
-  //   crewModal = {
-  //     id: 'crew',
-  //     title: 'Crew Qualification',
-  //     description: 'Combat Readiness Evaluation Assessment',
+  //   medOutput = {
+  //     id: 'medical',
+  //     title: 'Medical Readiness',
+  //     description: 'Health and medical certification status',
   //     percentage: percent
   //   }
   // }
 
-  // return crewModal;
-}
-
-const medModal = async (unit, verbose) => {
-  let percent = 75
-  let issuesActions = {
-    issues: "seed data in utils.js",
-    actions: "seed data in utils.js"
-  }
-  let medOutput
-  if(verbose == "true"){
-    medOutput = {
-      id: 'medical',
-      title: 'Medical Readiness',
-      description: 'Health and medical certification status',
-      percentage: percent,
-      data: {
-        metrics: [
-          { label: 'Medical Readiness', value: '92%', status: 'high' },
-          { label: 'Vaccinations Current', value: '98%', status: 'high' },
-          { label: 'Physical Fitness', value: '87%', status: 'high' },
-          { label: 'Medical Equipment', value: '94%', status: 'high' }
-        ],
-        issues: issuesActions.issues,
-        actions: issuesActions.actions
-      }
-    }
-  } else {
-    medOutput = {
-      id: 'medical',
-      title: 'Medical Readiness',
-      description: 'Health and medical certification status',
-      percentage: percent
-    }
-  }
-
-  return medOutput;
+  // return medOutput;
 }
 
 const weaponModal = async (unit, verbose) => {
-  let percent = 75
-  let issuesActions = {
-    issues: "seed data in utils.js",
-    actions: "seed data in utils.js"
-  }
-  let weaponOutput
-  if(verbose == "true"){
-    weaponOutput = {
-      id: 'weapons',
-      title: 'Weapons Qualification',
-      description: 'Weapons training and marksmanship status',
-      percentage: percent,
-      data: {
-        metrics: [
-          { label: 'Qualified Personnel', value: '68%', status: 'medium' },
-          { label: 'Range Time Current', value: '45%', status: 'low' },
-          { label: 'Equipment Status', value: '82%', status: 'high' },
-          { label: 'Safety Certification', value: '95%', status: 'high' }
-        ],
-        issues: issuesActions.issues,
-        actions: issuesActions.actions
-      }
-    }
-  } else {
-    weaponOutput = {
-      id: 'weapons',
-      title: 'Weapons Qualification',
-      description: 'Weapons training and marksmanship status',
-      percentage: percent
-    }
-  }
 
-  return weaponOutput;
+  let myNewSnap = new WeaponModal()
+    return myNewSnap.init(unit, verbose)
+    .then(()=>(myNewSnap.generateCard(verbose)))
+  // let percent = 75
+  // let issuesActions = {
+  //   issues: "seed data in utils.js",
+  //   actions: "seed data in utils.js"
+  // }
+  // let weaponOutput
+  // if(verbose == "true"){
+  //   weaponOutput = {
+  //     id: 'weapons',
+  //     title: 'Weapons Qualification',
+  //     description: 'Weapons training and marksmanship status',
+  //     percentage: percent,
+  //     data: {
+  //       metrics: [
+  //         { label: 'Qualified Personnel', value: '68%', status: 'medium' },
+  //         { label: 'Range Time Current', value: '45%', status: 'low' },
+  //         { label: 'Equipment Status', value: '82%', status: 'high' },
+  //         { label: 'Safety Certification', value: '95%', status: 'high' }
+  //       ],
+  //       issues: issuesActions.issues,
+  //       actions: issuesActions.actions
+  //     }
+  //   }
+  // } else {
+  //   weaponOutput = {
+  //     id: 'weapons',
+  //     title: 'Weapons Qualification',
+  //     description: 'Weapons training and marksmanship status',
+  //     percentage: percent
+  //   }
+  // }
+
+  // return weaponOutput;
 }
 
 const modal = async (unit, verbose, vicModalValue, deploymentModalValue, crewModalValue, medModalValue, weaponModalValue) => {
@@ -590,6 +532,7 @@ module.exports = {
   vicIssuesActions:vicIssuesActions,
   personnelIssuesActions:personnelIssuesActions,
   crewIssuesActions:crewIssuesActions,
+  medicalIssuesActions:medicalIssuesActions,
   vicCertified:vicCertified,
   formParser:formParser
 }

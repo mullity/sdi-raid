@@ -2,10 +2,10 @@ import { useState } from 'react';
 import './UICSelector.css';
 
 function UICSelector({ selectedUIC, onUICChange }) {
-  // Keep track of whether the dropdown is open or closed
+  // dropdown open/closed
   var [isOpen, setIsOpen] = useState(false);
 
-  // List of all the UIC options
+  // all the unit options
   var uicOptions = [
     { code: 'WAZMB0', name: 'Alpha Company' },
     { code: 'WAZMB1', name: 'Bravo Company' },
@@ -14,18 +14,18 @@ function UICSelector({ selectedUIC, onUICChange }) {
     { code: 'WAZMB4', name: 'Echo Company' }
   ];
 
-  // Function to open or close the dropdown
+  // toggle dropdown
   function handleToggle() {
     setIsOpen(!isOpen);
   }
 
-  // Function to handle when user selects a UIC
+  // when user picks something
   function handleSelect(uic) {
     setIsOpen(false);
     onUICChange(uic);
   }
 
-  // Find the currently selected UIC, or use the first one as default
+  // find which one is selected, or just use first one
   var currentUIC = null;
   for (var i = 0; i < uicOptions.length; i++) {
     if (uicOptions[i].code === selectedUIC) {
@@ -37,7 +37,7 @@ function UICSelector({ selectedUIC, onUICChange }) {
     currentUIC = uicOptions[0];
   }
 
-  // Figure out the CSS class for the dropdown arrow
+  // arrow styling
   var arrowClass = 'uic-dropdown-arrow';
   if (isOpen) {
     arrowClass = arrowClass + ' open';

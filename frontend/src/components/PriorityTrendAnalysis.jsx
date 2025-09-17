@@ -2,7 +2,7 @@ import { useState } from 'react';
 import './PriorityTrendAnalysis.css';
 import RecommendationsModal from './RecommendationsModal';
 
-function PriorityTrendAnalysis({ selectedArea, onClose }) {
+function PriorityTrendAnalysis({ selectedArea, onClose, unit }) {
   // Keep track of which timeframe is selected
   var [selectedTimeframe, setSelectedTimeframe] = useState('30d');
   var [showPrediction, setShowPrediction] = useState(false);
@@ -349,6 +349,7 @@ function PriorityTrendAnalysis({ selectedArea, onClose }) {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         priorityItem={selectedPriority}
+        unit={unit}
       />
     </div>
   );

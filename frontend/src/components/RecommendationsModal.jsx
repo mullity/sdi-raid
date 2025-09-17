@@ -1,8 +1,14 @@
 import './RecommendationsModal.css';
+import { useState, useEffect } from 'react';
+import { getRecommendations } from '../services/api';
 
-function RecommendationsModal({ isOpen, onClose, priorityItem }) {
-  // Recommendation data mapping for different priority types
-  const recommendationData = {
+function RecommendationsModal({ isOpen, onClose, priorityItem, unit }) {
+  const [recommendations, setRecommendations] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  // Fallback recommendation data mapping for different priority types
+  const fallbackRecommendationData = {
     'Personnel Accountability': {
       title: 'Personnel Accountability',
       urgency: 'High',
@@ -133,15 +139,15 @@ function RecommendationsModal({ isOpen, onClose, priorityItem }) {
       title: 'PT Test Preparation',
       urgency: 'High',
       recommendations: [
-        'Implement intensive ACFT preparation program',
+        'Implement intensive AFT preparation program',
         'Schedule remedial PT for at-risk personnel',
         'Provide nutritional guidance and support',
-        'Conduct practice ACFT sessions weekly',
+        'Conduct practice AFT sessions weekly',
         'Monitor individual progress closely'
       ],
       resources: [
         'Master Fitness Trainers',
-        'ACFT Equipment',
+        'AFT Equipment',
         'Nutrition Specialists'
       ],
       timeline: '30 days',
@@ -294,34 +300,72 @@ function RecommendationsModal({ isOpen, onClose, priorityItem }) {
     }
   };
 
-  // Get recommendation data for the current priority item
-  const getRecommendations = () => {
-    if (!priorityItem) return null;
+  // Fetch recommendations from backend
+  useEffect(() => {
+    if (isOpen && priorityItem && unit) {
+      setLoading(true);
+      setError(null);
 
-    const itemTitle = priorityItem.title || priorityItem.name;
-    return recommendationData[itemTitle] || {
-      title: itemTitle,
-      urgency: priorityItem.priority || 'Medium',
-      recommendations: [
-        'Review current status and requirements',
-        'Develop action plan to address deficiencies',
-        'Coordinate with relevant personnel',
-        'Monitor progress regularly',
-        'Update status upon completion'
-      ],
-      resources: [
-        'Unit Leadership',
-        'Subject Matter Experts',
-        'Relevant Documentation'
-      ],
-      timeline: '7-14 days',
-      impact: 'Important for unit readiness and effectiveness'
-    };
-  };
-
-  const recommendations = getRecommendations();
+      getRecommendations(unit, priorityItem)
+        .then(data => {
+          setRecommendations(data);
+          setLoading(false);
+        })
+        .catch(err => {
+          console.error('Failed to fetch recommendations:', err);
+          setError(err.message);
+          // Fall back to hardcoded data
+          const itemTitle = priorityItem.title || priorityItem.name;
+          setRecommendations(fallbackRecommendationData[itemTitle] || {
+            title: itemTitle,
+            urgency: priorityItem.priority || 'Medium',
+            recommendations: [
+              'Review current status and requirements',
+              'Develop action plan to address deficiencies',
+              'Coordinate with relevant personnel',
+              'Monitor progress regularly',
+              'Update status upon completion'
+            ],
+            resources: [
+              'Unit Leadership',
+              'Subject Matter Experts',
+              'Relevant Documentation'
+            ],
+            timeline: '7-14 days',
+            impact: 'Important for unit readiness and effectiveness'
+          });
+          setLoading(false);
+        });
+    }
+  }, [isOpen, priorityItem, unit]);
 
   if (!isOpen || !priorityItem) {
+    return null;
+  }
+
+  if (loading) {
+    return (
+      <div className="modal-overlay" onClick={onClose}>
+        <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+          <div className="modal-header">
+            <h2 className="modal-title">Loading Recommendations...</h2>
+            <button className="modal-close" onClick={onClose}>✕</button>
+          </div>
+          <div className="modal-body">
+            <p>Fetching recommendations from backend...</p>
+            {error && (
+              <div className="error-message">
+                <p>Error: {error}</p>
+                <p>Falling back to cached recommendations...</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!recommendations) {
     return null;
   }
 

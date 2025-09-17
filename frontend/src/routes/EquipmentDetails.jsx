@@ -8,20 +8,21 @@ const FIXED_UIC = "WAZMB0";
 export default function EquipmentDetails() {
   const [summary, setSummary] = useState(null);
   const [rows, setRows] = useState([]);
+  const [filteredRows, setFilteredRows] = useState([]);
   const [total, setTotal] = useState(0);
   const [vehicleData, setVehicleData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const [status, setStatus] = useState(""); // 'FMC' | 'PMC' | 'NMC' | ''
-  const [q, setQ] = useState("");           // search term
+  const [status, setStatus] = useState(""); // filter dropdown
+  const [q, setQ] = useState("");           // search box
   const [page, setPage] = useState(1);
   const pageSize = 20;
 
-  // Default unit ID - could be made dynamic
+  // hardcoded for now
   const defaultUnit = 1;
 
-  // Fetch real vehicle data from API
+  // load vehicle data on page load
   useEffect(() => {
     const fetchVehicleData = async () => {
       try {
@@ -34,7 +35,7 @@ export default function EquipmentDetails() {
         if (vehicleInfo) {
           setVehicleData(vehicleInfo);
 
-          // Build summary from API data
+          // build the kpi numbers
           const { fmc, pmc, nmc, total } = vehicleInfo.data;
           const pctFMC = total ? Math.round((fmc / total) * 1000) / 10 : 0;
           setSummary({
@@ -43,32 +44,35 @@ export default function EquipmentDetails() {
             pctFMC
           });
 
-          // Extract individual vehicles from nmcVics data for display
+          // pull out individual vehicles for the table
           const allVehicles = [];
           if (vehicleInfo.data.nmcVics) {
-            Object.entries(vehicleInfo.data.nmcVics).forEach(([vehicleType, vehicles]) => {
-              vehicles.forEach(vehicle => {
-                allVehicles.push({
-                  ...vehicle,
-                  name: vehicleType.replace(/_/g, ' ').toUpperCase(),
-                  status: 'NMC',
-                  id: vehicle.lin,
-                  unit_name: FIXED_UIC,
-                  date_last_serviced: vehicle.lastService,
-                  fuel_level: vehicleInfo.data.fuellevel || 0
+            Object.entries(vehicleInfo.data.nmcVics).forEach(([, vehicleGroup]) => {
+              // vehicleGroup = { name: string, data: array }
+              if (vehicleGroup.data && Array.isArray(vehicleGroup.data)) {
+                vehicleGroup.data.forEach(vehicle => {
+                  allVehicles.push({
+                    ...vehicle,
+                    name: vehicleGroup.name.replace(/_/g, ' ').toUpperCase(),
+                    status: 'NMC',
+                    id: vehicle.lin,
+                    unit_name: FIXED_UIC,
+                    date_last_serviced: vehicle.lastService,
+                    fuel_level: vehicleInfo.data.fuellevel || 0
+                  });
                 });
-              });
+              }
             });
           }
 
-          // Fill in missing FMC/PMC vehicles with fake data for now
+          // pad with fake data since we only get NMC vehicles from backend
           const nmcCount = allVehicles.length;
           const fakeVehiclesToAdd = fakeVehicles.slice(0, Math.max(0, total - nmcCount));
 
           setRows([...allVehicles, ...fakeVehiclesToAdd]);
           setTotal(total);
         } else {
-          // Fallback to fake data
+          // no data from api, use fake stuff
           const counts = { FMC: 0, PMC: 0, NMC: 0 };
           fakeVehicles.forEach(v => counts[v.status]++);
           const total = counts.FMC + counts.PMC + counts.NMC;
@@ -82,7 +86,7 @@ export default function EquipmentDetails() {
         console.error('Failed to fetch vehicle data:', err);
         setError(err.message);
 
-        // Fallback to fake data
+        // api failed, just show fake data
         const counts = { FMC: 0, PMC: 0, NMC: 0 };
         fakeVehicles.forEach(v => counts[v.status]++);
         const total = counts.FMC + counts.PMC + counts.NMC;
@@ -107,11 +111,9 @@ export default function EquipmentDetails() {
         v.lin.toLowerCase().includes(q.toLowerCase())
     );
 
-    // Only update if we have loaded data to avoid infinite loops
-    if (!loading && data.length !== rows.length) {
-      setTotal(data.length);
-    }
-  }, [status, q, page, loading]);
+    setFilteredRows(data);
+    setTotal(data.length);
+  }, [status, q, rows]);
 
   const StatusBadge = ({ value }) => {
     const cls = value === "FMC" ? "badge badge--ok"
@@ -124,6 +126,12 @@ export default function EquipmentDetails() {
     () => Math.max(1, Math.ceil(total / pageSize)),
     [total]
   );
+
+  const paginatedRows = useMemo(() => {
+    const startIndex = (page - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    return filteredRows.slice(startIndex, endIndex);
+  }, [filteredRows, page, pageSize]);
 
   return (
     <div className="equip-page">
@@ -194,7 +202,7 @@ export default function EquipmentDetails() {
             </tr>
           </thead>
           <tbody>
-            {rows.map(r => (
+            {paginatedRows.map(r => (
               <tr key={r.id}>
                 <td>{r.name}</td>
                 <td>{r.lin}</td>
@@ -207,7 +215,7 @@ export default function EquipmentDetails() {
                 </td>
               </tr>
             ))}
-            {rows.length === 0 && (
+            {paginatedRows.length === 0 && (
               <tr><td colSpan="7" className="empty">No results.</td></tr>
             )}
           </tbody>

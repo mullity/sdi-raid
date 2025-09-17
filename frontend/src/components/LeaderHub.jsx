@@ -5,13 +5,13 @@ import './LeaderHub.css';
 import raidLogo from '../assets/raidlogo.png';
 
 function LeaderHub({ selectedUnit }) {
-  // Keep track of which category the user is hovering over
+  // hover state
   var [hoveredCategory, setHoveredCategory] = useState(null);
-  
-  // Keep track of which category the user selected
+
+  // which one is clicked
   var [selectedCategory, setSelectedCategory] = useState(null);
-  
-  // Keep track of whether the modal is open or closed
+
+  // modal open/closed
   var [isModalOpen, setIsModalOpen] = useState(false);
 
   // Data about different readiness categories
