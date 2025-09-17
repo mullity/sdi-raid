@@ -53,7 +53,8 @@ export default function EquipmentDetails() {
               // vehicle = { name: string, data: array }               
                   allVehicles.push({
                     ...vehicle,
-                    name: vehicle.name.replace(/_/g, ' ').toUpperCase()+` BUMPER#: ${vehicle.bumpernumber}`,
+                    name: vehicle.name.replace(/_/g, ' ').toUpperCase(),
+                    bumperNumber: vehicle.bumpernumber,
                     status: vehicle.status.toUpperCase(),
                     lin: vehicle.lin,
                     unit_name: FIXED_UIC,
@@ -192,6 +193,7 @@ export default function EquipmentDetails() {
           <thead>
             <tr>
               <th>Name</th>
+              <th>Bumper#</th>
               <th>LIN</th>
               <th>Status</th>
               <th>Unit</th>
@@ -204,6 +206,7 @@ export default function EquipmentDetails() {
             {paginatedRows.map(r => (
               <tr key={r.id}>
                 <td>{r.name}</td>
+                <td>{r.bumperNumber}</td>
                 <td>{r.lin}</td>
                 <td><StatusBadge value={r.status} /></td>
                 <td>{r.unit_name ?? r.assigned_unit_id ?? "-"}</td>
