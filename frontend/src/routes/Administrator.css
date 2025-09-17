@@ -39,8 +39,15 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .admin-tabs {
@@ -89,7 +96,7 @@
 
 .data-form h3 {
   margin: 0 0 24px 0;
-  color: #2c3e50;
+  color: #111;
   font-size: 1.4rem;
   font-weight: 600;
   border-bottom: 2px solid #e9ecef;
@@ -114,7 +121,7 @@
 
 .form-group label {
   margin-bottom: 6px;
-  color: #495057;
+  color: #111;
   font-weight: 500;
   font-size: 0.9rem;
 }
@@ -128,6 +135,7 @@
   font-size: 1rem;
   transition: border-color 0.2s;
   background: white;
+  color: #111;
 }
 
 .form-group input:focus,
@@ -152,7 +160,7 @@
 
 .submit-btn {
   background: #28a745;
-  color: white;
+  color: #111;
   border: none;
   padding: 14px 32px;
   border-radius: 6px;
@@ -173,59 +181,59 @@
   transform: translateY(0);
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .administrator-page {
     padding: 16px;
   }
-  
+
   .admin-header {
     padding: 20px 16px;
   }
-  
+
   .admin-header h1 {
     font-size: 1.5rem;
   }
-  
+
   .admin-header p {
     font-size: 1rem;
   }
-  
+
   .admin-tabs {
     flex-direction: column;
   }
-  
+
   .tab-btn {
     border-right: none;
     border-bottom: 1px solid #e9ecef;
   }
-  
+
   .tab-btn:last-child {
     border-bottom: none;
   }
-  
+
   .admin-content {
     padding: 20px 16px;
   }
-  
+
   .form-grid {
     grid-template-columns: 1fr;
     gap: 16px;
   }
-  
+
   .data-form h3 {
     font-size: 1.2rem;
   }
 }
 
 @media (max-width: 480px) {
+
   .form-group input,
   .form-group select,
   .form-group textarea {
     padding: 10px 12px;
     font-size: 0.9rem;
   }
-  
+
   .submit-btn {
     padding: 12px 24px;
     font-size: 0.9rem;
@@ -233,83 +241,36 @@
   }
 }
 
-/* File Upload Styles */
-.file-input {
-  border: 2px dashed #cbd5e0;
-  border-radius: 8px;
-  padding: 20px;
-  background: #f8fafc;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
+
+.administrator-page .form-group input,
+.administrator-page .form-group select,
+.administrator-page .form-group textarea,
+.administrator-page .form-group label,
+.administrator-page .data-form h3,
+.administrator-page .submit-btn {
+  color: #111 !important;
+
 }
 
-.file-input:hover {
-  border-color: #4299e1;
-  background: #ebf8ff;
-}
 
-.file-input:focus {
-  outline: none;
-  border-color: #3182ce;
-  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
-}
+.theme-dark .administrator-page .form-group input,
+.dark .administrator-page .form-group input,
+[data-theme="dark"] .administrator-page .form-group input,
+.theme-dark .administrator-page .form-group select,
+.dark .administrator-page .form-group select,
+[data-theme="dark"] .administrator-page .form-group select,
+.theme-dark .administrator-page .form-group textarea,
+.dark .administrator-page .form-group textarea,
+[data-theme="dark"] .administrator-page .form-group textarea,
+.theme-dark .administrator-page .form-group label,
+.dark .administrator-page .form-group label,
+[data-theme="dark"] .administrator-page .form-group label,
+.theme-dark .administrator-page .data-form h3,
+.dark .administrator-page .data-form h3,
+[data-theme="dark"] .administrator-page .data-form h3,
+.theme-dark .administrator-page .submit-btn,
+.dark .administrator-page .submit-btn,
+[data-theme="dark"] .administrator-page .submit-btn {
+  color: #111 !important;
 
-.file-help {
-  display: block;
-  margin-top: 8px;
-  color: #6c757d;
-  font-size: 0.875rem;
-  font-style: italic;
-}
-
-.selected-files {
-  margin-top: 16px;
-  padding: 16px;
-  background: #f1f5f9;
-  border-radius: 6px;
-  border: 1px solid #e2e8f0;
-}
-
-.selected-files h5 {
-  margin: 0 0 12px 0;
-  color: #2d3748;
-  font-size: 1rem;
-  font-weight: 600;
-}
-
-.selected-files ul {
-  margin: 0;
-  padding-left: 20px;
-  list-style-type: disc;
-}
-
-.selected-files li {
-  margin-bottom: 8px;
-  color: #4a5568;
-  font-size: 0.875rem;
-  line-height: 1.4;
-}
-
-.error-message {
-  background: #fed7d7;
-  border: 1px solid #fc8181;
-  color: #c53030;
-  padding: 12px 20px;
-  border-radius: 4px;
-  margin-bottom: 20px;
-  text-align: center;
-  font-weight: 500;
-}
-
-/* Loading state for submit button */
-.submit-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  background-color: #9ca3af;
-}
-
-.submit-btn:disabled:hover {
-  background-color: #9ca3af;
-  transform: none;
 }

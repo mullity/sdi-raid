@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './Administrator.css';
 
 function Administrator() {
@@ -24,59 +24,14 @@ function Administrator() {
     trainingType: '',
     trainingDuration: '',
     trainingRequirements: '',
-    // User data
-    userEmail: '',
-    userUsername: '',
-    userPassword: '',
-    userRoleId: '',
-    userUnitId: '',
-    userMOS: ''
+    // Users data
+    email: '',
+    username: '',
+    password: '',
+    roleId: '',
+    unitId: ''
   });
-
-  const [roles, setRoles] = useState([]);
-  const [units, setUnits] = useState([]);
-
   const [successMessage, setSuccessMessage] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [selectedFiles, setSelectedFiles] = useState([]);
-
-  // Fetch roles and units on component mount
-  useEffect(() => {
-    fetchRolesAndUnits();
-  }, []);
-
-  const fetchRolesAndUnits = async () => {
-    try {
-      const [rolesResponse, unitsResponse] = await Promise.all([
-        fetch('http://localhost:3001/api/roles', { credentials: 'include' }),
-        fetch('http://localhost:3001/api/units', { credentials: 'include' })
-      ]);
-
-      if (rolesResponse.ok) {
-        const rolesData = await rolesResponse.json();
-        setRoles(rolesData);
-      }
-
-      if (unitsResponse.ok) {
-        const unitsData = await unitsResponse.json();
-        setUnits(unitsData);
-      }
-    } catch (err) {
-      console.error('Error fetching roles and units:', err);
-      // Set fallback data
-      setRoles([
-        { id: 1, name: 'DEV' },
-        { id: 2, name: 'ADMIN' },
-        { id: 3, name: 'USER' }
-      ]);
-      setUnits([
-        { id: 0, uic: 'WAMZA0', name: '160 Engineer Co' },
-        { id: 1, uic: 'WAMZB0', name: '244 Signal Co' },
-        { id: 2, uic: 'WAMZC0', name: '195 Infantry Co' }
-      ]);
-    }
-  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -86,119 +41,22 @@ function Administrator() {
     }));
   };
 
-  const handleFileChange = (e) => {
-    const files = Array.from(e.target.files);
-    setSelectedFiles(files);
-  };
-
-  const handleSubmit = async (e, dataType) => {
+  const handleSubmit = (e, dataType) => {
     e.preventDefault();
-    setLoading(true);
-    setError('');
+    // Here you would typically send data to your backend API
+    console.log(`Submitting ${dataType} data:`, formData);
 
-    try {
-      let endpoint = '';
-      let payload = {};
+    // Show success message
+    setSuccessMessage(`${dataType.charAt(0).toUpperCase() + dataType.slice(1)} data submitted successfully!`);
+    setTimeout(() => setSuccessMessage(''), 3000);
 
-      if (dataType === 'users') {
-        endpoint = 'http://localhost:3001/api/users';
-        payload = {
-          email: formData.userEmail,
-          username: formData.userUsername,
-          password: formData.userPassword,
-          role_id: parseInt(formData.userRoleId),
-          unit_id: parseInt(formData.userUnitId),
-          mos: formData.userMOS
-        };
-      } else if (dataType === 'training') {
-        endpoint = 'http://localhost:3001/api/training';
-
-        // Create FormData for file upload
-        const formDataObj = new FormData();
-        formDataObj.append('name', formData.trainingName);
-        formDataObj.append('type', formData.trainingType);
-        formDataObj.append('duration', formData.trainingDuration);
-        formDataObj.append('requirements', formData.trainingRequirements);
-
-        // Append files
-        selectedFiles.forEach((file, index) => {
-          formDataObj.append(`documents`, file);
-        });
-
-        // Handle FormData differently
-        const response = await fetch(endpoint, {
-          method: 'POST',
-          credentials: 'include',
-          body: formDataObj
-        });
-
-        if (response.ok) {
-          setSuccessMessage(`Training program created successfully!`);
-          setTimeout(() => setSuccessMessage(''), 3000);
-
-          // Clear form fields
-          const fieldsToReset = getFieldsForTab(dataType);
-          const updatedFormData = { ...formData };
-          fieldsToReset.forEach(field => {
-            updatedFormData[field] = '';
-          });
-          setFormData(updatedFormData);
-          setSelectedFiles([]);
-        } else {
-          const errorData = await response.text();
-          setError(`Error creating training: ${errorData}`);
-        }
-        setLoading(false);
-        return;
-      } else {
-        // For other data types, just log for now
-        console.log(`Submitting ${dataType} data:`, formData);
-        setSuccessMessage(`${dataType.charAt(0).toUpperCase() + dataType.slice(1)} data submitted successfully!`);
-        setTimeout(() => setSuccessMessage(''), 3000);
-
-        // Clear form fields for the current tab
-        const fieldsToReset = getFieldsForTab(dataType);
-        const updatedFormData = { ...formData };
-        fieldsToReset.forEach(field => {
-          updatedFormData[field] = field.includes('Status') ? 'operational' : '';
-        });
-        setFormData(updatedFormData);
-        setSelectedFiles([]);
-        setLoading(false);
-        return;
-      }
-
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify(payload)
-      });
-
-      if (response.ok) {
-        setSuccessMessage(`${dataType.charAt(0).toUpperCase() + dataType.slice(1)} created successfully!`);
-        setTimeout(() => setSuccessMessage(''), 3000);
-
-        // Clear form fields for the current tab
-        const fieldsToReset = getFieldsForTab(dataType);
-        const updatedFormData = { ...formData };
-        fieldsToReset.forEach(field => {
-          updatedFormData[field] = field.includes('Status') ? 'operational' : '';
-        });
-        setFormData(updatedFormData);
-        setSelectedFiles([]);
-      } else {
-        const errorData = await response.text();
-        setError(`Error creating ${dataType}: ${errorData}`);
-      }
-    } catch (err) {
-      console.error(`Error submitting ${dataType}:`, err);
-      setError(`Error creating ${dataType}: ${err.message}`);
-    } finally {
-      setLoading(false);
-    }
+    // Clear form fields for the current tab
+    const fieldsToReset = getFieldsForTab(dataType);
+    const updatedFormData = { ...formData };
+    fieldsToReset.forEach(field => {
+      updatedFormData[field] = field.includes('Status') ? 'operational' : '';
+    });
+    setFormData(updatedFormData);
   };
 
   const getFieldsForTab = (tab) => {
@@ -212,7 +70,7 @@ function Administrator() {
       case 'training':
         return ['trainingName', 'trainingType', 'trainingDuration', 'trainingRequirements'];
       case 'users':
-        return ['userEmail', 'userUsername', 'userPassword', 'userRoleId', 'userUnitId', 'userMOS'];
+        return ['email', 'username', 'password', 'roleId', 'unitId'];
       default:
         return [];
     }
@@ -480,130 +338,77 @@ function Administrator() {
             rows="4"
           />
         </div>
-        <div className="form-group full-width">
-          <label htmlFor="trainingDocuments">Training Documents</label>
-          <input
-            type="file"
-            id="trainingDocuments"
-            name="trainingDocuments"
-            onChange={handleFileChange}
-            accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt"
-            multiple
-            className="file-input"
-          />
-          <small className="file-help">
-            Upload training materials, SOPs, presentations, etc. (PDF, DOC, PPT, XLS, TXT files)
-          </small>
-          {selectedFiles.length > 0 && (
-            <div className="selected-files">
-              <h5>Selected Files:</h5>
-              <ul>
-                {selectedFiles.map((file, index) => (
-                  <li key={index}>
-                    {file.name} ({Math.round(file.size / 1024)} KB)
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
       </div>
-      <button type="submit" className="submit-btn" disabled={loading}>
-        {loading ? 'Creating Training Program...' : 'Add Training Program'}
-      </button>
+      <button type="submit" className="submit-btn">Add Training Program</button>
     </form>
   );
 
-  const renderUserForm = () => (
+  const renderUsersForm = () => (
     <form onSubmit={(e) => handleSubmit(e, 'users')} className="data-form">
       <h3>Add New User</h3>
       <div className="form-grid">
         <div className="form-group">
-          <label htmlFor="userEmail">Email</label>
+          <label htmlFor="email">Email</label>
           <input
             type="email"
-            id="userEmail"
-            name="userEmail"
-            value={formData.userEmail}
+            id="email"
+            name="email"
+            value={formData.email}
             onChange={handleInputChange}
-            placeholder="e.g., john.smith@army.mil"
+            placeholder="e.g., user@example.com"
             required
           />
         </div>
         <div className="form-group">
-          <label htmlFor="userUsername">Username</label>
+          <label htmlFor="username">Username</label>
           <input
             type="text"
-            id="userUsername"
-            name="userUsername"
-            value={formData.userUsername}
+            id="username"
+            name="username"
+            value={formData.username}
             onChange={handleInputChange}
-            placeholder="e.g., john.p.smith"
+            placeholder="e.g., john_doe"
             required
           />
         </div>
         <div className="form-group">
-          <label htmlFor="userPassword">Password</label>
+          <label htmlFor="password">Password</label>
           <input
             type="password"
-            id="userPassword"
-            name="userPassword"
-            value={formData.userPassword}
+            id="password"
+            name="password"
+            value={formData.password}
             onChange={handleInputChange}
-            placeholder="Enter secure password"
+            placeholder="Enter password"
             required
           />
         </div>
         <div className="form-group">
-          <label htmlFor="userRoleId">Role</label>
-          <select
-            id="userRoleId"
-            name="userRoleId"
-            value={formData.userRoleId}
-            onChange={handleInputChange}
-            required
-          >
-            <option value="">Select Role</option>
-            {roles.map(role => (
-              <option key={role.id} value={role.id}>
-                {role.name === 'DEV' ? 'Commander' : role.name === 'ADMIN' ? 'Administrator' : 'Viewer'}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="form-group">
-          <label htmlFor="userUnitId">Unit</label>
-          <select
-            id="userUnitId"
-            name="userUnitId"
-            value={formData.userUnitId}
-            onChange={handleInputChange}
-            required
-          >
-            <option value="">Select Unit</option>
-            {units.map(unit => (
-              <option key={unit.id} value={unit.id}>
-                {unit.uic} - {unit.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="form-group">
-          <label htmlFor="userMOS">MOS (Military Occupational Specialty)</label>
+          <label htmlFor="roleId">Role ID</label>
           <input
             type="text"
-            id="userMOS"
-            name="userMOS"
-            value={formData.userMOS}
+            id="roleId"
+            name="roleId"
+            value={formData.roleId}
             onChange={handleInputChange}
-            placeholder="e.g., 11B, 12B, 25B"
-            maxLength="20"
+            placeholder="e.g., admin, user"
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="unitId">Unit ID</label>
+          <input
+            type="text"
+            id="unitId"
+            name="unitId"
+            value={formData.unitId}
+            onChange={handleInputChange}
+            placeholder="e.g., W1234A"
+            required
           />
         </div>
       </div>
-      <button type="submit" className="submit-btn" disabled={loading}>
-        {loading ? 'Creating User...' : 'Add User'}
-      </button>
+      <button type="submit" className="submit-btn">Add User</button>
     </form>
   );
 
@@ -611,35 +416,27 @@ function Administrator() {
     <div className="administrator-page">
       <div className="admin-header">
         <h1>Administrator Dashboard</h1>
-        <p>Manage and input basic data for the R.A.I.D system</p>
+        <p>Manage and input basic data for the R.a.i.D system</p>
       </div>
-
       {successMessage && (
         <div className="success-message">
           {successMessage}
         </div>
       )}
-
-      {error && (
-        <div className="error-message">
-          {error}
-        </div>
-      )}
-
       <div className="admin-tabs">
-        <button 
+        <button
           className={`tab-btn ${activeTab === 'units' ? 'active' : ''}`}
           onClick={() => setActiveTab('units')}
         >
           Units
         </button>
-        <button 
+        <button
           className={`tab-btn ${activeTab === 'personnel' ? 'active' : ''}`}
           onClick={() => setActiveTab('personnel')}
         >
           Personnel
         </button>
-        <button 
+        <button
           className={`tab-btn ${activeTab === 'equipment' ? 'active' : ''}`}
           onClick={() => setActiveTab('equipment')}
         >
@@ -658,13 +455,12 @@ function Administrator() {
           Users
         </button>
       </div>
-
       <div className="admin-content">
         {activeTab === 'units' && renderUnitForm()}
         {activeTab === 'personnel' && renderPersonnelForm()}
         {activeTab === 'equipment' && renderEquipmentForm()}
         {activeTab === 'training' && renderTrainingForm()}
-        {activeTab === 'users' && renderUserForm()}
+        {activeTab === 'users' && renderUsersForm()}
       </div>
     </div>
   );

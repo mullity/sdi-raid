@@ -201,3 +201,38 @@ export const getRecommendations = async (unit, priorityItem) => {
   const priorityType = priorityItem?.type || priorityItem?.title || 'Training Records Update';
   return fallbackRecommendations[priorityType] || fallbackRecommendations['Training Records Update'];
 };
+
+export const createUnit = async (unitData) => {
+  return await apiCall("/", {
+    method: "POST",
+    body: unitData,
+  });
+};
+
+export const createPersonnel = async (personnelData) => {
+  return await apiCall("/localhost:3001/api/soldiers", {
+    method: "POST",
+    body: personnelData,
+  });
+};
+
+export const createEquipment = async (equipmentData) => {
+  return await apiCall("/localhost:3001/api/vehicle", {
+    method: "POST",
+    body: equipmentData,
+  });
+};
+
+export const createTraining = async (trainingData) => {
+  return await apiCall("/localhost:3001/api/tasks", {
+    method: "POST",
+    body: trainingData,
+  });
+};
+
+export const createUser = async (userData) => {
+  return await apiCall("/localhost:3001/api/users", {
+    method: "POST",
+    body: userData,
+  });
+};
