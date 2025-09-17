@@ -35,6 +35,24 @@ const selectParentsAndChildren = (uicVar) => {
 
 }
 
+const getByRole = (input) => {
+
+  if (typeof input === 'number' || !isNaN(input)){
+
+    let numericId = Number.parseInt(input)
+    return knex('roles')
+      .select('id')
+      .from('roles')
+      .where('id', numericId)
+  }
+  else if(typeof input === 'string'){
+    return knex('roles')
+    .select()
+    .from('roles')
+    .where('name', input)
+  }
+}
+
 const parentsAndChildrenToArray = (unitArray) => {
   return unitArray.map(unit => unit.id)
 }
@@ -534,7 +552,8 @@ module.exports = {
   crewIssuesActions:crewIssuesActions,
   medicalIssuesActions:medicalIssuesActions,
   vicCertified:vicCertified,
-  formParser:formParser
+  formParser:formParser,
+  getByRole:getByRole
 }
 
 // vicModal:vicModal,
