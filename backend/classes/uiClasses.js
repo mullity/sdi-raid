@@ -812,10 +812,10 @@ class WeaponModal extends Modal{
                 percentage: percent,
                 data: {
                     metrics: [
-                        { label: 'Qualified Personnel', value: '68%'},
-                        { label: 'Range Time Current', value: '45%'},
-                        { label: 'Equipment Status', value: '82%'},
-                        { label: 'Safety Certification', value: '95%'}
+                        { label: 'Qualified Personnel', value: 68},
+                        { label: 'Range Time Current', value: 45},
+                        { label: 'Equipment Status', value: 82},
+                        { label: 'Safety Certification', value: 95}
                     ],
                     issues: issuesActions.issues,
                     actions: issuesActions.actions
