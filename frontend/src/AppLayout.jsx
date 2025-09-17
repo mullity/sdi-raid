@@ -9,8 +9,7 @@ import './AppLayout.css';
 function AppLayout({ user, onLogout }) {
   const printRef = useRef(); // for printing stuff
   const fileInputRef = useRef(); // file upload button
-  const [selectedUIC, setSelectedUIC] = useState(null);
-
+  const [ selectedUIC, setSelectedUIC ] = useState('WAMZAA')
   // just capitalizes role name
   function formatRole(role) {
     if (!role) return '';
