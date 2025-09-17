@@ -247,7 +247,8 @@ class VehicleSnapshot extends Snapshot {
                     status: 'fmc',
                     lastService: vic.date_last_serviced.toLocaleDateString(),
                     unit: vic.assigned_unit_id,
-                    name: vic.name
+                    name: vic.name,
+                    fuellevel: vic.fuel_level
                 })
                 this.fmc++
             } else if (vic.status == 'PMC') {
@@ -258,7 +259,8 @@ class VehicleSnapshot extends Snapshot {
                     status: 'pmc',
                     lastService: vic.date_last_serviced.toLocaleDateString(),
                     unit: vic.assigned_unit_id,
-                    name: vic.name
+                    name: vic.name,
+                    fuellevel: vic.fuel_level
                 })
                 this.pmc++
             } else if (vic.status == 'NMC') {
@@ -269,7 +271,8 @@ class VehicleSnapshot extends Snapshot {
                     status: 'nmc',
                     lastService: vic.date_last_serviced.toLocaleDateString(),
                     unit: vic.assigned_unit_id,
-                    name: vic.name
+                    name: vic.name,
+                    fuellevel: vic.fuel_level
                 })
                 this.nmc++
                 this.nmcArray.push({
@@ -279,7 +282,8 @@ class VehicleSnapshot extends Snapshot {
                     status: 'nmc',
                     lastService: vic.date_last_serviced.toLocaleDateString(),
                     unit: vic.assigned_unit_id,
-                    name: vic.name
+                    name: vic.name,
+                    fuellevel: vic.fuel_level
                 })
             }
         }
@@ -366,7 +370,7 @@ class VehicleSnapshot extends Snapshot {
                         data: this.jltv2Array
                     },
                 },
-                allVics:this.allVics
+                allVics: this.allVics
 
             }
             return this.generateDataResponse('percent', snapData)
