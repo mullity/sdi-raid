@@ -21,6 +21,9 @@ const knexConfig = require("./knexfile")[environment];
 const knex = require("knex")(knexConfig);
 const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
 const {
   createNewToken,
   authenticateToken,
@@ -28,6 +31,47 @@ const {
 
 //Secret_Key from .env
 const secretKey = process.env.SECRET_KEY;
+
+// Create uploads directory if it doesn't exist
+const uploadsDir = path.join(__dirname, 'uploads', 'training');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
+// Configure multer for file uploads
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, uploadsDir);
+  },
+  filename: function (req, file, cb) {
+    // Generate unique filename with timestamp
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 10 * 1024 * 1024, // 10MB limit
+  },
+  fileFilter: function (req, file, cb) {
+    // Allow specific file types
+    const allowedTypes = /pdf|doc|docx|ppt|pptx|xls|xlsx|txt/;
+    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = allowedTypes.test(file.mimetype) ||
+                     file.mimetype.includes('document') ||
+                     file.mimetype.includes('presentation') ||
+                     file.mimetype.includes('spreadsheet') ||
+                     file.mimetype.includes('text');
+
+    if (mimetype && extname) {
+      return cb(null, true);
+    } else {
+      cb(new Error('Only PDF, DOC, PPT, XLS, and TXT files are allowed'));
+    }
+  }
+});
 
 const app = express();
 app.use(
@@ -81,7 +125,8 @@ app.post("/login", async (req, res) => {
               HttpResponse: "Login successful",
               user: {
                 username: user.username,
-                role: role
+                role: role,
+                mos: user.mos || '12B'
               }
             });
           });
@@ -148,6 +193,28 @@ app.listen(port, () => {
 
 app.get("/", (_req, res) => {
   res.status(200).send("server is up");
+});
+
+// API endpoint to get all roles
+app.get('/api/roles', async (req, res) => {
+  try {
+    const roles = await knex('roles').select('*').orderBy('name');
+    res.json(roles);
+  } catch (error) {
+    console.error('Error fetching roles:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// API endpoint to get all units
+app.get('/api/units', async (req, res) => {
+  try {
+    const units = await knex('units').select('*').orderBy('name');
+    res.json(units);
+  } catch (error) {
+    console.error('Error fetching units:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
 });
 
 app.get("/api/:uic", async (req, res) => {
@@ -350,6 +417,116 @@ app.post('/training' , async (req, res) => {
   }
 
 })
+
+// API endpoint to get tasks by MOS
+app.get('/api/tasks/mos/:mos', async (req, res) => {
+  try {
+    const { mos } = req.params;
+    const tasks = await knex('tasks')
+      .select('*')
+      .where('mos', mos)
+      .orderBy('number');
+
+    res.json(tasks);
+  } catch (error) {
+    console.error('Error fetching tasks by MOS:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// API endpoint to create a new training program with file uploads
+app.post('/api/training', upload.array('documents', 10), async (req, res) => {
+  try {
+    const { name, type, duration, requirements } = req.body;
+
+    // Validate required fields
+    if (!name || !type || !duration) {
+      return res.status(400).json({ error: 'Name, type, and duration are required' });
+    }
+
+    // Process uploaded files
+    const uploadedFiles = req.files || [];
+    const fileData = uploadedFiles.map(file => ({
+      originalName: file.originalname,
+      filename: file.filename,
+      path: file.path,
+      size: file.size,
+      mimetype: file.mimetype
+    }));
+
+    // For now, we'll store training data as a simple log
+    // In a real application, you'd save this to a database table
+    const trainingData = {
+      name,
+      type,
+      duration: parseInt(duration),
+      requirements: requirements || '',
+      documents: fileData,
+      created_at: new Date().toISOString()
+    };
+
+    console.log('Training program created:', trainingData);
+
+    res.status(201).json({
+      message: 'Training program created successfully',
+      training: {
+        name: trainingData.name,
+        type: trainingData.type,
+        duration: trainingData.duration,
+        documentsCount: fileData.length
+      }
+    });
+  } catch (error) {
+    console.error('Error creating training program:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// API endpoint to create a new user
+app.post('/api/users', async (req, res) => {
+  try {
+    const { email, username, password, role_id, unit_id, mos } = req.body;
+
+    // Validate required fields
+    if (!email || !username || !password || !role_id || !unit_id) {
+      return res.status(400).json({ error: 'All required fields must be provided' });
+    }
+
+    // Hash the password
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    // Check if user already exists
+    const existingUser = await knex('users')
+      .where('username', username)
+      .orWhere('email', email)
+      .first();
+
+    if (existingUser) {
+      return res.status(400).json({ error: 'User with this username or email already exists' });
+    }
+
+    // Insert new user
+    const newUser = await knex('users')
+      .insert({
+        email,
+        username,
+        password: hashedPassword,
+        role_id,
+        unit_id,
+        mos: mos || null
+      })
+      .returning(['id', 'email', 'username', 'role_id', 'unit_id', 'mos']);
+
+    res.status(201).json({
+      message: 'User created successfully',
+      user: newUser[0]
+    });
+  } catch (error) {
+    console.error('Error creating user:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
 
 // app.get('/api/training/350-1', function(request, response) {
 //   const trainingData = {
