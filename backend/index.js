@@ -32,7 +32,7 @@ const secretKey = process.env.SECRET_KEY;
 const app = express();
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: ["http://127.0.0.1:5173","http://localhost:3001"],
     credentials: true,
   })
 );
@@ -190,8 +190,8 @@ app.get("/snapshot", async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
-
-app.get("/kpi", authenticateToken, async (req, res) => {
+//TODO-READD AUTHENTICATE TOKEN
+app.get("/kpi", async (req, res) => {
   //required query params: unit(number)
   //optional query params: verbose(true/false as string), personnelReadinessScore(true/false as string), equipmentReadinessScore(true/false as string), trainingReadinessScore(true/false as string), medicalReadinessScore(true/false as string)
   let {
