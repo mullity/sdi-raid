@@ -139,7 +139,7 @@ function Dashboard() {
     ],
     training: [
       { id: 1, title: 'Weapons Qualification', priority: 'High', dueDate: '2025-09-13', description: 'Schedule and complete weapons qualification training' },
-      { id: 2, title: 'PT Test Preparation', priority: 'High', dueDate: '2025-09-17', description: 'Conduct ACFT practice and remedial training' },
+      { id: 2, title: 'PT Test Preparation', priority: 'High', dueDate: '2025-09-17', description: 'Conduct AFT practice and remedial training' },
       { id: 3, title: 'Mission Essential Training', priority: 'Medium', dueDate: '2025-09-22', description: 'Complete METL task certifications' }
     ],
     medical: [
@@ -253,10 +253,11 @@ function Dashboard() {
         <PrioritiesPanel
           priorities={selectedCategory ? categoryPriorityItems[selectedCategory] : []}
           selectedCategory={selectedCategory}
+          unit={selectedUnit?.id}
         />
       </div>
 
-      <PriorityTrendAnalysis />
+      <PriorityTrendAnalysis unit={selectedUnit?.id} />
     </div>
   );
 }

@@ -1,25 +1,19 @@
-import { useState, useRef } from 'react';
+import { useRef } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { useReactToPrint } from 'react-to-print';
 import LeaderHub from './components/LeaderHub';
 import ThemeToggle from './components/ThemeToggle';
-import UICSelector from './components/UICSelector';
 import PrintReport from './components/PrintReport';
 import './AppLayout.css';
 
 function AppLayout({ user, onLogout }) {
-  const [selectedUIC, setSelectedUIC] = useState('WAZMB0');
-  const printRef = useRef(); // Reference for content to print
-  const fileInputRef = useRef(); // Reference for file input
+  const printRef = useRef(); // for printing stuff
+  const fileInputRef = useRef(); // file upload button
 
-  // Capitalize first letter of role
+  // just capitalizes role name
   function formatRole(role) {
     if (!role) return '';
     return role.charAt(0).toUpperCase() + role.slice(1);
-  }
-
-  function handleUICChange(uic) {
-    setSelectedUIC(uic.code);
   }
 
   const handlePrint = useReactToPrint({
@@ -35,7 +29,7 @@ function AppLayout({ user, onLogout }) {
     const file = event.target.files[0];
     if (file) {
       console.log('File selected:', file.name);
-      // TODO: Implement file processing logic here
+      // TODO: actually do something with the file
       alert(`Document "${file.name}" Uploaded Succesfully, will be attached to Unit ID!`);
     }
   };
@@ -60,8 +54,6 @@ function AppLayout({ user, onLogout }) {
           </div>
 
          <nav className="main-nav">
-            <UICSelector selectedUIC={selectedUIC} onUICChange={handleUICChange} />
-
             <NavLink
               to="/dashboard"
               className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}

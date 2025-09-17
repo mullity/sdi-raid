@@ -2,7 +2,7 @@ import { useState } from 'react';
 import './PrioritiesPannel.css';
 import RecommendationsModal from './RecommendationsModal';
 
-function PrioritiesPanel({ priorities = [], selectedCategory }) {
+function PrioritiesPanel({ priorities = [], selectedCategory, unit }) {
   // State for modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPriority, setSelectedPriority] = useState(null);
@@ -186,6 +186,7 @@ function PrioritiesPanel({ priorities = [], selectedCategory }) {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         priorityItem={selectedPriority}
+        unit={unit}
       />
     </div>
   );

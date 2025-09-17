@@ -58,6 +58,40 @@
     font-weight: bold;
   }
 
+  /* KPI Grid for print */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+
+  /* KPI Card styling for print */
+  .kpi-card {
+    border: 1px solid #000;
+    padding: 8px;
+    text-align: center;
+    break-inside: avoid;
+  }
+
+  .kpi-card .kpi-value {
+    font-size: 16pt;
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+
+  .kpi-card .kpi-title {
+    font-size: 10pt;
+    font-weight: bold;
+    margin-bottom: 2px;
+  }
+
+  .kpi-card .kpi-description {
+    font-size: 8pt;
+    color: #333;
+    font-style: italic;
+  }
+
   /* Streamlined priority areas */
   .priority-areas-list {
     margin-bottom: 15px;
