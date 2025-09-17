@@ -215,14 +215,20 @@ class CollectiveTask {
     }
 
     async getCarData() {
-        let metaURL = this['metadata']['formats'].find(item => item['path'] == 'metadata.json')['link']['href']
-        return fetch(metaURL)
+        let metaURL = this['metadata']['formats'].find(item => item['path'] == 'metadata.json')?.['link']?.['href']
+        if(metaURL){
+            return fetch(metaURL)
             .then(res => toJSON(res.body))
             .then(carData => {
                 for (let key in carData['collectiveTask']) {
                     this[key] = carData['collectiveTask'][key]
                 }
             })
+        }
+        else {
+            return this['metadata']['formats'][0]['link']['href']
+        }
+        
         //     .then(jsonBody => jsonBody['catalogitems'][0])
         //     .then(carMetadata => {
         //         for (let key in carMetadata) {
@@ -273,10 +279,12 @@ async function toJSON(body) {
 }
 
 async function carSearch(docId) {
+    encodedDocId=encodeURI(docId)
     return fetch(`https://rdl.train.army.mil/catalog-ws/api/catalogitems.json?current=true
-            &search_terms=${docId}&page=1&pagesize=20&field_list=*`)
+            &search_terms=${encodedDocId}&page=1&pagesize=20&field_list=*`)
         .then(res => toJSON(res.body)
-            .then(jsonBody => jsonBody['catalogitems'][0])
+            .then(jsonBody => {
+                return jsonBody['catalogitems'][0]})
             .then(firstReturn => {
                 if (firstReturn['identifier']==docId){
                     return firstReturn
