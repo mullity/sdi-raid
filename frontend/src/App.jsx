@@ -9,6 +9,7 @@ import AmmoCalculator from './routes/AmmoCalculator';
 import ViewerDashboard from './routes/ViewerDashboard';
 import Login from './Login';
 import './App.css';
+import TaskViewer from './routes/TaskViewer';
 
 function App() {
   // Keep track of who is logged in
@@ -92,6 +93,7 @@ function App() {
         <Route path="/350-1" element={<ThreeFiftyOne />} />
         <Route path="/equipment" element={<EquipmentDetails />} />
         <Route path="/ammo-calculator" element={<AmmoCalculator />} />
+        <Route path="/task-viewer" element={<TaskViewer />} />
       </Route>
     </Routes>
   );

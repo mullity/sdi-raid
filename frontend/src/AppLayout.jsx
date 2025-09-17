@@ -81,6 +81,14 @@ function AppLayout({ user, onLogout }) {
             >
               Ammo Calculator
             </NavLink>
+
+            <NavLink
+              to="/task-viewer"
+              className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+            >
+              Task-Viewer
+            </NavLink>
+
           </nav>
 
           <div className="user-controls">
