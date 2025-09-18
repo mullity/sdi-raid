@@ -530,9 +530,10 @@ class VehicleModal extends Modal{
                     pmc: this.vics.data.pmc,
                     nmc: this.vics.data.nmc,
                     metrics: [
-                        { label: 'Operational Vehicles', value: this.vics.value},
-                        { label: 'Maintenance Current', value: this.vics.value},
-                        { label: 'Fuel Readiness', value: this.vics.data.fuellevel},
+
+                        { label: 'Operational Vehicles', value: (Math.round(this.vics.value * 100) /100) },
+                        { label: 'Maintenance Current', value: (Math.round(this.vics.value * 100) /100)},
+                        { label: 'Fuel Readiness', value: (Math.round(this.vics.data.fuellevel * 100) /100)},
                         //{ label: 'Driver Certification', value: certified.overall}
                     ],
                     issues: this.issuesActions.data.issues,
@@ -611,7 +612,7 @@ class DeploymentModal extends Modal{
                 data: {
                     metrics:
                     [
-                        { label: 'Personnel Ready', value: percent},
+                        { label: 'Personnel Ready', value: (Math.round(percent *100)/100)},
                         { label: 'Equipment Staged', value: 23},
                         { label: 'Transport Available', value: 67},
                         { label: 'Mission Planning', value: 12}
@@ -805,8 +806,8 @@ class WeaponModal extends Modal{
     generateCard(verbose){
 
         let issuesActions = {
-        issues: [],
-        actions: []
+        issues: [{id: 0, text: `25% of weapons are NMC`}],
+        actions: [{id: 0, text: `Work with MERS and BN Weapons Shop to schedule maintenance`}]
     }
         let snapData
         let percent = 75

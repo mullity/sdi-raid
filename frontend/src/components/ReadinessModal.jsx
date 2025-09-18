@@ -1,48 +1,37 @@
 import './ReadinessModal.css';
 
 function ReadinessModal({ category }) {
-   const getStatusClass = (percentage) => {
-  //   switch (status) {
-  //     case 'high': return 'status-high';
-  //     case 'medium': return 'status-medium';
-  //     case 'low': return 'status-low';
-  //     case 'critical': return 'status-critical';
-  //     default: return 'status-unknown';
-  //   }
-
-  if(percentage >= 90){
+  const getStatusClass = (percent) => {
+  if(percent >= 90){
       return 'status-high'
     }
-    else if(percentage >= 80){
+    else if(percent >= 80){
       return 'status-medium'
     }
-    else if(percentage >= 70){
+    else if(percent >= 70){
       return 'status-low'
     }
-    else if(percentage){
+    else if(percent > 0){
       return 'status-critical'
     } else {
       return 'status-unknown'
     }
   };
 
-  console.log(category)
-
   const getStatusLabel = (value) => {
     let status = getStatusClass(value)
     return status.charAt(0).toUpperCase() + status.slice(1);
   };
-
-  // Placeholder data for the modal content
-
-
+  if(category.percentage === null){
+    console.log('loading')
+  } else {
   return (
     <div className="readiness-modal">
       <div className="modal-summary">
         <div className="summary-header">
-          <div className="summary-percentage">{category.percentage}%</div>
+          <div className="summary-percentage">{Math.round(category.percentage * 100) /100}%</div>
           <div className={`summary-status ${getStatusClass(category.percentage)}`}>
-            {getStatusLabel(category.status)} Priority
+            {getStatusLabel(category.percentage)} Priority
           </div>
         </div>
         <p className="summary-description">{category.description}</p>
@@ -91,6 +80,7 @@ function ReadinessModal({ category }) {
       </div>
     </div>
   );
+}
 }
 
 export default ReadinessModal;

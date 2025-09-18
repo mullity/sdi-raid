@@ -121,7 +121,7 @@ function LeaderHub({ selectedUnit }) {
               }}
             >
             <div className="box-header">
-              <span className="box-percentage">{category.percentage}%</span>
+              <span className="box-percentage">{Math.round(category.percentage * 100) /100}%</span>
             </div>
 
             <h4 className="box-title">{category.title}</h4>
