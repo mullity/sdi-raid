@@ -531,7 +531,7 @@ class VehicleModal extends Modal{
                     nmc: this.vics.data.nmc,
                     metrics: [
                         { label: 'Operational Vehicles', value: this.vics.value},
-                        { label: 'Maintenance Current', value: 'supplied by front end'},
+                        { label: 'Maintenance Current', value: this.vics.value},
                         { label: 'Fuel Readiness', value: this.vics.data.fuellevel},
                         //{ label: 'Driver Certification', value: certified.overall}
                     ],
@@ -805,8 +805,8 @@ class WeaponModal extends Modal{
     generateCard(verbose){
 
         let issuesActions = {
-        issues: "seed data in utils.js",
-        actions: "seed data in utils.js"
+        issues: [],
+        actions: []
     }
         let snapData
         let percent = 75

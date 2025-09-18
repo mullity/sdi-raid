@@ -16,7 +16,7 @@ function LeaderHub({ selectedUnit }) {
 
       setModalData(data)
     })
-  }, [])
+  }, [hoveredCategory])
 
   // which one is clicked
   var [selectedCategory, setSelectedCategory] = useState(null);
@@ -50,10 +50,10 @@ function LeaderHub({ selectedUnit }) {
       title: datum.data.title,
       description: datum.data.description,
       percentage: datum.data.percentage,
-      status: status
+      status: status,
+      data: datum.data
     })
   }
-  console.log(readinessCategoriesData)
   // Sort categories from lowest to highest percentage
   var readinessCategories = readinessCategoriesData.sort(function(a, b) {
     return a.percentage - b.percentage;
@@ -156,7 +156,7 @@ function LeaderHub({ selectedUnit }) {
         title={selectedCategory?.title || 'Readiness Details'}
       >
         {selectedCategory && (
-          <ReadinessModal category={selectedCategory} />
+          <ReadinessModal category={selectedCategory.data}/>
         )}
       </Modal>
     </div>
