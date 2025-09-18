@@ -216,7 +216,7 @@ class CollectiveTask {
 
     async getCarData() {
         let metaURL = this['metadata']['formats'].find(item => item['path'] == 'metadata.json')?.['link']?.['href']
-        console.log(metaURL)
+        //console.log(metaURL)
         if(metaURL && !(metaURL.includes('atiam'))){
             return fetch(metaURL)
             .then(res => toJSON(res.body))
@@ -281,8 +281,7 @@ async function toJSON(body) {
 
 async function carSearch(docId) {
     encodedDocId=encodeURI(docId)
-    console.log(`fetching to https://rdl.train.army.mil/catalog-ws/api/catalogitems.json?current=true
-            &search_terms=${encodedDocId}&page=1&pagesize=20&field_list=`)
+    //console.log(`fetching to https://rdl.train.army.mil/catalog-ws/api/catalogitems.json?current=true&search_terms=${encodedDocId}&page=1&pagesize=20&field_list=`)
     return fetch(`https://rdl.train.army.mil/catalog-ws/api/catalogitems.json?current=true
             &search_terms=${encodedDocId}&page=1&pagesize=20&field_list=*`)
         .then(res => toJSON(res.body)
