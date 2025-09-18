@@ -40,7 +40,7 @@ export default function TaskViewer({ inputTask = '17-CW-5969' }) {
 
             <a href={currentTask?.metadata?.formats?.find(item => item['path'] == 'report.pdf')?.['link']?.['href'] || currentTask['metadata']['formats'][0]['link']['href']}
               target="_blank" rel="noopener noreferrer">
-                {currentTask?.metadata?.formats?.find(item => item['path'] == 'report.pdf')?.['link']?.['href'] || currentTask['metadata']['formats'][0]['link']['href'].includes('atiam') ? "Requires CAC login (Restricted Document) - " : ''}
+                {currentTask?.metadata?.formats?.find(item => item['path'] == 'report.pdf')?.['link']?.['href']?.includes('atiam') ? "Requires CAC login (Restricted Document) - " : ''}
                 Get the PDF from CAR              
             </a>
 
