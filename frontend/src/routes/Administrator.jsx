@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './Administrator.css';
+import { createUser } from '../services/api.js'
 
 function Administrator() {
   const [activeTab, setActiveTab] = useState('units');
@@ -28,8 +29,8 @@ function Administrator() {
     email: '',
     username: '',
     password: '',
-    roleId: '',
-    unitId: ''
+    role_id: '',
+    unit_id: ''
   });
   const [successMessage, setSuccessMessage] = useState('');
 
@@ -44,8 +45,8 @@ function Administrator() {
   const handleSubmit = (e, dataType) => {
     e.preventDefault();
     // Here you would typically send data to your backend API
-    console.log(`Submitting ${dataType} data:`, formData);
-
+    //e is event, datatype is table to update
+    createUser(formData)
     // Show success message
     setSuccessMessage(`${dataType.charAt(0).toUpperCase() + dataType.slice(1)} data submitted successfully!`);
     setTimeout(() => setSuccessMessage(''), 3000);
@@ -70,7 +71,7 @@ function Administrator() {
       case 'training':
         return ['trainingName', 'trainingType', 'trainingDuration', 'trainingRequirements'];
       case 'users':
-        return ['email', 'username', 'password', 'roleId', 'unitId'];
+        return ['email', 'username', 'password', 'role_id', 'unit_id'];
       default:
         return [];
     }
@@ -384,24 +385,24 @@ function Administrator() {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="roleId">Role ID</label>
+          <label htmlFor="role_id">Role ID</label>
           <input
             type="text"
-            id="roleId"
-            name="roleId"
-            value={formData.roleId}
+            id="role_id"
+            name="role_id"
+            value={formData.role_id}
             onChange={handleInputChange}
             placeholder="e.g., admin, user"
             required
           />
         </div>
         <div className="form-group">
-          <label htmlFor="unitId">Unit ID</label>
+          <label htmlFor="unit_id">Unit ID</label>
           <input
             type="text"
-            id="unitId"
-            name="unitId"
-            value={formData.unitId}
+            id="unit_id"
+            name="unit_id"
+            value={formData.unit_id}
             onChange={handleInputChange}
             placeholder="e.g., W1234A"
             required

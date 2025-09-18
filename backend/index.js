@@ -143,7 +143,8 @@ app.post("/login", async (req, res) => {
 app.post("/api/:table", async (req, res) => {
   const table = req.params.table;
   const input = req.body;
-
+  console.log(`table: ${table}`)
+  console.log(input, "input")
   const output = await postToTable(table, input);
   res.status(201).json(output);
 });

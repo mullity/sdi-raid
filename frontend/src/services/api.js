@@ -6,7 +6,7 @@ function getCookie() {
 }
 
 // Generic API call function with error handling
-const apiCall = async (endpoint, params = {}) => {
+const apiCall = async (endpoint, params = {}, method = "GET", body = {}) => {
   try {
     const queryParams = new URLSearchParams();
     Object.keys(params).forEach((key) => {
@@ -14,17 +14,25 @@ const apiCall = async (endpoint, params = {}) => {
         queryParams.append(key, params[key]);
       }
     });
-
-    const url = `${BASE_URL}${endpoint}?${queryParams.toString()}`;
+    let url
+    if( Object.keys(params).length > 0){
+      console.log(`with entries \n${queryParams.entries()}`)
+      url = `${BASE_URL}${endpoint}?${queryParams.toString()}`;
+    }else{
+      url = `${BASE_URL}${endpoint}`;
+      console.log(url, "url")
+    }
+    //const url = `${BASE_URL}${endpoint}?${queryParams.toString()}`;
     const token = getCookie("loginToken");
     console.log("Sending token:", token); // Debug log
     const response = await fetch(url, {
       credentials: "include",
-      method: "GET",
+      method: method.toUpperCase(),
       headers: {
         "Content-Type": "application/json",
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
+      body: body
     });
 
     if (!response.ok) {
@@ -210,29 +218,26 @@ export const createUnit = async (unitData) => {
 };
 
 export const createPersonnel = async (personnelData) => {
-  return await apiCall("/localhost:3001/api/soldiers", {
+  return await apiCall("/api/soldiers", {
     method: "POST",
     body: personnelData,
   });
 };
 
 export const createEquipment = async (equipmentData) => {
-  return await apiCall("/localhost:3001/api/vehicle", {
+  return await apiCall("/api/vehicle", {
     method: "POST",
     body: equipmentData,
   });
 };
 
 export const createTraining = async (trainingData) => {
-  return await apiCall("/localhost:3001/api/tasks", {
+  return await apiCall("/api/tasks", {
     method: "POST",
     body: trainingData,
   });
 };
 
 export const createUser = async (userData) => {
-  return await apiCall("/localhost:3001/api/users", {
-    method: "POST",
-    body: userData,
-  });
+  return await apiCall("/api/users", {}, "POST", JSON.stringify(userData));
 };
