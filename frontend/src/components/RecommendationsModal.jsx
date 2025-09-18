@@ -1,6 +1,6 @@
 import './RecommendationsModal.css';
 import { useState, useEffect } from 'react';
-//import { getRecommendations } from '../services/api';
+import { getRecommendations } from '../services/api';
 
 function RecommendationsModal({ isOpen, onClose, priorityItem, unit }) {
   const [recommendations, setRecommendations] = useState(null);
