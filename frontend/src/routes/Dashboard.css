@@ -43,7 +43,7 @@
   padding: 8px 12px;
   border: 1px solid var(--border-color, #ccc);
   border-radius: 4px;
-  background-color: var(--bg-primary, white);
+  background-color: var(--bg-primary);
   color: var(--text-primary);
   font-size: 0.9rem;
   min-width: 200px;
@@ -81,4 +81,53 @@
   grid-template-columns: 1fr;
   gap: 20px;
   margin-bottom: 20px;
+}
+
+/* Dark Mode Overrides */
+[data-theme="dark"] .dashboard-page {
+  background-color: var(--bg-primary);
+}
+
+[data-theme="dark"] .dashboard-header {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .dashboard-title {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .unit-selector label {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .unit-dropdown {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .unit-dropdown:focus {
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.25);
+}
+
+[data-theme="dark"] .unit-dropdown:disabled {
+  background-color: var(--bg-tertiary);
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .loading-units {
+  color: var(--text-secondary);
+}
+
+/* More specific selectors for dashboard header */
+[data-theme="dark"] .dashboard-page .dashboard-header {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] main .dashboard-page .dashboard-header {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
 }
