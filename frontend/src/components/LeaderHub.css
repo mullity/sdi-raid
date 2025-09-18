@@ -76,6 +76,7 @@
 .readiness-box.status-high {
   background: linear-gradient(135deg, #e8f5e8 0%, #f1f9f1 100%);
   border-color: #4caf50;
+  border-left: 4px solid #4caf50;
 }
 
 .readiness-box.status-high:hover {
@@ -86,6 +87,7 @@
 .readiness-box.status-medium {
   background: linear-gradient(135deg, #fff8e1 0%, #fffdf7 100%);
   border-color: #ff9800;
+  border-left: 4px solid #ff9800;
 }
 
 .readiness-box.status-medium:hover {
@@ -96,6 +98,7 @@
 .readiness-box.status-low {
   background: linear-gradient(135deg, #ffeaa7 0%, #fff4e0 100%);
   border-color: #fdcb6e;
+  border-left: 4px solid #ff5722;
 }
 
 .readiness-box.status-low:hover {
@@ -106,6 +109,7 @@
 .readiness-box.status-critical {
   background: linear-gradient(135deg, #ffebee 0%, #fdf2f2 100%);
   border-color: #f44336;
+  border-left: 4px solid #f44336;
 }
 
 .readiness-box.status-critical:hover {
@@ -172,40 +176,103 @@
   background: linear-gradient(90deg, #f44336 0%, #ef5350 100%);
 }
 
-/* Status Indicator */
+/* Professional Status Indicator */
 .status-indicator {
   display: flex;
   align-items: center;
-  gap: 4px;
-  font-size: 10px;
+  gap: 20px;
+  font-size: 15px;
+  padding: 0px 12px;
+  border-radius: 0px;
+  background: #b9cdd1;
+  border: 0px solid #e9ecef;
+  transition: all 0.0s ease;
+}
+
+.status-indicator.status-high {
+  background: #4caf50;
+  border-color: #4caf50;
+}
+
+.status-indicator.status-medium {
+  background: #ff9800;
+  border-color: #ff9800;
+}
+
+.status-indicator.status-low {
+  background: #ff5722;
+  border-color: #ff5722;
+}
+
+.status-indicator.status-critical {
+  background: #f44336;
+  border-color: #f44336;
+}
+
+.status-indicator:hover {
+  transform: translateY(-1px);
 }
 
 .status-dot {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
+  position: relative;
+  transition: all 0.6s ease;
+}
+
+.status-dot::after {
+  content: '';
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 0%;
+  top: 0%;
+  left: 0%;
+  transform: translate(0%, 0%);
+  background: rgba(255, 255, 255, 0.9);
 }
 
 .status-dot.status-high {
-  background: #4caf50;
+  background: linear-gradient(135deg, #10b981, #059669);
 }
 
 .status-dot.status-medium {
-  background: #ff9800;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
 }
 
 .status-dot.status-low {
-  background: #ff5722;
+  background: linear-gradient(135deg, #f97316, #ea580c);
 }
 
 .status-dot.status-critical {
-  background: #f44336;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
 }
 
 .status-text {
-  color: #6c757d;
-  font-weight: 500;
-  text-transform: capitalize;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 15px;
+  line-height: 1;
+
+}
+
+/* Status Text Colors - Match Status Levels */
+.status-high .status-text {
+  color: #059669;
+}
+
+.status-medium .status-text {
+  color: #d97706;
+}
+
+.status-low .status-text {
+  color: #ea580c;
+}
+
+.status-critical .status-text {
+  color: #dc2626;
 }
 
 /* Tooltip */
@@ -214,7 +281,7 @@
   bottom: -45px;
   left: 50%;
   transform: translateX(-50%);
-  background: #2c3e50;
+  background: #000000;
   color: white;
   padding: 8px 12px;
   border-radius: 6px;
@@ -230,9 +297,9 @@
   top: -5px;
   left: 50%;
   transform: translateX(-50%);
-  border-left: 5px solid transparent;
+  /* border-left: 0px solid transparent; */
   border-right: 5px solid transparent;
-  border-bottom: 5px solid #2c3e50;
+  border-bottom: 5px solid #ffffff;
 }
 
 /* Hub Summary */
@@ -295,6 +362,121 @@
   width: auto;
   filter: brightness(0);
   display: block;
+}
+
+/* Dark Mode Styles */
+[data-theme="dark"] .leader-hub {
+  background: #1f2937;
+  border: 1px solid #374151;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .hub-header {
+  border-bottom-color: #374151;
+}
+
+[data-theme="dark"] .hub-title {
+  color: #f9fafb;
+}
+
+[data-theme="dark"] .unit-label {
+  color: #9ca3af;
+}
+
+[data-theme="dark"] .unit-name {
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .unit-uic {
+  color: #60a5fa;
+}
+
+[data-theme="dark"] .readiness-box {
+  background: #374151;
+  border-color: #4b5563;
+}
+
+[data-theme="dark"] .readiness-box:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .box-percentage,
+[data-theme="dark"] .box-title {
+  color: #f9fafb;
+}
+
+[data-theme="dark"] .progress-bar {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+
+[data-theme="dark"] .hub-summary {
+  background: #374151;
+  border-color: #4b5563;
+}
+
+[data-theme="dark"] .overall-readiness h4 {
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .overall-percentage {
+  color: #f9fafb;
+}
+
+[data-theme="dark"] .breakdown-label {
+  color: #9ca3af;
+}
+
+[data-theme="dark"] .breakdown-count {
+  color: #f9fafb;
+  background: #1f2937;
+  border-color: #4b5563;
+}
+
+[data-theme="dark"] .raid-logo {
+  filter: brightness(1) invert(1);
+}
+
+
+[data-theme="dark"] .status-high .status-text {
+  color: #10b981;
+}
+
+[data-theme="dark"] .status-medium .status-text {
+  color: #f59e0b;
+}
+
+[data-theme="dark"] .status-low .status-text {
+  color: #f97316;
+}
+
+[data-theme="dark"] .status-critical .status-text {
+  color: #ef4444;
+}
+
+[data-theme="dark"] .status-indicator {
+  background: #374151;
+  border-color: #4b5563;
+}
+
+[data-theme="dark"] .status-indicator.status-high {
+  background: #10b981;
+  border-color: #10b981;
+}
+
+[data-theme="dark"] .status-indicator.status-medium {
+  background: #f59e0b;
+  border-color: #f59e0b;
+}
+
+[data-theme="dark"] .status-indicator.status-low {
+  background: #f97316;
+  border-color: #f97316;
+}
+
+[data-theme="dark"] .status-indicator.status-critical {
+  background: #ef4444;
+  border-color: #ef4444;
 }
 
 /* Responsive Design */
