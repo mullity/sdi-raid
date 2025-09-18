@@ -64,6 +64,8 @@ const postToTable = async (table, input) => {
     let roleId = await getByRole(role_id);
     let unitId = await getByUIC(unit_id);
     try {
+
+      //Filterinputs to only matching
       const columns = await getAllFields(table);
       const required = columns.filter((col) => col !== "id");
       console.log(JSON.stringify(required));

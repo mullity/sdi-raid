@@ -46,7 +46,13 @@ function Administrator() {
     e.preventDefault();
     // Here you would typically send data to your backend API
     //e is event, datatype is table to update
-    createUser(formData)
+    createUser(Object.keys(formData)
+    .filter(key=>getFieldsForTab('users').includes(key))
+    .reduce((obj, key) => {
+      console.log(key,formData[key],'formdata')
+    obj[key] = formData[key];
+    return obj;
+  },{}))
     // Show success message
     setSuccessMessage(`${dataType.charAt(0).toUpperCase() + dataType.slice(1)} data submitted successfully!`);
     setTimeout(() => setSuccessMessage(''), 3000);
