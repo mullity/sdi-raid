@@ -24,51 +24,6 @@ function LeaderHub({ selectedUnit }) {
   // modal open/closed
   var [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Data about different readiness categories
-  // var readinessCategoriesData = [
-  //   {
-  //     id: 'training',
-  //     title: 'Unit Specific Training',
-  //     description: 'Training readiness and certification status',
-  //     status: 'medium',
-  //     percentage: 76
-  //   },
-  //   {
-  //     id: 'crew',
-  //     title: 'Crew Qualification',
-  //     description: 'Combat Readiness Evaluation Assessment',
-  //     status: 'high',
-  //     percentage: 89
-  //   },
-  //   {
-  //     id: 'deployment',
-  //     title: 'Deployment Readiness',
-  //     description: 'Mission deployment preparation status',
-  //     status: 'critical',
-  //     percentage: 34
-  //   },
-  //   {
-  //     id: 'medical',
-  //     title: 'Medical Readiness',
-  //     description: 'Health and medical certification status',
-  //     status: 'high',
-  //     percentage: 92
-  //   },
-  //   {
-  //     id: 'weapons',
-  //     title: 'Weapons Qualification',
-  //     description: 'Weapons training and marksmanship status',
-  //     status: 'medium',
-  //     percentage: 68
-  //   },
-  //   {
-  //     id: 'vehicle',
-  //     title: 'Vehicle Readiness',
-  //     description: 'Equipment and vehicle operational status',
-  //     status: 'low',
-  //     percentage: 45
-  //   }
-  // ];
 
   if(modalData === null || modalData === undefined){
     console.log('loading')
@@ -77,28 +32,28 @@ function LeaderHub({ selectedUnit }) {
   for(let datum of modalData){
     //low, medium, high, critical
     let status
-    if(datum.percentage >= 90){
+    if(datum.data.percentage >= 90){
       status = 'high'
     }
-    else if(datum.percentage >= 80){
+    else if(datum.data.percentage >= 80){
       status = 'medium'
     }
-    else if(datum.percentage >= 70){
+    else if(datum.data.percentage >= 70){
       status = 'low'
     }
-    else if(datum.percentage >= 60){
+    else if(datum.data.percentage){
       status = 'critical'
     }
 
     readinessCategoriesData.push({
       id: datum.id,
-      title: datum.title,
-      description: datum.description,
-      percentage: datum.percentage,
+      title: datum.data.title,
+      description: datum.data.description,
+      percentage: datum.data.percentage,
       status: status
     })
   }
-
+  console.log(readinessCategoriesData)
   // Sort categories from lowest to highest percentage
   var readinessCategories = readinessCategoriesData.sort(function(a, b) {
     return a.percentage - b.percentage;
@@ -134,7 +89,7 @@ function LeaderHub({ selectedUnit }) {
   if(readinessCategories === undefined || readinessCategories === null){
     return <h1>Loading Leaderhub</h1>
   }else {
-    console.log(readinessCategories, 'leaderhub readiness categories')
+    //console.log(readinessCategories, 'leaderhub readiness categories')
   return (
     <div className="leader-hub">
       <div className="hub-header">
@@ -187,7 +142,7 @@ function LeaderHub({ selectedUnit }) {
             <div className="status-indicator">
               <span className={'status-dot ' + getStatusClass(category.status)}></span>
               <span className="status-text">
-                {category.status.charAt(0).toUpperCase() + category.status.slice(1)}
+                {category.status?.charAt(0).toUpperCase() + category.status?.slice(1)}
               </span>
             </div>
           </div>
