@@ -196,7 +196,7 @@ class CollectiveTask {
     }
 
     async init() {
-        return this.getCarMetaData().then(() => this.getCarData())
+        return this.getCarMetaData().then(() => this?.metadata?.formats ? this.getCarData() : false)
     }
 
     async getCarMetaData() {
@@ -216,7 +216,8 @@ class CollectiveTask {
 
     async getCarData() {
         let metaURL = this['metadata']['formats'].find(item => item['path'] == 'metadata.json')?.['link']?.['href']
-        if(metaURL){
+        console.log(metaURL)
+        if(metaURL && !(metaURL.includes('atiam'))){
             return fetch(metaURL)
             .then(res => toJSON(res.body))
             .then(carData => {
@@ -251,7 +252,7 @@ class CollectiveTask {
         if (this['references']?.length<1){
             return []
         } else {
-            return this['references'].map(reference=>carSearch(reference['id']).then(meta=>getPdfLink(meta)))
+            return this['references'].map(reference=>carSearch(reference['id']).then(meta=>getPdfLink(meta))) || undefined
         }
 
     }
@@ -280,16 +281,19 @@ async function toJSON(body) {
 
 async function carSearch(docId) {
     encodedDocId=encodeURI(docId)
+    console.log(`fetching to https://rdl.train.army.mil/catalog-ws/api/catalogitems.json?current=true
+            &search_terms=${encodedDocId}&page=1&pagesize=20&field_list=`)
     return fetch(`https://rdl.train.army.mil/catalog-ws/api/catalogitems.json?current=true
             &search_terms=${encodedDocId}&page=1&pagesize=20&field_list=*`)
         .then(res => toJSON(res.body)
             .then(jsonBody => {
                 return jsonBody['catalogitems'][0]})
             .then(firstReturn => {
-                if (firstReturn['identifier']==docId){
+                if (firstReturn['identifier']==docId || firstReturn['alternateid']==docId){
                     return firstReturn
                 } else {
-                    throw new Error(`First return did not match requested document, wanted ${docId}, received ${firstReturn['identifier']}`)
+                    console.log(`SOFT-ERROR First return did not match requested document, wanted ${docId}, received ${firstReturn['identifier'] || firstReturn['alternateid'] || firstReturn['title']}`)
+                    return undefined
                 }
             })
         )

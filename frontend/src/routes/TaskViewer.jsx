@@ -33,29 +33,41 @@ export default function TaskViewer({ inputTask = '17-CW-5969' }) {
       <div className="equip-page">
         <header className="equip-header">
           <div>
+
             <h1>{currentTask.metadata.identifier}</h1>
+
             <p className="equip-sub">{currentTask.metadata.title}</p>
+
             <a href={currentTask?.metadata?.formats?.find(item => item['path'] == 'report.pdf')?.['link']?.['href'] || currentTask['metadata']['formats'][0]['link']['href']}
               target="_blank" rel="noopener noreferrer">Get the PDF from CAR</a>
+
             <img src={currentTask.metadata.qr.find(item => item.title == "large")['href']} />
+
+
             <ul> References from this document:
               {currentTask.references?.map((refer, index) => (<li key={index} >
                 <a onClick={() => updateTask(refer.id)} style={{ cursor: 'pointer' }}>{refer.id} - {refer.title}</a>
 
               </li>)) || " No references found or metadata supplied"}
             </ul>
+
+
             <ul> Supporting Collective Tasks from this document:
               {currentTask.supportingCollectiveTasks?.map((refer, index) => (<li key={index} >
                 <a onClick={() => updateTask(refer.number)} style={{ cursor: 'pointer' }}>{refer.number} - {refer.title}</a>
 
               </li>)) || " No collective tasks for this document found"}
             </ul>
+
+
             <ul> Supporting Individual Tasks from this document (Not available for online viewing):
               {currentTask.supportingIndividualTasks?.map((refer, index) => (<li key={index} >
                 <a>{refer.number} - {refer.title}</a>
 
               </li>)) || " No individual tasks for this document found"}
             </ul>
+
+
             <ul> Supporting Collective Tasks from steps in this document:
               {currentTask.taskSteps?.map(task => {
                 console.log(JSON.stringify(task.supportingCollectiveTasks))
@@ -72,6 +84,8 @@ export default function TaskViewer({ inputTask = '17-CW-5969' }) {
               }) || " No steps have tasks associated"}
 
             </ul>
+
+            
           </div>
         </header>
 
