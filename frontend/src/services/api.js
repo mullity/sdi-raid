@@ -6,7 +6,7 @@ function getCookie() {
 }
 
 // Generic API call function with error handling
-const apiCall = async (endpoint, params = {}, method = "GET", body = {}) => {
+const apiCall = async (endpoint, params = {}, method = "GET", body = undefined) => {
   try {
     const queryParams = new URLSearchParams();
     Object.keys(params).forEach((key) => {
@@ -15,16 +15,37 @@ const apiCall = async (endpoint, params = {}, method = "GET", body = {}) => {
       }
     });
     let url
-    if( Object.keys(params).length > 0){
+    if (Object.keys(params).length > 0) {
       console.log(`with entries \n${queryParams.entries()}`)
       url = `${BASE_URL}${endpoint}?${queryParams.toString()}`;
-    }else{
+    } else {
       url = `${BASE_URL}${endpoint}`;
       console.log(url, "url")
     }
     //const url = `${BASE_URL}${endpoint}?${queryParams.toString()}`;
     const token = getCookie("loginToken");
     console.log("Sending token:", token); // Debug log
+    let payload
+    if (method.toUpperCase() == "GET") {
+      payload = {
+        credentials: "include",
+        method: method.toUpperCase(),
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: body
+      }
+    } else {
+      payload = {
+        credentials: "include",
+        method: method.toUpperCase(),
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      }
+    }
     const response = await fetch(url, {
       credentials: "include",
       method: method.toUpperCase(),
