@@ -12,8 +12,8 @@ exports.seed = function(knex) {
           let data = []
           let fakeUnits = Number(output.length)
           let faked = 10
+          let fakedBrads = 12
           let vicName = [
-            {name: 'M2A4 BRADLEY FIGHTING VEHICLE (BFV)', lin: 'M05073'},
             {name: 'LOADER SKID STEER: TYPE II', lin: 'L77147'},
             {name: 'JOINT LIGHT TACTICAL VEHICLE: A1 FOUR SEAT GEN PURPO:', lin: 'J05029'},
             {name: 'HMMWV', lin: 'M1079'},
@@ -23,6 +23,7 @@ exports.seed = function(knex) {
             {name: 'COMMAND POST CARRIER', lin: 'C05105'},
             {name: 'JOINT LIGHT TACTICAL VEHICLE: A1 TWO SEAT UTILITY', lin: 'J05028'},
             {name: 'BRIDGE : HEAVY ASSAULT SCISSORING', lin: 'B31098'},
+            {name: 'M2A4 BRADLEY FIGHTING VEHICLE (BFV)', lin: 'M05073'},
           ]
           let equipmentStatus = [
             {name: 'FMC'},
@@ -33,8 +34,9 @@ exports.seed = function(knex) {
           let idNum = 0
           for(let j = 0; j < fakeUnits; j++) {
             let unitNumber = `${output[j].name}`.slice(0,3)
+
             for(let i = 0; i < faked; i++){
-              let nameNum = Math.floor(Math.random() * 10)
+              let nameNum = Math.floor(Math.random() * 8)
               let statusNum = Math.floor(Math.random() * 3)
               let date = faker.date.past()
               let fuelNum = Math.floor(Math.random() * 100)
@@ -48,7 +50,25 @@ exports.seed = function(knex) {
                 assigned_unit_id: j,
                 date_last_serviced: date,
                 fuel_level: fuelNum,
-                bumper_number: `${unitNumber}-${i}`
+                bumper_number: `${unitNumber}-${idNum}`
+              })
+            }
+
+            for(let i = 0; i < fakedBrads; i++){
+              let statusNum = Math.floor(Math.random() * 3)
+              let date = faker.date.past()
+              let fuelNum = Math.floor(Math.random() * 100)
+
+              idNum++
+              data.push({
+                id: idNum,
+                name: `${vicName[9].name}`,
+                lin: `${vicName[9].lin}`,
+                status: `${equipmentStatus[statusNum].name}`,
+                assigned_unit_id: j,
+                date_last_serviced: date,
+                fuel_level: fuelNum,
+                bumper_number: `${unitNumber}-${idNum}`
               })
             }
           }

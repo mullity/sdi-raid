@@ -49,7 +49,7 @@ exports.seed = function(knex) {
                 assigned_unit_id: j,
                 date_last_serviced: date,
                 fuel_level: fuelNum,
-                bumper_number: `${unitNumber}-${i}`
+                bumper_number: `${unitNumber}-${idNum}`
               })
             }
 
@@ -67,7 +67,7 @@ exports.seed = function(knex) {
                 assigned_unit_id: j,
                 date_last_serviced: date,
                 fuel_level: fuelNum,
-                bumper_number: `${unitNumber}-${i}`
+                bumper_number: `${unitNumber}-${idNum}`
               })
             }
           }
