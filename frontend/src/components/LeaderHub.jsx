@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Modal from './Modal';
 import ReadinessModal from './ReadinessModal';
 import './LeaderHub.css';
@@ -7,6 +7,16 @@ import raidLogo from '../assets/raidlogo.png';
 function LeaderHub({ selectedUnit }) {
   // hover state
   var [hoveredCategory, setHoveredCategory] = useState(null);
+  const [modalData, setModalData] = useState(null)
+
+  useEffect(()=> {
+    fetch('http://localhost:3001/modal?unit=1&vicModalValue=true&deploymentModalValue=true&crewModalValue=true&medModalValue=true&weaponModalValue=true&verbose=true')
+    .then(res => res.json())
+    .then(data => {
+
+      setModalData(data)
+    })
+  }, [])
 
   // which one is clicked
   var [selectedCategory, setSelectedCategory] = useState(null);
@@ -15,50 +25,79 @@ function LeaderHub({ selectedUnit }) {
   var [isModalOpen, setIsModalOpen] = useState(false);
 
   // Data about different readiness categories
-  var readinessCategoriesData = [
-    {
-      id: 'training',
-      title: 'Unit Specific Training',
-      description: 'Training readiness and certification status',
-      status: 'medium',
-      percentage: 76
-    },
-    {
-      id: 'crew',
-      title: 'Crew Qualification',
-      description: 'Combat Readiness Evaluation Assessment',
-      status: 'high',
-      percentage: 89
-    },
-    {
-      id: 'deployment',
-      title: 'Deployment Readiness',
-      description: 'Mission deployment preparation status',
-      status: 'critical',
-      percentage: 34
-    },
-    {
-      id: 'medical',
-      title: 'Medical Readiness',
-      description: 'Health and medical certification status',
-      status: 'high',
-      percentage: 92
-    },
-    {
-      id: 'weapons',
-      title: 'Weapons Qualification',
-      description: 'Weapons training and marksmanship status',
-      status: 'medium',
-      percentage: 68
-    },
-    {
-      id: 'vehicle',
-      title: 'Vehicle Readiness',
-      description: 'Equipment and vehicle operational status',
-      status: 'low',
-      percentage: 45
+  // var readinessCategoriesData = [
+  //   {
+  //     id: 'training',
+  //     title: 'Unit Specific Training',
+  //     description: 'Training readiness and certification status',
+  //     status: 'medium',
+  //     percentage: 76
+  //   },
+  //   {
+  //     id: 'crew',
+  //     title: 'Crew Qualification',
+  //     description: 'Combat Readiness Evaluation Assessment',
+  //     status: 'high',
+  //     percentage: 89
+  //   },
+  //   {
+  //     id: 'deployment',
+  //     title: 'Deployment Readiness',
+  //     description: 'Mission deployment preparation status',
+  //     status: 'critical',
+  //     percentage: 34
+  //   },
+  //   {
+  //     id: 'medical',
+  //     title: 'Medical Readiness',
+  //     description: 'Health and medical certification status',
+  //     status: 'high',
+  //     percentage: 92
+  //   },
+  //   {
+  //     id: 'weapons',
+  //     title: 'Weapons Qualification',
+  //     description: 'Weapons training and marksmanship status',
+  //     status: 'medium',
+  //     percentage: 68
+  //   },
+  //   {
+  //     id: 'vehicle',
+  //     title: 'Vehicle Readiness',
+  //     description: 'Equipment and vehicle operational status',
+  //     status: 'low',
+  //     percentage: 45
+  //   }
+  // ];
+
+  if(modalData === null || modalData === undefined){
+    console.log('loading')
+  } else {
+  var readinessCategoriesData = []
+  for(let datum of modalData){
+    //low, medium, high, critical
+    let status
+    if(datum.percentage >= 90){
+      status = 'high'
     }
-  ];
+    else if(datum.percentage >= 80){
+      status = 'medium'
+    }
+    else if(datum.percentage >= 70){
+      status = 'low'
+    }
+    else if(datum.percentage >= 60){
+      status = 'critical'
+    }
+
+    readinessCategoriesData.push({
+      id: datum.id,
+      title: datum.title,
+      description: datum.description,
+      percentage: datum.percentage,
+      status: status
+    })
+  }
 
   // Sort categories from lowest to highest percentage
   var readinessCategories = readinessCategoriesData.sort(function(a, b) {
@@ -92,6 +131,10 @@ function LeaderHub({ selectedUnit }) {
     setSelectedCategory(null);
   }
 
+  if(readinessCategories === undefined || readinessCategories === null){
+    return <h1>Loading Leaderhub</h1>
+  }else {
+    console.log(readinessCategories, 'leaderhub readiness categories')
   return (
     <div className="leader-hub">
       <div className="hub-header">
@@ -125,11 +168,11 @@ function LeaderHub({ selectedUnit }) {
             <div className="box-header">
               <span className="box-percentage">{category.percentage}%</span>
             </div>
-            
+
             <h4 className="box-title">{category.title}</h4>
-            
+
             <div className="progress-bar">
-              <div 
+              <div
                 className="progress-fill"
                 style={{ width: category.percentage + '%' }}
               ></div>
@@ -152,7 +195,7 @@ function LeaderHub({ selectedUnit }) {
         })}
       </div>
 
-      <Modal 
+      <Modal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         title={selectedCategory?.title || 'Readiness Details'}
@@ -163,6 +206,8 @@ function LeaderHub({ selectedUnit }) {
       </Modal>
     </div>
   );
+}
+  }
 }
 
 export default LeaderHub;
