@@ -49,7 +49,7 @@ function LeaderHub({ selectedUnit }) {
       id: datum.id,
       title: datum.data.title,
       description: datum.data.description,
-      percentage: datum.data.percentage,
+      percentage: Math.floor(datum.data.percentage),
       status: status,
       data: datum.data
     })
