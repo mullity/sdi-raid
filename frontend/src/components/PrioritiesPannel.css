@@ -96,3 +96,34 @@
 .priority-view-button:hover {
   background-color: #2563eb;
 }
+
+/* Dark Mode Styles */
+[data-theme="dark"] .priorities-panel {
+  background-color: #1f2937;
+  border-color: #374151;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .priorities-title {
+  color: #f9fafb;
+}
+
+[data-theme="dark"] .priority-item {
+  background-color: #374151;
+}
+
+[data-theme="dark"] .priority-title {
+  color: #f9fafb;
+}
+
+[data-theme="dark"] .priority-due-date {
+  color: #9ca3af;
+}
+
+[data-theme="dark"] .priority-view-button {
+  background-color: #3b82f6;
+}
+
+[data-theme="dark"] .priority-view-button:hover {
+  background-color: #2563eb;
+}

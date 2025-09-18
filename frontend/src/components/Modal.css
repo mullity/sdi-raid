@@ -75,6 +75,18 @@
   padding: 24px;
   max-height: calc(90vh - 100px);
   overflow-y: auto;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+/* Dark Mode Styles */
+[data-theme="dark"] .modal-backdrop {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+[data-theme="dark"] .modal-close:hover {
+  background: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 /* Responsive Design */
@@ -83,15 +95,15 @@
     width: 95vw;
     margin: 20px;
   }
-  
+
   .modal-header {
     padding: 16px 20px;
   }
-  
+
   .modal-body {
     padding: 20px;
   }
-  
+
   .modal-title {
     font-size: 1.1rem;
   }

@@ -94,3 +94,21 @@
 .kpi-card.clickable:active {
   transform: translateY(0);
 }
+
+/* Dark Mode Styles */
+[data-theme="dark"] .kpi-card {
+  background-color: #1f2937;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .kpi-title {
+  color: #9ca3af;
+}
+
+[data-theme="dark"] .kpi-unit {
+  color: #9ca3af;
+}
+
+[data-theme="dark"] .kpi-card.clickable:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}

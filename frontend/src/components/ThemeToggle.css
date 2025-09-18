@@ -30,7 +30,7 @@
   background: white;
   border-radius: 50%;
   position: absolute;
-  top: 1px;
+  top: 2px;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
@@ -39,12 +39,12 @@
 }
 
 .toggle-slider.light {
-  left: 1px;
+  left: 2px;
   background: #fbbf24;
 }
 
 .toggle-slider.dark {
-  left: 25px;
+  left: 5px;
   background: #1f2937;
 }
 

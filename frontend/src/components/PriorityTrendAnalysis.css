@@ -360,18 +360,88 @@
   font-weight: bold;
 }
 
+/* Dark Mode Styles */
+[data-theme="dark"] .priority-trend-analysis {
+  background: var(--bg-secondary);
+  box-shadow: var(--shadow-medium);
+}
+
+[data-theme="dark"] .analysis-title {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .timeframe-selector {
+  background: var(--bg-tertiary);
+}
+
+[data-theme="dark"] .timeframe-btn {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .timeframe-btn:hover {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .priority-card {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .priority-rank {
+  background: var(--text-primary);
+  color: var(--bg-primary);
+}
+
+[data-theme="dark"] .priority-title {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .priority-description {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .current-value {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .trend-visualization {
+  border-top-color: var(--border-color);
+  border-bottom-color: var(--border-color);
+}
+
+[data-theme="dark"] .prediction-title {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .predicted-percentage {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .confidence-level {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .recommendations-title {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .recommendation-item {
+  color: var(--text-secondary);
+}
+
 /* Responsive Design */
 @media (max-width: 1200px) {
   .priorities-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .analysis-header {
     flex-direction: column;
     gap: 16px;
     align-items: flex-start;
   }
-  
+
   .controls-section {
     flex-direction: column;
     gap: 12px;
