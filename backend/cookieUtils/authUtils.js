@@ -5,13 +5,11 @@ const secretKey = process.env.SECRET_KEY;
 
 const createNewToken = (username, secretKey, knexInstance) => {
   const token = jwt.sign({ username }, secretKey, { expiresIn: "1h" });
-  console.log(token);
   //Create token in DB
   return knexInstance("users")
     .select("id")
     .where("username", username)
     .then((userId) => {
-      console.log(userId);
       return knexInstance("logins")
         .insert({
           user_id: userId[0].id,

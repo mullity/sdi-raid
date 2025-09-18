@@ -53,7 +53,6 @@ const getByUIC = (uic) => {
     .select("id")
     .where("uic", uic)
     .then((res) => {
-      console.log(res);
       return res;
     });
 };
@@ -64,15 +63,13 @@ const postToTable = async (table, input) => {
     let roleId = await getByRole(role_id);
     let unitId = await getByUIC(unit_id);
     try {
-
       //Filterinputs to only matching
       const columns = await getAllFields(table);
       const required = columns.filter((col) => col !== "id");
-      console.log(JSON.stringify(required));
+
       const getId = await getter(table);
 
       const inputKeys = Object.keys(input);
-      console.log(JSON.stringify(inputKeys));
 
       if (!required.every((key) => inputKeys.includes(key))) {
         return "All fields have not been entered";
@@ -80,13 +77,9 @@ const postToTable = async (table, input) => {
       if (inputKeys.length > required.length) {
         return "Too many fields have been entered";
       }
-      console.log(
-        ` id.length: ${typeof getId.length}, email ${typeof email}, password ${typeof password}, unitId ${typeof unitId[0]
-          .id}, username ${typeof username}, roleId ${typeof roleId} `
-      );
 
       input["id"] = getId.length;
-      console.log(unitId[0].id);
+
       const inserted = await knex(table)
         .insert({
           id: getId.length + 1,
@@ -106,11 +99,10 @@ const postToTable = async (table, input) => {
     try {
       const columns = await getAllFields(table);
       const required = columns.filter((col) => col !== "id");
-      console.log(JSON.stringify(required));
+
       const getId = await getter(table);
 
       const inputKeys = Object.keys(input);
-      console.log(JSON.stringify(inputKeys));
 
       if (!required.every((key) => inputKeys.includes(key))) {
         return "All fields have not been entered";
@@ -131,7 +123,6 @@ const postToTable = async (table, input) => {
 };
 
 const destructureUsers = (request) => {
-  console.log(request);
   const reqArray = Object.keys(request);
   return reqArray;
 };
@@ -161,7 +152,6 @@ function calcEquipmentScore(vehicles) {
 }
 
 const checkUnitId = async (table, unit) => {
-  console.log(table, unit);
   let data = await getWithUnitId(table, unit);
 
   if (data.length !== 0) {
