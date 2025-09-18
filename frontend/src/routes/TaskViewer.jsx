@@ -38,13 +38,19 @@ export default function TaskViewer({ inputTask = '17-CW-5969' }) {
 
             <p className="equip-sub">{currentTask.metadata.title}</p>
 
-            <a href={currentTask?.metadata?.formats?.find(item => item['path'] == 'report.pdf')?.['link']?.['href'] || currentTask['metadata']['formats'][0]['link']['href']}
-              target="_blank" rel="noopener noreferrer">
-                {currentTask?.metadata?.formats?.find(item => item['path'] == 'report.pdf')?.['link']?.['href']?.includes('atiam') ? "Requires CAC login (Restricted Document) - " : ''}
-                Get the PDF from CAR              
-            </a>
-
             <img src={currentTask.metadata.qr.find(item => item.title == "large")['href']} />
+
+
+            <ul>
+              <h3>
+                <a href={currentTask?.metadata?.formats?.find(item => item['path'] == 'report.pdf')?.['link']?.['href'] || currentTask['metadata']['formats'][0]['link']['href']}
+                  target="_blank" rel="noopener noreferrer">
+                  {currentTask?.metadata?.formats?.find(item => item['path'] == 'report.pdf')?.['link']?.['href']?.includes('atiam') ? "Requires CAC login (Restricted Document) - " : ''}
+                  Get the PDF from CAR
+                </a>
+              </h3>
+            </ul>
+
 
 
             <ul> References from this document:
