@@ -512,7 +512,7 @@ class VehicleModal extends Modal{
         this.intermediate = await selectParentsAndChildren(unit)
         this.units = parentsAndChildrenToArray(this.intermediate)
         this.vics = await vicSnapshot(unit, 'true')
-        this.issuesActions = await vicIssuesActions((Number((this.vics.data.pmc + this.vics.data.nmc)/this.vics.data.total)*100), this.vics.data.fuellevel, this.units, verbose)
+        this.issuesActions = await vicIssuesActions(percentToTwoDigits((this.vics.data.pmc + this.vics.data.nmc)/this.vics.data.total), this.vics.data.fuellevel, this.units, verbose)
         this.certified = await vicCertified(this.units)
     }
 
@@ -598,7 +598,7 @@ class DeploymentModal extends Modal{
         const { personnelSnapshot, selectParentsAndChildren, parentsAndChildrenToArray, personnelIssuesActions ,vicCertified } = require('../cookieUtils/utils.js')
         this.units = parentsAndChildrenToArray(await selectParentsAndChildren(unit))
         this.troops = await personnelSnapshot(unit, 'true')
-        this.issuesActions = await personnelIssuesActions(Number((this.troops.data.nondeployable / this.troops.data.total) * 100), verbose)
+        this.issuesActions = await personnelIssuesActions(percentToTwoDigits(this.troops.data.nondeployable / this.troops.data.total), verbose)
     }
 
     generateCard(verbose){
@@ -678,7 +678,7 @@ class CrewModal extends Modal{
         const { crewSnapshot, selectParentsAndChildren, parentsAndChildrenToArray, crewIssuesActions } = require('../cookieUtils/utils.js')
         this.units = parentsAndChildrenToArray(await selectParentsAndChildren(unit))
         this.crews = await crewSnapshot(unit, 'true')
-        this.issuesActions = await crewIssuesActions(Number((this.crews.data.nondeployable/this.crews.data.total)*100), verbose)
+        this.issuesActions = await crewIssuesActions(percentToTwoDigits(this.crews.data.nondeployable/this.crews.data.total), verbose)
     }
 
     generateCard(verbose){
@@ -755,7 +755,7 @@ class MedicalModal extends Modal{
         const { medicalSnapshot, selectParentsAndChildren, parentsAndChildrenToArray, medicalIssuesActions } = require('../cookieUtils/utils.js')
         this.units = parentsAndChildrenToArray(await selectParentsAndChildren(unit))
         this.troops = await medicalSnapshot(unit, 'true')
-        this.issuesActions = await medicalIssuesActions(Number((this.troops.data.red / this.troops.data.total) * 100), verbose)
+        this.issuesActions = await medicalIssuesActions(percentToTwoDigits(this.troops.data.red / this.troops.data.total), verbose)
     }
 
     generateCard(verbose){
@@ -839,6 +839,10 @@ class WeaponModal extends Modal{
             }
 
     }
+}
+
+function percentToTwoDigits(inputNumber){
+    return Math.round(inputNumber*10000)/100
 }
 
 

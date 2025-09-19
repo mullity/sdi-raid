@@ -33,6 +33,7 @@
   list-style-type: none !important;
   padding: 0 !important;
   margin: 0 !important;
+  padding-left: 4px !important;
 }
 
 .modal-content ul::before,

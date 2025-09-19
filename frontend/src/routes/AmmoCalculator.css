@@ -22,7 +22,7 @@
   font-weight: 800;
   margin: 0;
   color: var(--text-primary, #1e293b);
-  background: linear-gradient(135deg, #0a0b0c 0%, #ca2525 100%);
+  background: linear-gradient(135deg, #A2ACB6 0%, #CA2525 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
