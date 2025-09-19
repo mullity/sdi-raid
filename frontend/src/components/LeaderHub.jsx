@@ -49,7 +49,7 @@ function LeaderHub({ selectedUnit }) {
       id: datum.id,
       title: datum.data.title,
       description: datum.data.description,
-      percentage: isNaN(Math.round(datum.data.percentage * 100) /100) ? 69 : Math.round(datum.data.percentage * 100)/100,
+      percentage: isNaN(Math.round(datum.data.percentage * 100) /100) ? 69 : Math.round(datum.data.percentage * 100)/100, //TODO - TEMP FIX FOR NAN
       status: status,
       data: datum.data
     })
